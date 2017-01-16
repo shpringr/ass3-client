@@ -1,5 +1,4 @@
-#include "BidiMessagingProtocol.h"
-#include "Connections.h"
+#include "../include/MessageEncoderDecoder.h"
 
 namespace bgu
 {
@@ -9,9 +8,6 @@ namespace bgu
 		{
 			namespace api
 			{
-				namespace bidi
-				{
-				}
 			}
 		}
 	}

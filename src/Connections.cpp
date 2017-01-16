@@ -1,4 +1,4 @@
-#include "MessageEncoderDecoder.h"
+#include "../include/Connections.h"
 
 namespace bgu
 {
@@ -8,6 +8,9 @@ namespace bgu
 		{
 			namespace api
 			{
+				namespace bidi
+				{
+				}
 			}
 		}
 	}

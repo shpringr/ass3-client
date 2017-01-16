@@ -1,5 +1,5 @@
-#include "BidiMessagingProtocolImpl.h"
-#include "Connections.h"
+#include "../include/BidiMessagingProtocolImpl.h"
+#include "../include/Connections.h"
 
 namespace bgu
 {

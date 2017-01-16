@@ -1,5 +1,5 @@
-#include "EncoderDecTest.h"
-#include "MessageEncoderDecoder.h"
+#include "../include/EncoderDecTest.h"
+#include "../include/MessageEncoderDecoder.h"
 
 namespace bgu
 {
