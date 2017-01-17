@@ -13,7 +13,7 @@
         return fileName;
     }
 
-    std::vector<char> BCASTPacket::toByteArr() {
+    char* BCASTPacket::toByteArr() {
 //        ByteBuffer *lengthBuffer = ByteBuffer::allocate(2 + 1 + fileName.length() + 1);
 //        lengthBuffer->put(shortToBytes(opCode));
 //        lengthBuffer->put(deletedAdd);

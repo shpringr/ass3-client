@@ -1,6 +1,6 @@
 #include "DATAPacket.h"
 
-    DATAPacket::DATAPacket(short packetSize, short block, std::vector<char> &data) {
+    DATAPacket::DATAPacket(short packetSize, short block, char* &data) {
         this->packetSize = packetSize;
         this->block = block;
         this->data = data;
@@ -15,11 +15,11 @@
         return block;
     }
 
-    std::vector<char> DATAPacket::getData() {
+    char* DATAPacket::getData() {
         return data;
     }
 
-    std::vector<char> DATAPacket::toByteArr() {
+    char* DATAPacket::toByteArr() {
 //						ByteBuffer *lengthBuffer = ByteBuffer::allocate(2 + 2 + 2 + data.size());
 //						lengthBuffer->put(shortToBytes(opCode));
 //						lengthBuffer->put(shortToBytes(packetSize));

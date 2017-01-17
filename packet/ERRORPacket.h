@@ -51,7 +51,7 @@
 
         virtual std::wstring getErrMsg();
 
-        virtual std::vector<char> toByteArr() override;
+    virtual char* toByteArr() override ;
     };
 
 

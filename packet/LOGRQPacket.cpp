@@ -9,7 +9,7 @@
         return userName;
     }
 
-    std::vector<char> LOGRQPacket::toByteArr() {
+    char* LOGRQPacket::toByteArr() {
 //						ByteBuffer *lengthBuffer = ByteBuffer::allocate(2 + getUserName().length() + 1);
 //						lengthBuffer->put(shortToBytes(opCode));
 //						try

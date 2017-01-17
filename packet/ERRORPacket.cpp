@@ -14,7 +14,7 @@
         return errMsg;
     }
 
-    std::vector<char> ERRORPacket::toByteArr() {
+    char* ERRORPacket::toByteArr() {
 //						ByteBuffer *lengthBuffer = ByteBuffer::allocate(2 + 2 + getErrMsg().length() + 1);
 //						lengthBuffer->put(shortToBytes(opCode));
 //						lengthBuffer->put(shortToBytes(errorCode));

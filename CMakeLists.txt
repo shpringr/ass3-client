@@ -2,12 +2,20 @@ cmake_minimum_required(VERSION 2.8.4)
 project(Client)
 
 message(STATUS "start running cmake...")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Weffc++ -std=c++11")
+
 set(Boost_INCLUDE_DIR "C:/Program Files/boost_1_63_0/include/boost-1_63/")
 set(Boost_LIBRARY_DIR "C:/Program Files/boost_1_63_0/lib/")
 
-#find_package(Boost COMPONENTS system filesystem REQUIRED)
+set(BOOST_ROOT "C:/Program Files/boost_1_63_0/")
+
+find_package(Boost COMPONENTS REQUIRED)
 
 if(Boost_FOUND)
+
+    LINK_DIRECTORIES(${Boost_LIBRARY_DIR})
+
     message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
    message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
     message(STATUS "Boost_VERSION: ${Boost_VERSION}")
@@ -28,7 +36,7 @@ add_executable(Client src/connectionHandler.cpp src/echoClient.cpp include/conne
         packet/DELRQPacket.h packet/DELRQPacket.cpp
         packet/DIRQPacket.h packet/DIRQPacket.cpp
         packet/DISCPacket.h packet/DISCPacket.cpp
-        )
+        src/EncdecTest.cpp include/EncdecTest.h)
 
 if(Boost_FOUND)
 

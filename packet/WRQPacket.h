@@ -13,7 +13,7 @@
 
         virtual std::wstring getFileName();
 
-        virtual std::vector<char> toByteArr() override;
+        virtual char* toByteArr() override ;
 
     };
 

@@ -16,7 +16,7 @@ public:
     virtual std::string getUserName();
 
 
-    virtual std::vector<char> toByteArr() override;
+    virtual char* toByteArr() override ;
 };
 
 

@@ -3,7 +3,7 @@
         Packet::opCode = 10;
     }
 
-    std::vector<char> DISCPacket::toByteArr() {
+    char* DISCPacket::toByteArr() {
 //        ByteBuffer *lengthBuffer = ByteBuffer::allocate(2);
 //        lengthBuffer->put(shortToBytes(opCode));
 //        return lengthBuffer->array_Renamed();

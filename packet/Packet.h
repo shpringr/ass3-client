@@ -1,4 +1,3 @@
-#pragma once
 
 #include <vector>
 
@@ -11,12 +10,13 @@ public:
 
     // protected abstract void parssed(byte[] byteArr);
 
-    virtual std::vector<char> toByteArr() = 0;
+        virtual short bytesToShort(char *bytesArr) = 0;
 
 
-    //Encode short to 2 bytes
-    virtual std::vector<char> shortToBytes(short num);
+        //Encode short to 2 bytes
+        virtual void shortToBytes(short num, char *bytesArr) = 0;
 
+        virtual char* toByteArr() = 0;
 
 };
 

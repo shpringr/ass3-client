@@ -7,17 +7,17 @@
     public:
         short packetSize = 0;
         short block = 0;
-        std::vector<char> data;
+        char* data;
 
-        DATAPacket(short packetSize, short block, std::vector<char> &data);
+        DATAPacket(short packetSize, short block, char* &data);
 
         virtual short getPacketSize();
 
         virtual short getBlock();
 
-        virtual std::vector<char> getData();
+        virtual char* getData();
 
-        virtual std::vector<char> toByteArr() override;
+        virtual char* toByteArr() override ;
     };
 
 

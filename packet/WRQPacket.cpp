@@ -9,7 +9,7 @@
         return fileName;
     }
 
-    std::vector<char> WRQPacket::toByteArr() {
+    char* WRQPacket::toByteArr() {
 //        ByteBuffer *lengthBuffer = ByteBuffer::allocate(2 + fileName.length() + 1);
 //        lengthBuffer->put(shortToBytes(opCode));
 //        try {

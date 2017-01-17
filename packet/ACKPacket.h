@@ -10,6 +10,6 @@
 
         virtual short getBlock();
 
-        virtual std::vector<char> toByteArr() override;
+        virtual char* toByteArr() override ;
     };
 

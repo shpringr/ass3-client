@@ -9,7 +9,7 @@
         return fileName;
     }
 
-    std::vector<char> DELRQPacket::toByteArr() {
+    char* DELRQPacket::toByteArr() {
 //        ByteBuffer *lengthBuffer = ByteBuffer::allocate(2 + getFilename().length() + 1);
 //        lengthBuffer->put(shortToBytes(opCode));
 //        try {
