@@ -1,4 +1,4 @@
-#include "../include/MessageEncoderDecoderImpl.h"
+#include "MessageEncoderDecoderImpl.h"
 
 namespace bgu
 {

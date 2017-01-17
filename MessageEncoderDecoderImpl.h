@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MessageEncoderDecoder.h"
+#include "Packet.h"
 #include <string>
 #include <vector>
 
