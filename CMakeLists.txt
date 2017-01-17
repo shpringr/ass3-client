@@ -36,7 +36,8 @@ add_executable(Client src/connectionHandler.cpp src/echoClient.cpp include/conne
         packet/DELRQPacket.h packet/DELRQPacket.cpp
         packet/DIRQPacket.h packet/DIRQPacket.cpp
         packet/DISCPacket.h packet/DISCPacket.cpp
-        src/EncdecTest.cpp include/EncdecTest.h)
+        src/EncdecTest.cpp include/EncdecTest.h
+        src/MessageEncoderDecoder.cpp include/MessageEncoderDecoder.h)
 
 if(Boost_FOUND)
 
