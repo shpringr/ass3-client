@@ -1,5 +1,6 @@
 #include "BCASTPacket.h"
-    BCASTPacket::BCASTPacket(char deletedAdd, const std::wstring &fileName) {
+#include <string>
+    BCASTPacket::BCASTPacket(char deletedAdd, const string &fileName) {
         this->deletedAdd = deletedAdd;
         this->fileName = fileName;
         Packet::opCode = 9;
@@ -9,7 +10,7 @@
         return deletedAdd;
     }
 
-    std::wstring BCASTPacket::getFileName() {
+    string BCASTPacket::getFileName() {
         return fileName;
     }
 

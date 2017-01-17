@@ -1,13 +1,13 @@
 #include "DATAPacket.h"
 
-    DATAPacket::DATAPacket(short packetSize, short block, char* &data) {
+    DATAPacket::DATAPacket(short packetSize, short block, char* data) {
         this->packetSize = packetSize;
         this->block = block;
         this->data = data;
         Packet::opCode = 3;
     }
 
-    short DATAPacket::getPacketSize() {
+short DATAPacket::getPacketSize() {
         return packetSize;
     }
 

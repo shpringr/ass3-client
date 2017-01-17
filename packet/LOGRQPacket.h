@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Packet.h"
-#include <string>
 #include <vector>
+#include <string>
 
+using namespace std;
 
 class LOGRQPacket : public Packet {
 private:
@@ -13,7 +14,7 @@ private:
 public:
     LOGRQPacket(const std::string &userName);
 
-    virtual std::string getUserName();
+    virtual string getUserName();
 
 
     virtual char* toByteArr() override ;

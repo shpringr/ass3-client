@@ -3,15 +3,18 @@
 #include "Packet.h"
 #include <string>
 #include <vector>
+using namespace std;
+#include <string>
+#include <iostream>
 
     class DELRQPacket : public Packet {
     private:
-        std::wstring fileName;
+        string fileName;
 
     public:
-        DELRQPacket(const std::wstring &filename);
+        DELRQPacket(const string &filename);
 
-        virtual std::wstring getFilename();
+        virtual string getFilename();
 
 
         virtual char* toByteArr() override ;

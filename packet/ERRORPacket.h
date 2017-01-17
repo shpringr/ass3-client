@@ -3,11 +3,14 @@
 #include "Packet.h"
 #include <string>
 #include <vector>
+using namespace std;
+#include <string>
+#include <iostream>
 
     class ERRORPacket : public Packet {
     public:
         short errorCode = 0;
-        std::wstring errMsg;
+        string errMsg;
 
     public:
 //        enum class Errors {
@@ -45,11 +48,11 @@
 //        };
 
     public:
-        ERRORPacket(short errorCode, const std::wstring &errMsg);
+        ERRORPacket(short errorCode, const string &errMsg);
 
         virtual short getErrorCode();
 
-        virtual std::wstring getErrMsg();
+        virtual string getErrMsg();
 
     virtual char* toByteArr() override ;
     };

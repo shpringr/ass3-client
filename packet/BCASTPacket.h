@@ -1,19 +1,22 @@
 #pragma once
 
 #include "Packet.h"
-#include <string>
 #include <vector>
+using namespace std;
+#include <string>
+#include <iostream>
+
 
     class BCASTPacket : public Packet {
     public:
         char deletedAdd = 0;
-        std::wstring fileName;
+        string fileName;
 
-        BCASTPacket(char deletedAdd, const std::wstring &fileName);
+        BCASTPacket(char deletedAdd, const string &fileName);
 
         virtual char getDeletedAdd();
 
-        virtual std::wstring getFileName();
+        virtual string getFileName();
 
         virtual char* toByteArr() override ;
     };

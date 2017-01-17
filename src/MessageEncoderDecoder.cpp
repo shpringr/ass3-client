@@ -91,7 +91,7 @@ void MessageEncoderDecoder::makeBCastPacket(char nextByte)  {
 //        if (nextByte != L'\0') {
 //            lengthBuffer->put(nextByte);
 //        } else { //nextByte == '\0'
-//            std::wstring fileName = std::wstring(getDataFromBuffer(lengthBuffer), L"UTF-8");
+//            string fileName = string(getDataFromBuffer(lengthBuffer), L"UTF-8");
 //            res = new BCASTPacket(deletedAdd, fileName);
 //            initAll();
 //        }
@@ -102,7 +102,7 @@ void MessageEncoderDecoder::makeDelRqPacket(char nextByte)  {
 //    if (nextByte != L'\0') {
 //        lengthBuffer->put(nextByte);
 //    } else { //nextByte == '\0'
-//        std::wstring fileName = std::wstring(getDataFromBuffer(lengthBuffer), L"UTF-8");
+//        string fileName = string(getDataFromBuffer(lengthBuffer), L"UTF-8");
 //        res = new DELRQPacket(fileName);
 //        initAll();
 //    }
@@ -112,7 +112,7 @@ void MessageEncoderDecoder::makeLoginPacket(char nextByte)  {
 //    if (nextByte != L'\0') {
 //        lengthBuffer->put(nextByte);
 //    } else { //nextByte == '\0'
-//        std::wstring userName = std::wstring(getDataFromBuffer(lengthBuffer), L"UTF-8");
+//        string userName = string(getDataFromBuffer(lengthBuffer), L"UTF-8");
 //        res = new LOGRQPacket(userName);
 //        initAll();
 //    }
@@ -141,7 +141,7 @@ void MessageEncoderDecoder::makeErrorPacket(char nextByte)  {
 //        if (nextByte != L'\0') {
 //            lengthBuffer->put(nextByte);
 //        } else { //nextByte == '\0'
-//            std::wstring errMsg = std::wstring(getDataFromBuffer(lengthBuffer), L"UTF-8");
+//            string errMsg = string(getDataFromBuffer(lengthBuffer), L"UTF-8");
 //            res = new ERRORPacket(errorCode, errMsg);
 //            initAll();
 //        }
@@ -185,7 +185,7 @@ void MessageEncoderDecoder::makeWRQPacket(char nextByte)  {
 //    if (nextByte != L'\0') {
 //        lengthBuffer->put(nextByte);
 //    } else { //nextByte == '\0'
-//        std::wstring filename = std::wstring(getDataFromBuffer(lengthBuffer), L"UTF-8");
+//        string filename = string(getDataFromBuffer(lengthBuffer), L"UTF-8");
 //        res = new WRQPacket(filename);
 //        initAll();
 //    }
@@ -195,7 +195,7 @@ void MessageEncoderDecoder::makeRRQPacket(char nextByte)  {
 //    if (nextByte != L'\0') {
 //        lengthBuffer->put(nextByte);
 //    } else { //nextByte == '\0'
-//        std::wstring filename = std::wstring(getDataFromBuffer(lengthBuffer), L"UTF-8");
+//        string filename = string(getDataFromBuffer(lengthBuffer), L"UTF-8");
 //        res = new RRQPacket(filename);
 //        initAll();
 //    }
@@ -238,7 +238,7 @@ void MessageEncoderDecoder::initOpCodeAndBuffers(char nextByte) {
 //    }/
 }
 
-std::vector<char> MessageEncoderDecoder::encode(Packet *message) {
+char* MessageEncoderDecoder::encode(Packet *message) {
     return message->toByteArr();
 }
 

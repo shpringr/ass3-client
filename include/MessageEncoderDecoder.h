@@ -9,7 +9,7 @@
 /// <summary>
 /// Created by ROTEM on 09/01/2017.
 /// </summary>
-class MessageEncoderDecoder<Packet *> {
+class MessageEncoderDecoder{
 
 private:
 //    ByteBuffer *const opLengthBuffer = ByteBuffer::allocate(2);
@@ -76,9 +76,9 @@ private:
 
     //@TODO SHITTTTTTTTTTTTTTTTTTTTTTTTTTTT
 public:
-    virtual std::vector<char> encode(Packet *message);
+    virtual char* encode(Packet *message);
 
-    short MessageEncoderDecoder::bytesToShort(char bytesArr[]);
-    void MessageEncoderDecoder::shortToBytes(short num, char bytesArr[]);
+    short bytesToShort(char bytesArr[]);
+    void shortToBytes(short num, char bytesArr[]);
 
 };

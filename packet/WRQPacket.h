@@ -3,15 +3,18 @@
 #include "Packet.h"
 #include <string>
 #include <vector>
+using namespace std;
+#include <string>
+#include <iostream>
 
     class WRQPacket : public Packet {
     private:
-        std::wstring fileName;
+        string fileName;
 
     public:
-        WRQPacket(const std::wstring &filename);
+        WRQPacket(const string &filename);
 
-        virtual std::wstring getFileName();
+        virtual string getFileName();
 
         virtual char* toByteArr() override ;
 

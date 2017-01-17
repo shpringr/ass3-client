@@ -8,7 +8,7 @@
 
         ACKPacket(short block);
 
-        virtual short getBlock();
+        short getBlock();
 
         virtual char* toByteArr() override ;
     };

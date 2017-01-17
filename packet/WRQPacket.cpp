@@ -1,11 +1,11 @@
 #include "WRQPacket.h"
 
-    WRQPacket::WRQPacket(const std::wstring &filename) {
+    WRQPacket::WRQPacket(const string &filename) {
         fileName = filename;
         Packet::opCode = 2;
     }
 
-    std::wstring WRQPacket::getFileName() {
+    string WRQPacket::getFileName() {
         return fileName;
     }
 

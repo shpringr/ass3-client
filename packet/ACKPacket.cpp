@@ -26,11 +26,15 @@
 //
         char *opCodeBytes = new char[2];
         char *blockBytes = new char[2];
+        char* returnBytes = new char[2+2];
 
         shortToBytes(opCode, opCodeBytes);
         shortToBytes(block, blockBytes);
 
-        return strcat(opCodeBytes, blockBytes);
+        strcpy(returnBytes,opCodeBytes);
+        strcat(returnBytes,blockBytes);
+
+        return returnBytes;
 //        ByteBuffer *lengthBuffer = ByteBuffer::allocate(2 + 2);
 //        lengthBuffer->put(shortToBytes(opCode));
 //        lengthBuffer->put(shortToBytes(block));

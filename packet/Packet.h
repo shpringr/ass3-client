@@ -1,3 +1,4 @@
+#pragma once
 
 #include <vector>
 
@@ -6,18 +7,13 @@ protected:
     short opCode = 0;
 
 public:
-    virtual short getOpCode();
+        short getOpCode();
 
-    // protected abstract void parssed(byte[] byteArr);
+        short bytesToShort(char bytesArr[]);
 
-        virtual short bytesToShort(char bytesArr[]) = 0;
-
-
-        //Encode short to 2 bytes
-        virtual void shortToBytes(short num, char bytesArr[]) = 0;
+        void shortToBytes(short num, char bytesArr[]);
 
         virtual char* toByteArr() = 0;
-
 };
 
 

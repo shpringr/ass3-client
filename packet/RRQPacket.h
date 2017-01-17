@@ -4,15 +4,18 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+#include <string>
+#include <iostream>
 
     class RRQPacket : public Packet {
     private:
-        std::wstring fileName;
+        string fileName;
 
     public:
-        RRQPacket(const std::wstring &filename);
+        RRQPacket(const string &filename);
 
-        virtual std::wstring getFileName();
+        virtual string getFileName();
 
 
         virtual char* toByteArr() override ;

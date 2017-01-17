@@ -1,6 +1,6 @@
 #include "ERRORPacket.h"
 
-    ERRORPacket::ERRORPacket(short errorCode, const std::wstring &errMsg) {
+    ERRORPacket::ERRORPacket(short errorCode, const string &errMsg) {
         this->errorCode = errorCode;
         this->errMsg = errMsg;
         Packet::opCode = 5;
@@ -10,7 +10,7 @@
         return errorCode;
     }
 
-    std::wstring ERRORPacket::getErrMsg() {
+    string ERRORPacket::getErrMsg() {
         return errMsg;
     }
 

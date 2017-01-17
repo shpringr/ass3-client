@@ -1,11 +1,11 @@
 #include "DELRQPacket.h"
 
-    DELRQPacket::DELRQPacket(const std::wstring &filename) {
+    DELRQPacket::DELRQPacket(const string &filename) {
         fileName = filename;
         Packet::opCode = 8;
     }
 
-    std::wstring DELRQPacket::getFilename() {
+    string DELRQPacket::getFilename() {
         return fileName;
     }
 
