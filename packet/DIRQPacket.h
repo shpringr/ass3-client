@@ -3,9 +3,6 @@
 #include "Packet.h"
 #include <vector>
 
-namespace packet {
-
-
     class DIRQPacket : public Packet {
 
     public:
@@ -15,4 +12,4 @@ namespace packet {
         virtual std::vector<char> toByteArr() override;
     };
 
-}
+

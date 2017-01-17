@@ -2,9 +2,6 @@
 
 #include "Packet.h"
 #include <vector>
-
-namespace packet {
-
     class ACKPacket : public Packet {
     public:
         short block = 0;
@@ -16,4 +13,3 @@ namespace packet {
         virtual std::vector<char> toByteArr() override;
     };
 
-}

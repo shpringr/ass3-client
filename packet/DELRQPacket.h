@@ -4,9 +4,6 @@
 #include <string>
 #include <vector>
 
-namespace packet {
-
-
     class DELRQPacket : public Packet {
     private:
         std::wstring fileName;
@@ -20,4 +17,4 @@ namespace packet {
         virtual std::vector<char> toByteArr() override;
     };
 
-}
+

@@ -1,7 +1,4 @@
 #include "ACKPacket.h"
-
-namespace packet {
-
     ACKPacket::ACKPacket(short block) {
         this->block = block;
         Packet::opCode = 4;
@@ -19,4 +16,3 @@ namespace packet {
 //        lengthBuffer->put(shortToBytes(block));
 //        return lengthBuffer->array_Renamed();
     }
-}

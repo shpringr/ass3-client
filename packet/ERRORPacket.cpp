@@ -1,7 +1,5 @@
 #include "ERRORPacket.h"
 
-namespace packet {
-
     ERRORPacket::ERRORPacket(short errorCode, const std::wstring &errMsg) {
         this->errorCode = errorCode;
         this->errMsg = errMsg;
@@ -31,4 +29,4 @@ namespace packet {
 //						lengthBuffer->put(static_cast<char>(0));
 //						return lengthBuffer->array_Renamed();
     }
-}
+

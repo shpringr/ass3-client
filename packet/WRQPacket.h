@@ -4,9 +4,6 @@
 #include <string>
 #include <vector>
 
-namespace packet {
-
-
     class WRQPacket : public Packet {
     private:
         std::wstring fileName;
@@ -21,4 +18,4 @@ namespace packet {
     };
 
 
-}
+

@@ -1,7 +1,5 @@
 #include "DATAPacket.h"
 
-namespace packet {
-
     DATAPacket::DATAPacket(short packetSize, short block, std::vector<char> &data) {
         this->packetSize = packetSize;
         this->block = block;
@@ -29,4 +27,3 @@ namespace packet {
 //						lengthBuffer->put(data);
 //						return lengthBuffer->array_Renamed();
     }
-}

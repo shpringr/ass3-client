@@ -3,9 +3,6 @@
 #include "Packet.h"
 #include <vector>
 
-namespace packet {
-
-
     class DATAPacket : public Packet {
     public:
         short packetSize = 0;
@@ -23,4 +20,4 @@ namespace packet {
         virtual std::vector<char> toByteArr() override;
     };
 
-}
+

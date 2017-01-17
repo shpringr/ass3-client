@@ -1,7 +1,5 @@
 #include "DIRQPacket.h"
 
-namespace packet {
-
     DIRQPacket::DIRQPacket() {
         Packet::opCode = 6;
     }
@@ -11,4 +9,3 @@ namespace packet {
 //        lengthBuffer->put(shortToBytes(opCode));
 //        return lengthBuffer->array_Renamed();
     }
-}

@@ -16,7 +16,19 @@ if(Boost_FOUND)
 
 endif()
 
-add_executable(Client src/connectionHandler.cpp src/echoClient.cpp include/connectionHandler.h)
+add_executable(Client src/connectionHandler.cpp src/echoClient.cpp include/connectionHandler.h
+        packet/Packet.h
+        packet/LOGRQPacket.h packet/LOGRQPacket.cpp
+        packet/RRQPacket.h packet/RRQPacket.cpp
+        packet/ACKPacket.h packet/ACKPacket.cpp
+        packet/BCASTPacket.h packet/BCASTPacket.cpp
+        packet/WRQPacket.h packet/WRQPacket.cpp
+        packet/ERRORPacket.h packet/ERRORPacket.cpp
+        packet/DATAPacket.h packet/DATAPacket.cpp
+        packet/DELRQPacket.h packet/DELRQPacket.cpp
+        packet/DIRQPacket.h packet/DIRQPacket.cpp
+        packet/DISCPacket.h packet/DISCPacket.cpp
+        )
 
 if(Boost_FOUND)
 

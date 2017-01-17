@@ -1,7 +1,4 @@
 #include "DISCPacket.h"
-
-namespace packet {
-
     DISCPacket::DISCPacket() {
         Packet::opCode = 10;
     }
@@ -11,4 +8,3 @@ namespace packet {
 //        lengthBuffer->put(shortToBytes(opCode));
 //        return lengthBuffer->array_Renamed();
     }
-}

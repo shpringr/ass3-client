@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-namespace packet {
-
 
     class RRQPacket : public Packet {
     private:
@@ -20,4 +18,4 @@ namespace packet {
         virtual std::vector<char> toByteArr() override;
     };
 
-}
+

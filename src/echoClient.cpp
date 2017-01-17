@@ -1,10 +1,35 @@
 #include <stdlib.h>
 #include <iostream>
 #include "../include/connectionHandler.h"
+#include "../packet/LOGRQPacket.h"
+#include "../packet/Packet.h"
+#include "../packet/RRQPacket.h"
+#include "../packet/ACKPacket.h"
+#include "../packet/BCASTPacket.h"
+#include "../packet/WRQPacket.h"
+#include "../packet/ERRORPacket.h"
+#include "../packet/DATAPacket.h"
+#include "../packet/DELRQPacket.h"
+#include "../packet/DIRQPacket.h"
+#include "../packet/DISCPacket.h"
+
+
+
+using namespace std;
 
 /**
 * This code assumes that the server replies the exact text the client sent it (as opposed to the practical session example)
 */
+
+// Value-Defintions of the different String values
+static enum StringValue {
+    LOGRQ,
+    DELRQ,
+    RRQ,
+    WRQ,
+    DIRQ,
+    DISC};
+
 int main (int argc, char *argv[]) {
     if (argc < 3) {
         std::cerr << "Usage: " << argv[0] << " host port" << std::endl << std::endl;
@@ -25,7 +50,19 @@ int main (int argc, char *argv[]) {
         char buf[bufsize];
         std::cin.getline(buf, bufsize);
 		std::string line(buf);
-		int len=line.length();
+        std::string comand(line.substr(0,line.find(" ",0)));
+        std::string name(line.substr(line.find("<",0),line.find(">",0)));
+        int len=line.length();
+
+        if(comand.compare("LOGRQ")){
+            LOGRQPacket *packetToSend = nullptr;
+            packetToSend = new LOGRQPacket(name);
+
+            RRQPacket p = new RRQPacket(name);
+
+            connectionHandler.send( );
+        }
+
         if (!connectionHandler.sendLine(line)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;

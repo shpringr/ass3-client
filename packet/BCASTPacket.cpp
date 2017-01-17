@@ -1,7 +1,4 @@
 #include "BCASTPacket.h"
-
-namespace packet {
-
     BCASTPacket::BCASTPacket(char deletedAdd, const std::wstring &fileName) {
         this->deletedAdd = deletedAdd;
         this->fileName = fileName;
@@ -29,4 +26,3 @@ namespace packet {
 //        lengthBuffer->put(static_cast<char>(0));
 //        return lengthBuffer->array_Renamed();
     }
-}

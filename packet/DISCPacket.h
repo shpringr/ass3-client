@@ -2,10 +2,6 @@
 
 #include "Packet.h"
 #include <vector>
-
-namespace packet {
-
-
     class DISCPacket : public Packet {
 
     public:
@@ -15,4 +11,4 @@ namespace packet {
         virtual std::vector<char> toByteArr() override;
     };
 
-}
+

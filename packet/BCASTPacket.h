@@ -4,9 +4,6 @@
 #include <string>
 #include <vector>
 
-namespace packet {
-
-
     class BCASTPacket : public Packet {
     public:
         char deletedAdd = 0;
@@ -21,4 +18,4 @@ namespace packet {
         virtual std::vector<char> toByteArr() override;
     };
 
-}
+

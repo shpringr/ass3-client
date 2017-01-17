@@ -1,13 +1,11 @@
 #include "LOGRQPacket.h"
 
-namespace packet {
-
-    LOGRQPacket::LOGRQPacket(const std::wstring &userName) {
+    LOGRQPacket::LOGRQPacket(const std::string &userName) {
         this->userName = userName;
         Packet::opCode = 7;
     }
 
-    std::wstring LOGRQPacket::getUserName() {
+    std::string LOGRQPacket::getUserName() {
         return userName;
     }
 
@@ -25,4 +23,4 @@ namespace packet {
 //						lengthBuffer->put(static_cast<char>(0));
 //						return lengthBuffer->array_Renamed();
     }
-}
+

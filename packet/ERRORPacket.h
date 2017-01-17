@@ -4,9 +4,6 @@
 #include <string>
 #include <vector>
 
-namespace packet {
-
-
     class ERRORPacket : public Packet {
     public:
         short errorCode = 0;
@@ -57,5 +54,5 @@ namespace packet {
         virtual std::vector<char> toByteArr() override;
     };
 
-}
+
 
