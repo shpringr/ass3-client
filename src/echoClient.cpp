@@ -54,13 +54,11 @@ int main (int argc, char *argv[]) {
         std::string name(line.substr(line.find("<",0),line.find(">",0)));
         int len=line.length();
 
+        Packet *packetToSend = nullptr;
+
         if(comand.compare("LOGRQ")){
-            LOGRQPacket *packetToSend = nullptr;
             packetToSend = new LOGRQPacket(name);
-
-            RRQPacket p = new RRQPacket(name);
-
-            connectionHandler.send( );
+            connectionHandler.send(packetToSend);
         }
 
         if (!connectionHandler.sendLine(line)) {

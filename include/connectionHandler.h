@@ -4,6 +4,7 @@
 #include <string>
 #include <boost/asio.hpp>
 #include <iostream>
+#include "../packet/Packet.h"
 
 using boost::asio::ip::tcp;
 
@@ -47,7 +48,8 @@ public:
 	
     // Close down the connection properly.
     void close();
- 
+
+    void send(Packet *pPacket);
 }; //class ConnectionHandler
  
 #endif
