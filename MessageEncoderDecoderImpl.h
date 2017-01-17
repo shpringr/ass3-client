@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MessageEncoderDecoder.h"
-#include "Packet.h"
+#include "Packet/Packet.h"
 #include <string>
 #include <vector>
 
