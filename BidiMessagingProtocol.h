@@ -28,8 +28,6 @@ namespace bgu
 					{
 
 					public:
-						virtual void start(int connectionId, Connections<T> *connections) = 0;
-
 						virtual void process(T message) = 0;
 
 						/// <returns> true if the connection should be terminated </returns>

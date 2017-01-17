@@ -1,6 +1,14 @@
 #include "BidiMessagingProtocolImpl.h"
-#include "Connections.h"
-
+#include "Packet/LOGRQPacket.h";
+#include "Packet/ACKPacket.h";
+#include "Packet/BCASTPacket.h";
+#include "Packet/DATAPacket.h";
+#include "Packet/DELRQPacket.h";
+#include "Packet/DIRQPacket.h";
+#include "Packet/DISCPacket.h";
+#include "Packet/RRQPacket.h";
+#include "Packet/ERRORPacket.h";
+#include "Packet/WRQPacket.h";
 namespace bgu
 {
 	namespace spl171
@@ -12,18 +20,9 @@ namespace bgu
 				namespace bidi
 				{
 					using namespace bgu::spl171::net::impl::packet;
-//					import static bgu.spl171.net.impl.packet.ERRORPacket.Errors.*;
-std::vector<int> BidiMessagingProtocolImpl::logOns;
-
-					void BidiMessagingProtocolImpl::start(int connectionId, Connections *connections)
-					{
-						this->connections = connections;
-						this->connectionId = connectionId;
-					}
 
 					void BidiMessagingProtocolImpl::process(Packet *message)
 					{
-
 						if (isLegalFirstCommand(message))
 						{
 							switch ((message->getOpCode()))
@@ -290,7 +289,7 @@ std::vector<int> BidiMessagingProtocolImpl::logOns;
 						}
 					}
 
-					void BidiMessagingProtocolImpl::sendError(ERRORPacket::Errors *errorCode, const std::wstring &extraMsg)
+					void BidiMessagingProtocolImpl::sendError(ERRORPacket::Errors errorCode, const std::wstring &extraMsg)
 					{
 						ERRORPacket tempVar(static_cast<short>(errorCode->ordinal()), errorCode->getErrorMsg() + extraMsg);
 						connections->send(connectionId, &tempVar);

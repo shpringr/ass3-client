@@ -1,6 +1,8 @@
 #pragma once
 
 #include "BidiMessagingProtocol.h"
+#include "Packet/ACKPacket.h"
+#include "Packet/ERRORPacket.h"
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -81,7 +83,7 @@ namespace bgu
 
 						void broadcastMessageToLogons(char delOrIns, const std::wstring &filename);
 
-						void sendError(ERRORPacket::Errors *errorCode, const std::wstring &extraMsg);
+						void sendError(bgu::spl171::net::impl::packet::ERRORPacket::Errors errorCode, const std::wstring &extraMsg);
 
 						void handleLoginPacket(LOGRQPacket *message);
 
