@@ -3,30 +3,16 @@
 #include "Packet.h"
 #include <vector>
 
-namespace bgu
-{
-	namespace spl171
-	{
-		namespace net
-		{
-			namespace impl
-			{
-				namespace packet
-				{
+namespace packet {
 
 
-					class DIRQPacket : public Packet
-					{
+    class DIRQPacket : public Packet {
 
-					public:
-						DIRQPacket();
+    public:
+        DIRQPacket();
 
 
-						virtual std::vector<char> toByteArr() override;
-					};
+        virtual std::vector<char> toByteArr() override;
+    };
 
-				}
-			}
-		}
-	}
 }

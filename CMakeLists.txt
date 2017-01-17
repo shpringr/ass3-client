@@ -1,21 +1,25 @@
-#cmake_minimum_required(VERSION 3.6)
-#project(Client)
-#
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Weffc++ -std=c++11")
-#
-#set(SOURCE_FILES Boost_Echo_Client)
-#add_executable(Client ${SOURCE_FILES})
-
-#My cmake doesn't contain anything, it just works I don't know why:
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 2.8.4)
 project(Client)
 
-set(CMAKE_CXX_STANDARD 11)
+message(STATUS "start running cmake...")
+set(Boost_INCLUDE_DIR "C:/Program Files/boost_1_63_0/include/boost-1_63/")
+set(Boost_LIBRARY_DIR "C:/Program Files/boost_1_63_0/lib/")
 
-set(SOURCE_FILES src/connectionHandler.cpp src/echoClient.cpp include/connectionHandler.h)
-add_executable(Client ${SOURCE_FILES})
-#set(Boost_INCLUDE_DIR "C:/boost_1_63_0/include/boost-1_63/boost")
-#set(Boost_LIBRARY_DIR "C:/boost_1_63_0/lib")
 #find_package(Boost COMPONENTS system filesystem REQUIRED)
-#include_directories(${Boost_INCLUDE_DIR})
-#target_link_libraries( Client ${Boost_LIBRARY_DIR})
+
+if(Boost_FOUND)
+    message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+   message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
+    message(STATUS "Boost_VERSION: ${Boost_VERSION}")
+
+    include_directories(${Boost_INCLUDE_DIRS})
+
+endif()
+
+add_executable(Client src/connectionHandler.cpp src/echoClient.cpp include/connectionHandler.h)
+
+if(Boost_FOUND)
+
+target_link_libraries(Client ${Boost_LIBRARIES})
+
+endif()

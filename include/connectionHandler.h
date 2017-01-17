@@ -2,8 +2,8 @@
 #define CONNECTION_HANDLER__
                                            
 #include <string>
-#include <iostream>
 #include <boost/asio.hpp>
+#include <iostream>
 
 using boost::asio::ip::tcp;
 

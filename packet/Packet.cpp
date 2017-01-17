@@ -1,30 +1,22 @@
 #include "Packet.h"
 
-namespace bgu
-{
-	namespace spl171
-	{
-		namespace net
-		{
-			namespace impl
-			{
 				namespace packet
 				{
-
 					short Packet::getOpCode()
 					{
 						return opCode;
 					}
 
-					std::vector<char> Packet::shortToBytes(short num)
+					short bytesToShort(char* bytesArr)
 					{
-						std::vector<char> bytesArr(2);
-						bytesArr[0] = static_cast<char>((num >> 8) & 0xFF);
-						bytesArr[1] = static_cast<char>(num & 0xFF);
-						return bytesArr;
+						short result = (short)((bytesArr[0] & 0xff) << 8);
+						result += (short)(bytesArr[1] & 0xff);
+						return result;
+					}
+
+					void shortToBytes(short num, char* bytesArr)
+					{
+						bytesArr[0] = (char) ((num >> 8) & 0xFF);
+						bytesArr[1] = (char) (num & 0xFF);
 					}
 				}
-			}
-		}
-	}
-}
