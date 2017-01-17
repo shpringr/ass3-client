@@ -1,5 +1,4 @@
 #include "ERRORPacket.h"
-
 namespace bgu
 {
 	namespace spl171
