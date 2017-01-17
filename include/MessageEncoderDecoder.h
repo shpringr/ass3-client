@@ -78,10 +78,7 @@ private:
 public:
     virtual std::vector<char> encode(Packet *message);
 
-    //Decode 2 bytes to short
-    virtual short bytesToShort(std::vector<char> &byteArr);
-
-    //Encode short to 2 bytes
-    virtual std::vector<char> shortToBytes(short num);
+    short MessageEncoderDecoder::bytesToShort(char bytesArr[]);
+    void MessageEncoderDecoder::shortToBytes(short num, char bytesArr[]);
 
 };

@@ -4,7 +4,7 @@
 
 #ifndef CLIENTDANA_ENCDECTEST_H
 #define CLIENTDANA_ENCDECTEST_H
-#include "../include/EncoderDecoder.h"
+#include "../include/MessageEncoderDecoder.h"
 using namespace std;
 #include <string>
 #include <iostream>
@@ -13,29 +13,29 @@ using namespace std;
 class EncdecTest {
 
 public:
-    EncoderDecoder* encdec = new EncoderDecoder();
+    MessageEncoderDecoder* encdec = new MessageEncoderDecoder();
      char* vecToArr(vector<char>& v);
      vector<char> arrToVec(char* c);
-     void testDataDecode (EncoderDecoder& encdec);
-     void testDataEncode (EncoderDecoder& encdec);
-     void testDISCDecode (EncoderDecoder& encdec);
-     void testDISCEncode (EncoderDecoder& encdec);
-     void testBCastDecode (EncoderDecoder& encdec);
-     void testBCastEncode (EncoderDecoder& encdec);
-     void testDELRQDecode (EncoderDecoder& encdec);
-     void testDELRQEncode (EncoderDecoder& encdec);
-     void testLOGRQDecode (EncoderDecoder& encdec);
-     void testLOGRQEncode (EncoderDecoder& encdec);
-     void testDIRQDecode (EncoderDecoder& encdec);
-     void testDIRQEncode (EncoderDecoder& encdec);
-     void testErrorDecode (EncoderDecoder& encdec);
-     void testErrorEncode (EncoderDecoder& encdec);
-     void testRRQDecode (EncoderDecoder& encdec);
-     void testRRQEncode (EncoderDecoder& encdec);
-     void testWRQDecode (EncoderDecoder& encdec);
-     void testWRQEncode (EncoderDecoder& encdec);
-     void testACKDecode (EncoderDecoder& encdec);
-     void testACKEncode (EncoderDecoder& encdec);
+     void testDataDecode (MessageEncoderDecoder& encdec);
+     void testDataEncode (MessageEncoderDecoder& encdec);
+     void testDISCDecode (MessageEncoderDecoder& encdec);
+     void testDISCEncode (MessageEncoderDecoder& encdec);
+     void testBCastDecode (MessageEncoderDecoder& encdec);
+     void testBCastEncode (MessageEncoderDecoder& encdec);
+     void testDELRQDecode (MessageEncoderDecoder& encdec);
+     void testDELRQEncode (MessageEncoderDecoder& encdec);
+     void testLOGRQDecode (MessageEncoderDecoder& encdec);
+     void testLOGRQEncode (MessageEncoderDecoder& encdec);
+     void testDIRQDecode (MessageEncoderDecoder& encdec);
+     void testDIRQEncode (MessageEncoderDecoder& encdec);
+     void testErrorDecode (MessageEncoderDecoder& encdec);
+     void testErrorEncode (MessageEncoderDecoder& encdec);
+     void testRRQDecode (MessageEncoderDecoder& encdec);
+     void testRRQEncode (MessageEncoderDecoder& encdec);
+     void testWRQDecode (MessageEncoderDecoder& encdec);
+     void testWRQEncode (MessageEncoderDecoder& encdec);
+     void testACKDecode (MessageEncoderDecoder& encdec);
+     void testACKEncode (MessageEncoderDecoder& encdec);
      void printArr(vector<char> b);
      short bytesToShort(vector<char> byteArr);
      vector<char> shortToBytes(short num);

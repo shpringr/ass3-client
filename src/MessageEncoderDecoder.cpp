@@ -239,18 +239,16 @@ void MessageEncoderDecoder::initOpCodeAndBuffers(char nextByte) {
 }
 
 std::vector<char> MessageEncoderDecoder::encode(Packet *message) {
-//    return message->toByteArr();
+    return message->toByteArr();
 }
 
-short MessageEncoderDecoder::bytesToShort(std::vector<char> &byteArr) {
-//    short result = static_cast<short>((byteArr[0] & 0xff) << 8);
-//    result += static_cast<short>(byteArr[1] & 0xff);
-//    return result;
+short MessageEncoderDecoder::bytesToShort(char bytesArr[]) {
+    short result = (short) ((bytesArr[0] & 0xff) << 8);
+    result += (short) (bytesArr[1] & 0xff);
+    return result;
 }
 
-std::vector<char> MessageEncoderDecoder::shortToBytes(short num) {
-//    std::vector<char> bytesArr(2);
-//    bytesArr[0] = static_cast<char>((num >> 8) & 0xFF);
-//    bytesArr[1] = static_cast<char>(num & 0xFF);
-//    return bytesArr;
+void MessageEncoderDecoder::shortToBytes(short num, char bytesArr[]) {
+    bytesArr[0] = (char) ((num >> 8) & 0xFF);
+    bytesArr[1] = (char) (num & 0xFF);
 }

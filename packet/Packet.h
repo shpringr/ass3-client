@@ -10,11 +10,11 @@ public:
 
     // protected abstract void parssed(byte[] byteArr);
 
-        virtual short bytesToShort(char *bytesArr) = 0;
+        virtual short bytesToShort(char bytesArr[]) = 0;
 
 
         //Encode short to 2 bytes
-        virtual void shortToBytes(short num, char *bytesArr) = 0;
+        virtual void shortToBytes(short num, char bytesArr[]) = 0;
 
         virtual char* toByteArr() = 0;
 

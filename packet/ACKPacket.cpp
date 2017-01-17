@@ -30,7 +30,7 @@
         shortToBytes(opCode, opCodeBytes);
         shortToBytes(block, blockBytes);
 
-        return strcat(opCodeBytes, blockBytes);;
+        return strcat(opCodeBytes, blockBytes);
 //        ByteBuffer *lengthBuffer = ByteBuffer::allocate(2 + 2);
 //        lengthBuffer->put(shortToBytes(opCode));
 //        lengthBuffer->put(shortToBytes(block));
