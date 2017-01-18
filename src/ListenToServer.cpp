@@ -167,12 +167,16 @@ void ListenToServer::operator()(){
 }
 
 void ListenToServer::printDirqArr(int size) {
-//
-//    string str = dirqCharArr;
-//    int curSize = str.length();
-////    while(size )
 
-}
+    string str = dirqCharArr;
+    int currSize = str.length();
+
+    while(currSize != size)
+    {
+        cout << str << endl;
+        str = dirqCharArr[currSize];
+        currSize += str.length();
+    }}
 
 /*
 
