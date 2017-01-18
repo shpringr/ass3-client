@@ -1,6 +1,7 @@
 #include "../include/BidiMessagingProtocolImpl.h"
+#include "../packet/Packet.h"
 
-using namespace bgu::spl171::net::impl::packet;
+using namespace std;
 //					import static bgu.spl171.net.impl.packet.ERRORPacket.Errors.*;
 std::vector<int> BidiMessagingProtocolImpl::logOns;
 
