@@ -7,6 +7,9 @@
 #include "../packet/LOGRQPacket.h"
 #include "../packet/BCASTPacket.h"
 #include "../packet/DELRQPacket.h"
+#include "../packet/ERRORPacket.h"
+#include "../packet/WRQPacket.h"
+#include "../packet/RRQPacket.h"
 
 MessageEncoderDecoder::MessageEncoderDecoder() {
     initAll();
@@ -139,34 +142,23 @@ void MessageEncoderDecoder::makeLoginPacket(char nextByte)  {
     }
 }
 
-//std::vector<char> MessageEncoderDecoder::getDataFromBuffer(ByteBuffer *buffer) {
-//    buffer->flip();
-//    std::vector<char> objectBytes(buffer->limit());
-//    buffer->get(objectBytes, 0, buffer->limit());
-//    return objectBytes;
-//}
+void MessageEncoderDecoder::makeErrorPacket(char nextByte) {
 
-void MessageEncoderDecoder::makeDIRQPacket() {
-//    res = new DIRQPacket();
-//    initAll();
-}
-
-void MessageEncoderDecoder::makeErrorPacket(char nextByte)  {
-//    if (errorArr.empty()) {
-//        errorBuffer->put(nextByte);
-//        if (!errorBuffer->hasRemaining()) {
-//            errorArr = getDataFromBuffer(errorBuffer);
-//            errorCode = bytesToShort(errorArr);
-//        }
-//    } else {
-//        if (nextByte != L'\0') {
-//            lengthArr->put(nextByte);
-//        } else { //nextByte == '\0'
-//            string errMsg = string(getDataFromBuffer(lengthArr), L"UTF-8");
-//            res = new ERRORPacket(errorCode, errMsg);
-//            initAll();
-//        }
-//    }
+    if (errorArrIndex != errorArrSize) {
+        errorArr[errorArrIndex] = nextByte;
+        errorArrIndex++;
+        if (errorArrIndex == errorArrSize) {
+            errorCode = bytesToShort(errorArr);
+        }
+    } else if (nextByte != L'\0') {
+        lengthArr[lengthArrIndex] = nextByte;
+        lengthArrIndex++;
+    } else { //nextByte == '\0'
+        lengthArr[lengthArrIndex] = nextByte;
+        string errMsg = lengthArr;
+        res = new ERRORPacket(errorCode, errMsg);
+        initAll();
+    }
 }
 
 void MessageEncoderDecoder::makeACKPacket(char nextByte) {
@@ -210,23 +202,27 @@ void MessageEncoderDecoder::makeDataPacket(char nextByte) {
 }
 
 void MessageEncoderDecoder::makeWRQPacket(char nextByte)  {
-//    if (nextByte != L'\0') {
-//        lengthArr->put(nextByte);
-//    } else { //nextByte == '\0'
-//        string filename = string(getDataFromBuffer(lengthArr), L"UTF-8");
-//        res = new WRQPacket(filename);
-//        initAll();
-//    }
+    if (nextByte != L'\0') {
+        lengthArr[lengthArrIndex] = nextByte;
+        lengthArrIndex++;
+    } else { //nextByte == '\0'
+        lengthArr[lengthArrIndex] = nextByte;
+        string filename= lengthArr;
+        res = new WRQPacket(filename);
+        initAll();
+    }
 }
 
 void MessageEncoderDecoder::makeRRQPacket(char nextByte)  {
-//    if (nextByte != L'\0') {
-//        lengthArr->put(nextByte);
-//    } else { //nextByte == '\0'
-//        string filename = string(getDataFromBuffer(lengthArr), L"UTF-8");
-//        res = new RRQPacket(filename);
-//        initAll();
-//    }
+    if (nextByte != L'\0') {
+        lengthArr[lengthArrIndex] = nextByte;
+        lengthArrIndex++;
+    } else { //nextByte == '\0'
+        lengthArr[lengthArrIndex] = nextByte;
+        string filename= lengthArr;
+        res = new RRQPacket(filename);
+        initAll();
+    }
 }
 
 void MessageEncoderDecoder::initOpCodeAndBuffers(char nextByte) {
@@ -270,6 +266,7 @@ void MessageEncoderDecoder::initOpCodeAndBuffers(char nextByte) {
                 res = new DISCPacket();
                 initOpObjects();
                 break;
+            default:break;
         }
     }
 }

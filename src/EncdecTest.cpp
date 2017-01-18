@@ -31,21 +31,20 @@ int main(int argc, char *argv[]) {
     //               *. Some of the tests are not relevant - You need to encode just: data, ack, bcast, and error.
     MessageEncoderDecoder encdec;
     EncdecTest test;
-//  test.testRRQDecode(encdec); // 1
-//  test.testWRQDecode(encdec); // 2
+//  test.testRRQDecode(encdec); // 1 --works
+//  test.testWRQDecode(encdec); // 2 --works
  // test.testDataDecode(encdec); // 3 --works
-//  test.testDataEncode(encdec); // 3
+//  test.testDataEncode(encdec); // 3 --works
 // test.testACKDecode(encdec); // 4 --works
  	// test.testACKEncode(encdec); // 4 --works
-//  test.testErrorDecode(encdec); // 5
-//	test.testErrorEncode(encdec); // 5
-// 	test.testDIRQDecode(encdec); // 6
+//  test.testErrorDecode(encdec); // 5 --works
+//	test.testErrorEncode(encdec); // 5 --works
+ 	//test.testDIRQDecode(encdec); // 6 --works
  //	test.testLOGRQDecode(encdec); // 7 -- works
 // 	test.testDELRQDecode(encdec); // 8 -- works
 // 	test.testBCastDecode(encdec); // 9 --works
-//  test.testBCastEncode(encdec); // 9
-//	test.testDISCDecode(encdec); // 10
-//    test.testDISCDecode(encdec); // 10
+//  test.testBCastEncode(encdec); // 9 --works
+//	test.testDISCDecode(encdec); // 10 --works
 }
 
 
