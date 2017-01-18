@@ -6,8 +6,8 @@
 
 void Packet::shortToBytes(short num, char *bytesArr) {
 
-    bytesArr[0] = (char) ((num >> 8) & 0xFF);
-    bytesArr[1] = (char) (num & 0xFF);
+    bytesArr[0] = ((num >> 8) & 0xFF);
+    bytesArr[1] = (num & 0xFF);
 }
 
 short Packet::bytesToShort(char *bytesArr) {

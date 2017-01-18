@@ -2,18 +2,25 @@
 // Created by ROTEM on 18/01/2017.
 //
 
-#include "ListenToServer.h"
+#include <boost/thread/win32/thread_data.hpp>
+#include "../include/ListenToServer.h"
 #include "../packet/Packet.h"
 
 Status ListenToServer::status(Status::Normal);
 
 bool conected = true;
 
-void ListenToServer::run() {
-    while (conected) {
-        Packet* answerPacket;
+ListenToServer::ListenToServer(int number, ConnectionHandler* handler) {
+    this->connectionHandler = handler;
+    _id=number;
+}
 
-        if (connectionHandler.getPacket(answerPacket)) {
+
+ void ListenToServer::run() {
+    while (conected) {
+        Packet *answerPacket = nullptr;
+
+        if (connectionHandler->getPacket(answerPacket)) {
             process(answerPacket);
         } else {
             conected = false;
@@ -26,6 +33,10 @@ void ListenToServer::run() {
 
 void ListenToServer::process(Packet* packet) {
 
+}
+void ListenToServer::operator()(){
+    run();
+    boost::this_thread::yield(); //Gives up the remainder of the current thread's time slice, to allow other threads to run.
 }
 
 /*

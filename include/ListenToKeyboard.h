@@ -5,7 +5,7 @@
 
 #include <stdlib.h>
 #include <iostream>
-#include "../include/connectionHandler.h"
+#include "connectionHandler.h"
 #include "../packet/LOGRQPacket.h"
 #include "../packet/Packet.h"
 #include "../packet/RRQPacket.h"
@@ -17,19 +17,22 @@
 #include "../packet/DELRQPacket.h"
 #include "../packet/DIRQPacket.h"
 #include "../packet/DISCPacket.h"
-#include "../src/ListenToServer.h"
+#include "ListenToServer.h"
 
 
 
 class ListenToKeyboard {
 
 private:
-    ConnectionHandler connectionHandler;
+
+
+    ConnectionHandler* connectionHandler = nullptr;
+    int _id;
 
 public:
-//    ListenToKeyboard(ConnectionHandler *connectionHandler);
-
+    ListenToKeyboard(int number, ConnectionHandler* handler);
     void run();
+    void operator()();
 
     Packet * createNewPacketFromKeyboard() const;
 };

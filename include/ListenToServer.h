@@ -1,7 +1,7 @@
 #pragma execution_character_set("utf-8")
 #pragma once
 
-#include "../include/connectionHandler.h"
+#include "connectionHandler.h"
 
 
 enum class Status {
@@ -20,16 +20,16 @@ enum class Status {
 
 
 class ListenToServer {
+protected:
+    int _id;
+    ConnectionHandler* connectionHandler = nullptr;
 public:
     static FILE file;
     static Status status;
 
-protected:
-    ConnectionHandler connectionHandler;
-
-public:
+    ListenToServer(int number, ConnectionHandler* handler);
     void run();
-
     void process(Packet* packet);
+    void operator()();
 };
 
