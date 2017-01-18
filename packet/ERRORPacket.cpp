@@ -10,6 +10,12 @@
         return errorCode;
     }
 
+const char* ERRORPacket::getErrorCodeInBytes() {
+    char *errorCodeArr = new char[2];
+    shortToBytes(getErrorCode(),errorCodeArr);
+    return errorCodeArr;
+}
+
     string ERRORPacket::getErrMsg() {
         return errMsg;
     }

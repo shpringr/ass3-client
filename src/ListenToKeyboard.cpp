@@ -11,7 +11,7 @@
 #include "../include/connectionHandler.h"
 
 ListenToKeyboard::ListenToKeyboard(int number, ConnectionHandler* handler){
-    this->connectionHandler = connectionHandler;
+    this->connectionHandler = handler;
     _id=number;
 }
 
@@ -30,7 +30,7 @@ Packet * ListenToKeyboard::createNewPacketFromKeyboard() const {
     std::cin.getline(buf, bufsize);
     std::__cxx11::string line(buf);
     std::__cxx11::string comand(line.substr(0, line.find(" ", 0)));
-    std::__cxx11::string name(line.substr(line.find(" ", 0)));
+    std::__cxx11::string name(line.substr(line.find(" ", 0)).substr(1, line.length()));
     int len=line.length();
 
     Packet *packetToSend = nullptr;

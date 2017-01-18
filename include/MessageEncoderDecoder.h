@@ -63,10 +63,6 @@ private:
 
     void makeLoginPacket(char nextByte) ;
 
-    //std::vector<char> getDataFromBuffer(ByteBuffer *buffer);
-
-    void makeDIRQPacket();
-
     void makeErrorPacket(char nextByte) ;
 
     void makeACKPacket(char nextByte);
@@ -79,7 +75,6 @@ private:
 
     void initOpCodeAndBuffers(char nextByte);
 
-    //@TODO SHITTTTTTTTTTTTTTTTTTTTTTTTTTTT
 public:
     virtual char* encode(Packet *message);
 

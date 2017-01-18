@@ -55,7 +55,9 @@ using namespace std;
         virtual string getErrMsg();
 
     virtual char* toByteArr() override ;
-    };
+
+    const char *getErrorCodeInBytes();
+};
 
 
 
