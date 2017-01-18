@@ -25,12 +25,11 @@ class ListenToKeyboard {
 
 private:
 
-
-    ConnectionHandler* connectionHandler = nullptr;
+    shared_ptr<ConnectionHandler> connectionHandler;
     int _id;
 
 public:
-    ListenToKeyboard(int number, ConnectionHandler* handler);
+    ListenToKeyboard(int number, shared_ptr<ConnectionHandler> handler);
     void run();
     void operator()();
 

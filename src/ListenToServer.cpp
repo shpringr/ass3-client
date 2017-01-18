@@ -15,9 +15,8 @@ bool conected = true;
 ListenToServer::ListenToServer(const ListenToServer& listenToServer){
 }
 
-ListenToServer::ListenToServer(int number, ConnectionHandler* handler) {
-    this->connectionHandler = handler;
-    _id=number;
+ListenToServer::ListenToServer(int number, shared_ptr<ConnectionHandler> handler) :connectionHandler(handler),
+_id(number){
 //    dataQueue = queue<Packet *>();
 }
 

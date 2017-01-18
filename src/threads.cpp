@@ -1,4 +1,5 @@
-#include <iostream>  
+#include <iostream>
+#include <memory>
 #include <boost/thread.hpp>
 #include "../include/ListenToKeyboard.h"
 #include "../include/ListenToServer.h"
@@ -17,14 +18,17 @@ int main(int argc, char *argv[]){
 
 
 	MessageEncoderDecoder* encoderDecoder = new MessageEncoderDecoder();
-	ConnectionHandler connectionHandler(host, port,*encoderDecoder);
-	if (!connectionHandler.connect()) {
+
+	shared_ptr<ConnectionHandler> ptr =
+			shared_ptr<ConnectionHandler>(new ConnectionHandler(host, port,*encoderDecoder));
+
+	if (!ptr->connect()) {
 		std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
 		return 1;
 	}
 
-	ListenToKeyboard task1(1, &connectionHandler);
-	ListenToServer task2(2, &connectionHandler);
+	ListenToKeyboard task1(1, ptr);
+	ListenToServer task2(2, ptr);
 	
 	boost::thread th1(task1); 
 	boost::thread th2(task2); 

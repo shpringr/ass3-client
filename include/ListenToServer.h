@@ -24,7 +24,7 @@ enum class Status {
 class ListenToServer {
 protected:
     int _id;
-    ConnectionHandler* connectionHandler = nullptr;
+    shared_ptr<ConnectionHandler> connectionHandler;
 public:
     ofstream fileToWrite;
     ifstream fileTosend;
@@ -33,7 +33,8 @@ public:
     queue <Packet *> dataQueue ;
     char *fileCharArr;
 
-    ListenToServer(int number, ConnectionHandler* handler);
+    ListenToServer(int number, shared_ptr<ConnectionHandler> handler);
+
     ListenToServer(const ListenToServer &listenToServer_);
 
     void run();

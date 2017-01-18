@@ -10,11 +10,10 @@
 #include "../include/ListenToServer.h"
 #include "../include/connectionHandler.h"
 
-ListenToKeyboard::ListenToKeyboard(int number, ConnectionHandler* handler){
-    this->connectionHandler = handler;
-    _id=number;
+ListenToKeyboard::ListenToKeyboard(int number, shared_ptr<ConnectionHandler> handler) :connectionHandler(handler),
+                                                                                   _id(number){
+//    dataQueue = queue<Packet *>();
 }
-
 
 void ListenToKeyboard::run() {
     Packet* packetToSend = createNewPacketFromKeyboard();
