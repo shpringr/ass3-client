@@ -50,12 +50,12 @@ bool ConnectionHandler::connect() {
     return true;
 }
 
-bool ConnectionHandler::getPacket(Packet& packet) {
+bool ConnectionHandler::getPacket(Packet* packet) {
     return getFrameAscii(packet);
 
 }
 
-bool ConnectionHandler::getFrameAscii(Packet& packet) {
+bool ConnectionHandler::getFrameAscii(Packet* packet) {
     char ch;
     // Stop when we encounter the null character.
     // Notice that the null character is not appended to the frame string.
@@ -65,7 +65,7 @@ bool ConnectionHandler::getFrameAscii(Packet& packet) {
             getBytes(&ch, 1);
             packet1 = encDec_.decodeNextByte(ch);
         }
-        packet = *packet1;
+        packet = packet1;
     } catch (std::exception& e) {
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
         return false;

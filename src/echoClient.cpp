@@ -27,7 +27,8 @@ int main (int argc, char *argv[]) {
     std::string host = argv[1];
     short port = atoi(argv[2]);
 
-    ConnectionHandler connectionHandler(host, port);
+    MessageEncoderDecoder* encoderDecoder = new MessageEncoderDecoder();
+    ConnectionHandler connectionHandler(host, port,*encoderDecoder);
     if (!connectionHandler.connect()) {
         std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
         return 1;
@@ -35,7 +36,7 @@ int main (int argc, char *argv[]) {
 	
 	//From here we will see the rest of the ehco client implementation:
     while (1) {
-        Packet answerPacket;
+        Packet* answerPacket;
         const short bufsize = 518;
         char buf[bufsize];
         std::cin.getline(buf, bufsize);
@@ -50,8 +51,9 @@ int main (int argc, char *argv[]) {
         if(comand.compare("LOGRQ")){
             packetToSend = new LOGRQPacket(name);
             if (!connectionHandler.send(packetToSend)){
-                errorToSend = new ERRORPacket();
-                connectionHandler.send();
+               //TODO:what
+                errorToSend = new ERRORPacket(0, "");
+                connectionHandler.send(errorToSend);
             }
 
             connectionHandler.getPacket(answerPacket);
@@ -85,10 +87,10 @@ int main (int argc, char *argv[]) {
             connectionHandler.send(packetToSend);
         }
 
-        if (!connectionHandler.sendLine(l7ine)) {
-            std::cout << "Disconnected. Exiting...\n" << std::endl;
-            break;
-        }
+//        if (!connectionHandler.sendLine(line)) {
+//            std::cout << "Disconnected. Exiting...\n" << std::endl;
+//            break;
+//        }
 		// connectionHandler.sendLine(line) appends '\n' to the message. Therefor we send len+1 bytes.
         std::cout << "Sent " << len+1 << " bytes to server" << std::endl;
  
@@ -109,10 +111,10 @@ int main (int argc, char *argv[]) {
         }
 
 
-        if (!connectionHandler.getLine(answer)) {
-            std::cout << "Disconnected. Exiting...\n" << std::endl;
-            break;
-        }
+//        if (!connectionHandler.getLine(answer)) {
+//            std::cout << "Disconnected. Exiting...\n" << std::endl;
+//            break;
+//        }
         
 		len=answer.length();
 

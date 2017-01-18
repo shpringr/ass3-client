@@ -11,7 +11,7 @@ bool conected = true;
 
 void ListenToServer::run() {
     while (conected) {
-        Packet answerPacket;
+        Packet* answerPacket;
 
         if (connectionHandler.getPacket(answerPacket)) {
             process(answerPacket);
@@ -24,7 +24,7 @@ void ListenToServer::run() {
     }
 }
 
-void ListenToServer::process(Packet packet) {
+void ListenToServer::process(Packet* packet) {
 
 }
 

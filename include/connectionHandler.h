@@ -75,7 +75,7 @@ public:
 
     bool sendFrameAscii(const string &frame);
 
-    bool getFrameAscii(Packet &packet);
+    bool getFrameAscii(Packet *packet);
 }; //class ConnectionHandler
  
 #endif

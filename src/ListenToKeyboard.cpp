@@ -13,14 +13,11 @@
 //ListenToKeyboard::ListenToKeyboard(ConnectionHandler *connectionHandler) : connectionHandler(*connectionHandler) {
 //}
 
-
-void ListenToKeyboard::run(Packet*) {
-
 void ListenToKeyboard::run() {
     Packet* packetToSend = createNewPacketFromKeyboard();
     bool success = connectionHandler.send(packetToSend);
     if (!success){
-        ///send error
+        //TODO:send error
     }
 }
 

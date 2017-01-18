@@ -30,6 +30,6 @@ protected:
 public:
     void run();
 
-    void process(Packet packet);
+    void process(Packet* packet);
 };
 

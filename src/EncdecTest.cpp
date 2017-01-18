@@ -1,7 +1,6 @@
 //
 // Created by alonam on 1/15/17.
 //
-
 #include <cstring>
 #include "../include/EncdecTest.h"
 #include "../packet/WRQPacket.h"
@@ -16,7 +15,7 @@
 #include "../packet/ACKPacket.h"
 
 
-int main(int argc, char *argv[]) {
+int maian(int argc, char *argv[]) {
 
 
 
