@@ -8,7 +8,7 @@
         DISCPacket();
 
 
-        virtual char* toByteArr() override ;
+        virtual void toByteArr(char *outChar) override ;
     };
 
 

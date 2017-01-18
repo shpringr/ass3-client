@@ -19,11 +19,33 @@ short DATAPacket::getPacketSize() {
         return data;
     }
 
-    char* DATAPacket::toByteArr() {
-//						ByteBuffer *lengthBuffer = ByteBuffer::allocate(2 + 2 + 2 + data.size());
-//						lengthBuffer->put(shortToBytes(opCode));
-//						lengthBuffer->put(shortToBytes(packetSize));
-//						lengthBuffer->put(shortToBytes(block));
-//						lengthBuffer->put(data);
-//						return lengthBuffer->array_Renamed();
+    void DATAPacket::toByteArr(char* outChar) {
+
+        char *opCodeBytes = new char[2];
+        char *sizeChar = new char[2];
+        char blockChar[11];
+        char * returnBytes = new char[2 + 2+ 2+ sizeof(data) + 1];
+
+        shortToBytes(opCode, opCodeBytes);
+        shortToBytes(packetSize, sizeChar);
+        shortToBytes(block, blockChar);
+
+        for (unsigned int i = 0; i < 2; i++)
+            returnBytes[i] = opCodeBytes[i];
+
+        for (unsigned int i = 2; i < 4; i++)
+            returnBytes[i] = sizeChar[i - 2];
+
+        for (unsigned int i = 4; i < 6; i++)
+            returnBytes[i] = blockChar[i - 4];
+
+        for (unsigned int i = 6; i < sizeof(returnBytes) - 1; i++)
+            returnBytes[i] = data[i - 6];
+
+        returnBytes[sizeof(returnBytes) - 1] = '0';
+
+        for(int i=0; i < sizeof(returnBytes); ++i){
+            outChar[i] = returnBytes[i];
+        }
+
     }

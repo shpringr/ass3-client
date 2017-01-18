@@ -4,8 +4,13 @@
         Packet::opCode = 6;
     }
 
-    char* DIRQPacket::toByteArr() {
-//        ByteBuffer *lengthBuffer = ByteBuffer::allocate(2);
-//        lengthBuffer->put(shortToBytes(opCode));
-//        return lengthBuffer->array_Renamed();
+    void DIRQPacket::toByteArr(char* outChar) {
+        char *opCodeBytes = new char[2];
+
+        shortToBytes(opCode, opCodeBytes);
+
+
+        for(int i=0; i < sizeof(opCodeBytes); ++i){
+            outChar[i] = opCodeBytes[i];
+        }
     }

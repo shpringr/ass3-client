@@ -17,7 +17,7 @@ public:
     virtual string getUserName();
 
 
-    virtual char* toByteArr() override ;
+    virtual void toByteArr(char *outChar) override ;
 };
 
 

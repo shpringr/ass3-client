@@ -14,19 +14,29 @@
         return errMsg;
     }
 
-    char* ERRORPacket::toByteArr() {
-//						ByteBuffer *lengthBuffer = ByteBuffer::allocate(2 + 2 + getErrMsg().length() + 1);
-//						lengthBuffer->put(shortToBytes(opCode));
-//						lengthBuffer->put(shortToBytes(errorCode));
-//						try
-//						{
-//							lengthBuffer->put(errMsg.getBytes(L"UTF-8"));
-//						}
-//						catch (const UnsupportedEncodingException &e)
-//						{
-//							e->printStackTrace();
-//						}
-//						lengthBuffer->put(static_cast<char>(0));
-//						return lengthBuffer->array_Renamed();
+    void ERRORPacket::toByteArr(char* outChar) {
+
+        char *opCodeBytes = new char[2];
+        char *errorCodeChar = new char[2];
+        const char *errorMsgChar = errMsg.c_str();
+        char *returnBytes = new char[2 + 2+ errMsg.length() + 1];
+
+        shortToBytes(opCode, opCodeBytes);
+        shortToBytes(errorCode, errorCodeChar);
+
+        for (unsigned int i = 0; i < 2; i++)
+            returnBytes[i] = opCodeBytes[i];
+
+        for (unsigned int i = 2; i < 4; i++)
+            returnBytes[i] = errorCodeChar[i-2];
+
+        for (unsigned int i = 4; i < sizeof(returnBytes) - 1; i++)
+            returnBytes[i] = errorMsgChar[i - 4];
+
+        returnBytes[sizeof(returnBytes) - 1] = '0';
+
+        for(int i=0; i < sizeof(returnBytes); ++i){
+            outChar[i] = returnBytes[i];
+        }
     }
 

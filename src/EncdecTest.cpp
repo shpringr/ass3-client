@@ -2,6 +2,7 @@
 // Created by alonam on 1/15/17.
 //
 
+#include <cstring>
 #include "../include/EncdecTest.h"
 #include "../packet/WRQPacket.h"
 #include "../packet/DATAPacket.h"
@@ -35,14 +36,14 @@ int main(int argc, char *argv[]) {
 //  test.testDataDecode(encdec); // 3
 //  test.testDataEncode(encdec); // 3
 //  test.testACKDecode(encdec); // 4
- 	test.testACKEncode(encdec); // 4
+// 	test.testACKEncode(encdec); // 4
 //  test.testErrorDecode(encdec); // 5
 //	test.testErrorEncode(encdec); // 5
 // 	test.testDIRQDecode(encdec); // 6
 // 	test.testLOGRQDecode(encdec); // 7
 // 	test.testDELRQDecode(encdec); // 8
 // 	test.testBCastDecode(encdec); // 9
-//  test.testBCastEncode(encdec); // 9
+  test.testBCastEncode(encdec); // 9
 //	test.testDISCDecode(encdec); // 10
 
 }
@@ -74,7 +75,7 @@ vector<char> EncdecTest::arrToVec(char *c) {
 //    // bytesToShort({0,5})=(short)5, bytesToShort({1,5})=(short)261
 //    ServerPacket* res=nullptr;
 //    cout<< "Before decoding, the Arr is"<< endl;
-//    printArr(b);
+//    printArr(vecToArr(b));
 //    cout << "FLAG DataDecode 1" << endl;
 //    for (unsigned int i=0; i<b.size(); i++) {
 //        char tmp = b.at(i);
@@ -102,7 +103,7 @@ void EncdecTest::testDataDecode(MessageEncoderDecoder &encdec) {
     // bytesToShort({0,5})=(short)5, bytesToShort({1,5})=(short)261
     Packet *res = nullptr;
     cout << "Before decoding, the Arr is" << endl;
-    printArr(b);
+    printArr(vecToArr(b));
     cout << "FLAG DataDecode 1" << endl;
     for (unsigned int i = 0; i < b.size(); i++)
         res = encdec.decodeNextByte(b[i]);
@@ -118,7 +119,7 @@ void EncdecTest::testDataDecode(MessageEncoderDecoder &encdec) {
     cout << "The opcode is " << opcode << " The packetSize is " << packetSize << "  and the blockNum is " << blockNum
          << endl;
     cout << "The data is " << endl;
-    printArr(arrToVec(dataBytes));
+    printArr(dataBytes);
 }
 
 void EncdecTest::testDataEncode(MessageEncoderDecoder &encdec) {
@@ -128,10 +129,10 @@ void EncdecTest::testDataEncode(MessageEncoderDecoder &encdec) {
     cout << "Encoding the packet " << packet->getOpCode() << " is the Opcode " << packet->getPacketSize()
          << " is the packetSize " << packet->getBlock() << " is the Block Num " << endl;
     cout << "The data arr is " << endl;
-    printArr(b);
+    printArr(vecToArr(b));
     cout << "Output: " << endl;
 
-    printArr(arrToVec(res)); // Should be {0,3,0,5,1,5,1,2,3,4,5}
+    printArr(res); // Should be {0,3,0,5,1,5,1,2,3,4,5}
     cout << "The output should be {0,3,0,5,1,5,1,2,3,4,5}" << endl;
 }
 
@@ -140,7 +141,7 @@ void EncdecTest::testDISCDecode(MessageEncoderDecoder &encdec) {
     vector<char> b = {0, 10};
     Packet *res = nullptr;
     cout << "Before decoding, the Arr is" << endl;
-    printArr(b);
+    printArr(vecToArr(b));
     for (unsigned int i = 0; i < b.size(); i++)
         res = encdec.decodeNextByte(b[i]);
     DISCPacket *res1 = dynamic_cast<DISCPacket *>(res);
@@ -155,7 +156,7 @@ void EncdecTest::testDISCEncode(MessageEncoderDecoder &encdec) {
     cout << "Encoding the packet " << packet->getOpCode() << " is the Opcode" << endl;
     cout << "Output: " << endl;
 
-    printArr(arrToVec(res)); // Should be {0,10}
+    printArr(res); // Should be {0,10}
     cout << "The output should be {0,10}" << endl;
 }
 
@@ -164,7 +165,7 @@ void EncdecTest::testBCastDecode(MessageEncoderDecoder &encdec) {
     // popString({66,67,97,115,116,83,116,114})=(String)"BCastStr"
     Packet *res = nullptr;
     cout << "Before decoding, the Arr is" << endl;
-    printArr(b);
+    printArr(vecToArr(b));
     for (unsigned int i = 0; i < b.size(); i++)
         res = encdec.decodeNextByte(b[i]);
     BCASTPacket *res1 = dynamic_cast<BCASTPacket *>(res);
@@ -183,7 +184,7 @@ void EncdecTest::testBCastEncode(MessageEncoderDecoder &encdec) {
          << " is the deleted_or_added code " << packet->getFileName() << endl;
     cout << "Output: " << endl;
 
-    printArr(arrToVec(res)); // Should be {0,9,1,66,67,97,115,116,83,116,114,0}
+    printArr(res); // Should be {0,9,1,66,67,97,115,116,83,116,114,0}
     cout << "The output should be {0,9,1,66,67,97,115,116,83,116,114,0}" << endl;
 }
 
@@ -191,7 +192,7 @@ void EncdecTest::testDELRQDecode(MessageEncoderDecoder &encdec) {
     vector<char> b = {0, 8, 68, 97, 110, 97, 0};
     Packet *res = nullptr;
     cout << "Before decoding, the Arr is" << endl;
-    printArr(b);
+    printArr(vecToArr(b));
     for (unsigned int i = 0; i < b.size(); i++)
         res = encdec.decodeNextByte(b[i]);
     DELRQPacket *res1 = dynamic_cast<DELRQPacket *>(res);
@@ -207,7 +208,7 @@ void EncdecTest::testDELRQEncode(MessageEncoderDecoder &encdec) {
     cout << "Encoding the packet " << packet->getOpCode() << " Opcode " << packet->getFilename() << endl;
     cout << "Output: " << endl;
 
-    printArr(arrToVec(res)); // Should be {0,8,68,97,110,97,0}
+    printArr(res); // Should be {0,8,68,97,110,97,0}
     cout << "The output should be {0,8,68,97,110,97,0}" << endl;
 }
 
@@ -216,7 +217,7 @@ void EncdecTest::testLOGRQDecode(MessageEncoderDecoder &encdec) {
     vector<char> b = {0, 7, 68, 97, 110, 97, 0};
     Packet *res = nullptr;
     cout << "Before decoding, the Arr is" << endl;
-    printArr(b);
+    printArr(vecToArr(b));
     for (unsigned int i = 0; i < b.size(); i++)
         res = encdec.decodeNextByte(b[i]);
     LOGRQPacket *res1 = dynamic_cast<LOGRQPacket *>(res);
@@ -232,7 +233,7 @@ void EncdecTest::testLOGRQEncode(MessageEncoderDecoder &encdec) {
     cout << "Encoding the packet " << packet->getOpCode() << " Opcode " << packet->getUserName() << endl;
     cout << "Output: " << endl;
 
-    printArr(arrToVec(res)); // Should be {0,7,68,97,110,97,0}
+    printArr(res); // Should be {0,7,68,97,110,97,0}
     cout << "The output should be {0,7,68,97,110,97,0}" << endl;
 }
 
@@ -241,7 +242,7 @@ void EncdecTest::testDIRQDecode(MessageEncoderDecoder &encdec) {
     vector<char> b = {0, 6};
     Packet *res = nullptr;
     cout << "Before decoding, the Arr is" << endl;
-    printArr(b);
+    printArr(vecToArr(b));
     for (unsigned int i = 0; i < b.size(); i++)
         res = encdec.decodeNextByte(b[i]);
     DIRQPacket *res1 = dynamic_cast<DIRQPacket *>(res);
@@ -256,7 +257,7 @@ void EncdecTest::testDIRQEncode(MessageEncoderDecoder &encdec) {
     cout << "Encoding the packet " << packet->getOpCode() << " is the Opcode" << endl;
     cout << "Output: " << endl;
 
-    printArr(arrToVec(res)); // Should be {0,6}
+    printArr(res); // Should be {0,6}
     cout << "The output should be {0,6}" << endl;
 }
 
@@ -266,7 +267,7 @@ void EncdecTest::testErrorDecode(MessageEncoderDecoder &encdec) {
     // bytesToShort({14,20})=(short)3604, and popString({69,114,114,111,114,32,75,97,112,97,114,97})=(String)"Error Kapara"
     Packet *res = nullptr;
     cout << "Before decoding, the Arr is" << endl;
-    printArr(b);
+    printArr(vecToArr(b));
     for (unsigned int i = 0; i < b.size(); i++)
         res = encdec.decodeNextByte(b[i]);
     ERRORPacket *res1 = dynamic_cast<ERRORPacket *>(res);
@@ -286,7 +287,7 @@ void EncdecTest::testErrorEncode(MessageEncoderDecoder &encdec) {
          << " is the error code " << packet->getErrMsg() << endl;
     cout << "Output: " << endl;
 
-    printArr(arrToVec(res)); // Should be {0,5,14,20 ,69,114 ,114,111,114,32,75,97,112,97,114,97 ,0}
+    printArr(res); // Should be {0,5,14,20 ,69,114 ,114,111,114,32,75,97,112,97,114,97 ,0}
     cout << "The output should be {0,5,14,20,69,114,114,111,114,32,75,97,112,97,114,97,0}" << endl;
 }
 
@@ -294,7 +295,7 @@ void EncdecTest::testRRQDecode(MessageEncoderDecoder &encdec) {
     vector<char> b = {0, 1, 68, 97, 110, 97, 0};
     Packet *res = nullptr;
     cout << "Before decoding, the Arr is" << endl;
-    printArr(b);
+    printArr(vecToArr(b));
     for (unsigned int i = 0; i < b.size(); i++)
         res = encdec.decodeNextByte(b[i]);
     RRQPacket *res1 = dynamic_cast<RRQPacket *>(res);
@@ -311,7 +312,7 @@ void EncdecTest::testRRQEncode(MessageEncoderDecoder &encdec) {
     cout << "Encoding the packet " << packet->getOpCode() << " Opcode " << packet->getFileName() << endl;
     cout << "Output: " << endl;
 
-    printArr(arrToVec(res)); // Should be {0,1,68,97,110,97,0}
+    printArr(res); // Should be {0,1,68,97,110,97,0}
     cout << "The output should be {0,1,68,97,110,97,0}" << endl;
 }
 
@@ -319,7 +320,7 @@ void EncdecTest::testWRQDecode(MessageEncoderDecoder &encdec) {
     vector<char> b = {0, 2, 68, 97, 110, 97, 0};
     Packet *res = nullptr;
     cout << "Before decoding, the Arr is" << endl;
-    printArr(b);
+    printArr(vecToArr(b));
     for (unsigned int i = 0; i < b.size(); i++)
         res = encdec.decodeNextByte(b[i]);
     WRQPacket *res1 = dynamic_cast<WRQPacket *>(res);
@@ -335,7 +336,7 @@ void EncdecTest::testWRQEncode(MessageEncoderDecoder &encdec) {
     cout << "Encoding the packet " << packet->getOpCode() << " Opcode " << packet->getFileName() << endl;
     cout << "Output: " << endl;
 
-    printArr(arrToVec(res)); // Should be {0,2,68,97,110,97,0}
+    printArr(res); // Should be {0,2,68,97,110,97,0}
     cout << "The output should be {0,2,68,97,110,97,0}" << endl;
 }
 
@@ -343,7 +344,7 @@ void EncdecTest::testACKDecode(MessageEncoderDecoder &encdec) {
     vector<char> b = {0, 4, 14, 20}; // bytesToShort({14,20})=(short)3604
     Packet *res = nullptr;
     cout << "Before decoding, the Arr is" << endl;
-    printArr(b);
+    printArr(vecToArr(b));
     for (unsigned int i = 0; i < b.size(); i++)
         res = encdec.decodeNextByte(b[i]);
     ACKPacket *res1 = dynamic_cast<ACKPacket *>(res);
@@ -354,25 +355,24 @@ void EncdecTest::testACKDecode(MessageEncoderDecoder &encdec) {
 }
 
 void EncdecTest::testACKEncode(MessageEncoderDecoder &encdec) {
-    ACKPacket*packet = new ACKPacket(((short) 3604)); // bytesToShort({14,20})=(short)3604
+    ACKPacket* packet = new ACKPacket(((short) 3604)); // bytesToShort({14,20})=(short)3604
     char *res = encdec.encode(packet);
     cout << "Encoding the packet " << packet->getOpCode() << " Opcode " << packet->getBlock() << endl;
     cout << "Output: " << endl;
 
-    printArr(arrToVec(res)); // Should be {0,2,68,97,110,97,0}
+    printArr(res); // Should be {0,2,68,97,110,97,0}
     cout << "The output should be {0,4,14,20}" << endl;
 }
 
 
-void EncdecTest::printArr(vector<char> b) {
-    //	System.out.print("Output: ");
-    string s = "";
-    for (unsigned int i = 0; i < b.size(); i++) {
-        s = s + b.at(i) + " ";
+void EncdecTest::printArr(char b[])
+{
+    for (unsigned int i = 0; i < sizeof(b); i++) {
+        cout << b[i] + " ";
     }
-    cout << s << endl;
+    //{0,3,0,5,1,5,1,2,3,4,5}
+    cout << endl;
 }
-
 
 short EncdecTest::bytesToShort(vector<char> byteArr) {
     short result = (short) ((byteArr[0] & 0xff) << 8);

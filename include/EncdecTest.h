@@ -1,6 +1,7 @@
 //
 // Created by alonam on 1/15/17.
 //
+#pragma execution_character_set("utf-8")
 
 #ifndef CLIENTDANA_ENCDECTEST_H
 #define CLIENTDANA_ENCDECTEST_H
@@ -36,7 +37,7 @@ public:
      void testWRQEncode (MessageEncoderDecoder& encdec);
      void testACKDecode (MessageEncoderDecoder& encdec);
      void testACKEncode (MessageEncoderDecoder& encdec);
-     void printArr(vector<char> b);
+     void printArr(char b[]);
      short bytesToShort(vector<char> byteArr);
      vector<char> shortToBytes(short num);
      vector<char> popTwoFirstBytes(vector<char> dataToDecode);
