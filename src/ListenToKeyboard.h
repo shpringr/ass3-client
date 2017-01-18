@@ -1,9 +1,8 @@
-//
-// Created by ROTEM on 18/01/2017.
-//
+#pragma execution_character_set("utf-8")
 
-#ifndef CLIENT_TFTPPROTOCOLCLIENT_H
-#define CLIENT_TFTPPROTOCOLCLIENT_H
+#ifndef LISTEN_TO_KEYBOARD_H
+#define LISTEN_TO_KEYBOARD_H
+
 #include <stdlib.h>
 #include <iostream>
 #include "../include/connectionHandler.h"
@@ -28,9 +27,9 @@ private:
     ConnectionHandler connectionHandler;
 
 public:
-    ListenToKeyboard(const ConnectionHandler &connectionHandler);
+//    ListenToKeyboard(ConnectionHandler *connectionHandler);
 
-    void run(Packet);
+    void run(Packet*);
 
     Packet * createNewPacketFromKeyboard() const;
 };

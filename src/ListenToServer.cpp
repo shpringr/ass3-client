@@ -5,10 +5,10 @@
 #include "ListenToServer.h"
 #include "../packet/Packet.h"
 
-Status ListenToServer::status("normal");
+Status ListenToServer::status(Status::Normal);
 
 
-void ListenToServer::run(Packet) {
+void ListenToServer::run(Packet*) {
 
 
 }

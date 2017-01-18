@@ -1,6 +1,4 @@
-//
-// Created by ROTEM on 18/01/2017.
-//
+#pragma execution_character_set("utf-8")
 
 #ifndef CLIENT_PROTOCOL_H
 #define CLIENT_PROTOCOL_H

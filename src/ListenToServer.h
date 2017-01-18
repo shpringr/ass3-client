@@ -1,7 +1,5 @@
-//
-// Created by ROTEM on 18/01/2017.
-//
-
+#pragma execution_character_set("utf-8")
+#pragma once
 
 #include "../include/connectionHandler.h"
 
@@ -12,7 +10,7 @@ enum class Status {
     WRQ,
     DATA,
     ACK,
-    ERROR,
+    ERRORR,
     DIRQ ,
     LOGRQ,
     DELRQ,
@@ -28,6 +26,6 @@ protected:
     ConnectionHandler connectionHandler;
 
 public:
-    void run(Packet);
+    void run(Packet*);
 };
 

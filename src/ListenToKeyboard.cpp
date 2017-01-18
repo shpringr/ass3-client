@@ -10,11 +10,11 @@
 #include "../include/connectionHandler.h"
 
 
-ListenToKeyboard::ListenToKeyboard(const ConnectionHandler &connectionHandler) : connectionHandler(connectionHandler) {
-}
+//ListenToKeyboard::ListenToKeyboard(ConnectionHandler *connectionHandler) : connectionHandler(*connectionHandler) {
+//}
 
 
-void ListenToKeyboard::run(Packet) {
+void ListenToKeyboard::run(Packet*) {
 
     Packet* packetToSend = createNewPacketFromKeyboard();
     bool success = connectionHandler.send(packetToSend);

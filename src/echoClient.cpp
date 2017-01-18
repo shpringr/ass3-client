@@ -85,7 +85,7 @@ int main (int argc, char *argv[]) {
             connectionHandler.send(packetToSend);
         }
 
-        if (!connectionHandler.sendLine(line)) {
+        if (!connectionHandler.sendLine(l7ine)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }

@@ -1,5 +1,7 @@
-#ifndef CONNECTION_HANDLER__
-#define CONNECTION_HANDLER__
+#pragma execution_character_set("utf-8")
+
+#ifndef CONNECTION_HANDLER_H
+#define CONNECTION_HANDLER_H
                                            
 #include <string>
 #include <boost/asio.hpp>
@@ -67,7 +69,7 @@ public:
 
     bool send(Packet *pPacket);
 
-    bool getPacket(Packet packet);
+    bool getPacket(Packet* packet);
 
     bool sendBytes(const char *bytes);
 
