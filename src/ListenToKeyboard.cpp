@@ -43,10 +43,12 @@ Packet * ListenToKeyboard::createNewPacketFromKeyboard() const {
     else if(comand.compare("WRQ")){
         packetToSend = new WRQPacket(name);
         ListenToServer::status = Status::WRQ;
+        ListenToServer::fileName=name;
     }
     else if(comand.compare("RRQ")){
         packetToSend = new RRQPacket(name);
         ListenToServer::status = Status::RRQ;
+        ListenToServer::fileName=name;
     }
     else if(comand.compare("DIRQ")){
         packetToSend = new DIRQPacket();

@@ -1,75 +1,53 @@
 #include "../include/BidiMessagingProtocolImpl.h"
 #include "../packet/Packet.h"
+#include "../packet/RRQPacket.h"
+#include "../packet/WRQPacket.h"
+#include "../packet/DATAPacket.h"
+#include "../packet/ACKPacket.h"
+#include "../packet/LOGRQPacket.h"
+#include "../packet/DELRQPacket.h"
+#include "../packet/ERRORPacket.h"
 
 using namespace std;
-//					import static bgu.spl171.net.impl.packet.ERRORPacket.Errors.*;
-std::vector<int> BidiMessagingProtocolImpl::logOns;
+
+
+/*
+private final static short ACK_OK = 0;
+private static List<Integer> logOns = new ArrayList<>();
+private final static File file = new File("Server/Files");
+
+private boolean shouldTerminate = false;
+private Connections connections;
+private Integer connectionId;
+private boolean isFirstCommand = true;
+private LinkedBlockingQueue<DATAPacket> dataQueue = new LinkedBlockingQueue<>();
+private String state = "";
+private File fileToWrite = null;
+*/
+
 
 
 void BidiMessagingProtocolImpl::process(Packet *message) {
 
     if (isLegalFirstCommand(message)) {
         switch ((message->getOpCode())) {
-            case 1:
-                handleReadPacket(static_cast<RRQPacket *>(message));
-                break;
-
-            case 2:
-                handleWritePacket(static_cast<WRQPacket *>(message));
-                break;
-
             case 3:
                 handleDataPacket(static_cast<DATAPacket *>(message));
                 break;
-
             case 4:
                 handleAckPacket(static_cast<ACKPacket *>(message));
                 break;
-
             case 5:
                 handleErrorPacket();
                 break;
-
-            case 6:
-                handleDirqPacket();
-                break;
-
-            case 7:
-                handleLoginPacket(static_cast<LOGRQPacket *>(message));
-                break;
-
-            case 8:
-                handleDelReqPacket(static_cast<DELRQPacket *>(message));
-                break;
-
             case 9:
                 handleBCastPacket();
                 break;
-
-            case 10:
-                handleDiscPacket();
-                break;
-            default:
-                sendError(ERRORPacket::Errors::ILLEGAL_TFTP_OPERATION, L"");
+                //sendError(ERRORPacket::Errors::ILLEGAL_TFTP_OPERATION, L"");
                 break;
         }
     }
 }
-
-void BidiMessagingProtocolImpl::handleDiscPacket() {
-    try {
-        connections->disconnect(connectionId);
-//JAVA TO C++ CONVERTER TODO TASK: The Java Collection 'remove(Object)' method is not converted:
-        logOns.remove(connectionId);
-        ACKPacket tempVar(ACK_OK);
-        connections->send(connectionId, &tempVar);
-        shouldTerminate_Renamed = true;
-    }
-    catch (const IOException &e) {
-        sendError(ERRORPacket::Errors::NOT_DEFINED, e->getMessage());
-    }
-}
-
 void BidiMessagingProtocolImpl::handleBCastPacket() {
     sendError(ERRORPacket::Errors::NOT_DEFINED, L"called BCast on server side!");
 }
@@ -114,6 +92,45 @@ void BidiMessagingProtocolImpl::handleDataPacket(DATAPacket *message) {
         }
     }
 }
+
+void BidiMessagingProtocolImpl::readFileIntoDataQueue(File *file) throw(IOException) {
+    short blockPacket = 1;
+    FileInputStream *fileInputStream = new FileInputStream(file);
+    std::vector<char> dataBytes(512);
+    short packetSize = static_cast<short>(fileInputStream->read(dataBytes));
+    while (packetSize == 512) {
+        DATAPacket *dataToSend = new DATAPacket(packetSize, blockPacket, dataBytes);
+        dataQueue->add(dataToSend);
+        blockPacket++;
+        packetSize = static_cast<short>(fileInputStream->read(dataBytes));
+    }
+    if (packetSize == -1) {
+        std::vector<char> lastDataBytes(0);
+        DATAPacket *dataToSend = new DATAPacket(static_cast<short>(0), blockPacket, lastDataBytes);
+        dataQueue->add(dataToSend);
+    } else {
+        dataBytes = Arrays::copyOf(dataBytes, packetSize);
+        DATAPacket *dataToSend = new DATAPacket(packetSize, blockPacket, dataBytes);
+        dataQueue->add(dataToSend);
+    }
+}
+
+bool BidiMessagingProtocolImpl::shouldTerminate() {
+    return shouldTerminate_Renamed;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void BidiMessagingProtocolImpl::handleWritePacket(WRQPacket *message) {
     std::wstring fileNameToWrite = message->getFileName();
@@ -246,28 +263,5 @@ void BidiMessagingProtocolImpl::handleLoginPacket(LOGRQPacket *message) {
     }
 }
 
-void BidiMessagingProtocolImpl::readFileIntoDataQueue(File *file) throw(IOException) {
-    short blockPacket = 1;
-    FileInputStream *fileInputStream = new FileInputStream(file);
-    std::vector<char> dataBytes(512);
-    short packetSize = static_cast<short>(fileInputStream->read(dataBytes));
-    while (packetSize == 512) {
-        DATAPacket *dataToSend = new DATAPacket(packetSize, blockPacket, dataBytes);
-        dataQueue->add(dataToSend);
-        blockPacket++;
-        packetSize = static_cast<short>(fileInputStream->read(dataBytes));
-    }
-    if (packetSize == -1) {
-        std::vector<char> lastDataBytes(0);
-        DATAPacket *dataToSend = new DATAPacket(static_cast<short>(0), blockPacket, lastDataBytes);
-        dataQueue->add(dataToSend);
-    } else {
-        dataBytes = Arrays::copyOf(dataBytes, packetSize);
-        DATAPacket *dataToSend = new DATAPacket(packetSize, blockPacket, dataBytes);
-        dataQueue->add(dataToSend);
-    }
-}
 
-bool BidiMessagingProtocolImpl::shouldTerminate() {
-    return shouldTerminate_Renamed;
-}
+
