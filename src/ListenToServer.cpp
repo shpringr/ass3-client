@@ -7,9 +7,24 @@
 
 Status ListenToServer::status(Status::Normal);
 
+bool conected = true;
 
-void ListenToServer::run(Packet*) {
+void ListenToServer::run() {
+    while (conected) {
+        Packet answerPacket;
 
+        if (connectionHandler.getPacket(answerPacket)) {
+            process(answerPacket);
+        } else {
+            conected = false;
+            // releaseBuffer(buf);
+            //close();
+            //return nullptr;
+        }
+    }
+}
+
+void ListenToServer::process(Packet packet) {
 
 }
 

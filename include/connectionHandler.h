@@ -74,6 +74,8 @@ public:
     bool sendBytes(const char *bytes);
 
     bool sendFrameAscii(const string &frame);
+
+    bool getFrameAscii(Packet &packet);
 }; //class ConnectionHandler
  
 #endif

@@ -1,14 +1,9 @@
 #include "../include/BidiMessagingProtocolImpl.h"
-#include "Connections.h"
 
 using namespace bgu::spl171::net::impl::packet;
 //					import static bgu.spl171.net.impl.packet.ERRORPacket.Errors.*;
 std::vector<int> BidiMessagingProtocolImpl::logOns;
 
-void BidiMessagingProtocolImpl::start(int connectionId, Connections *connections) {
-    this->connections = connections;
-    this->connectionId = connectionId;
-}
 
 void BidiMessagingProtocolImpl::process(Packet *message) {
 

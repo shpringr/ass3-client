@@ -18,14 +18,18 @@ enum class Status {
     DISC
 };
 
+
 class ListenToServer {
 public:
+    static FILE file;
     static Status status;
 
 protected:
     ConnectionHandler connectionHandler;
 
 public:
-    void run(Packet*);
+    void run();
+
+    void process(Packet packet);
 };
 

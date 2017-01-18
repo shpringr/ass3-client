@@ -29,7 +29,7 @@ private:
 public:
 //    ListenToKeyboard(ConnectionHandler *connectionHandler);
 
-    void run(Packet*);
+    void run();
 
     Packet * createNewPacketFromKeyboard() const;
 };

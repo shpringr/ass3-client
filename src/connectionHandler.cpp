@@ -50,21 +50,22 @@ bool ConnectionHandler::connect() {
     return true;
 }
 
+bool ConnectionHandler::getPacket(Packet& packet) {
+    return getFrameAscii(packet);
 
-bool ConnectionHandler::getLine(std::string& line) {
-    return getFrameAscii(line, '\n');
 }
 
-
-bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
+bool ConnectionHandler::getFrameAscii(Packet& packet) {
     char ch;
     // Stop when we encounter the null character.
     // Notice that the null character is not appended to the frame string.
     try {
-        do{
+        Packet* packet1 = nullptr;
+        while (packet1==nullptr){
             getBytes(&ch, 1);
-            frame.append(1, ch);
-        }while (delimiter != ch);
+            packet1 = encDec_.decodeNextByte(ch);
+        }
+        packet = *packet1;
     } catch (std::exception& e) {
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
         return false;
@@ -140,8 +141,28 @@ void ConnectionHandler::close() {
 }
 
 
-bool ConnectionHandler::getPacket(Packet packet) {
-    //sholud read from socket and put the packet
 
+
+/*
+
+bool ConnectionHandler::getLine(std::string& line) {
+    return getFrameAscii(line, '\n');
 }
 
+
+bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
+    char ch;
+    // Stop when we encounter the null character.
+    // Notice that the null character is not appended to the frame string.
+    try {
+        do{
+            getBytes(&ch, 1);
+            frame.append(1, ch);
+        }while (delimiter != ch);
+    } catch (std::exception& e) {
+        std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
+        return false;
+    }
+    return true;
+}
+*/
