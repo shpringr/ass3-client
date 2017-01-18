@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "../include/connectionHandler.h"
+#include "connectionHandler.h"
 
 
 enum class Status {
@@ -22,18 +22,17 @@ enum class Status {
 
 
 class ListenToServer {
+protected:
+    int _id;
+    ConnectionHandler* connectionHandler = nullptr;
 public:
     ofstream fileToWrite;
     ifstream fileTosend;
     static Status status;
     static string fileName;
 
-protected:
-    ConnectionHandler connectionHandler;
-
-public:
+    ListenToServer(int number, ConnectionHandler* handler);
     void run();
-
     void process(Packet* packet);
 
     void handleAckPacket(ACKPacket *message);
@@ -43,5 +42,6 @@ public:
     void handleErrorPacket(ERRORPacket *packet);
 
     void handleBCastPacket(BCASTPacket *packet);
+    void operator()();
 };
 

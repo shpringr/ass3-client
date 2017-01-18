@@ -331,9 +331,9 @@ void EncdecTest::testACKEncode(MessageEncoderDecoder &encdec) {
 void EncdecTest::printArr(char b[])
 {
     string s;
-    for (unsigned int i = 0; i < sizeof(b); i++) {
-        s = b[i] + " ";
-    }
+//    for (unsigned int i = 0; i < sizeof(b); i++) {
+//        s = b[i] + " ";
+//    }
     //{0,3,0,5,1,5,1,2,3,4,5}
     cout << s << endl;
 }

@@ -1,23 +1,30 @@
 #include <iostream>  
-#include <boost/thread.hpp>  
+#include <boost/thread.hpp>
+#include "../include/ListenToKeyboard.h"
+#include "../include/ListenToServer.h"
 
-class Task {
-private:
-	int _id;
-public:
-	Task (int number) : _id(number) {}
+int main(int argc, char *argv[]){
 
-	void operator()(){
-		for (int i= 0; i < 100; i++){
-		   std::cout << i << ") Task " << _id << " is working" << std::endl; 
-		}
-		boost::this_thread::yield(); //Gives up the remainder of the current thread's time slice, to allow other threads to run. 
+//	if (argc < 3) {
+//		std::cerr << "Usage: " << argv[0] << " host port" << std::endl << std::endl;
+//		return -1;
+//	}
+//	std::string host = argv[1];
+//	short port = (short) atoi(argv[2]);
+
+	std::string host = "127.0.0.1";
+	short port = (short) 7777;
+
+
+	MessageEncoderDecoder* encoderDecoder = new MessageEncoderDecoder();
+	ConnectionHandler connectionHandler(host, port,*encoderDecoder);
+	if (!connectionHandler.connect()) {
+		std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
+		return 1;
 	}
-};
 
-int main(){
-	Task task1(1);
-	Task task2(2);
+	ListenToKeyboard task1(1, &connectionHandler);
+	ListenToServer task2(2, &connectionHandler);
 	
 	boost::thread th1(task1); 
 	boost::thread th2(task2); 

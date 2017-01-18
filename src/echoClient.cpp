@@ -17,9 +17,9 @@
 
 using namespace std;
 
-#include "ListenToKeyboard.h"
+#include "../include/ListenToKeyboard.h"
 
-int main (int argc, char *argv[]) {
+int maain (int argc, char *argv[]) {
     if (argc < 3) {
         std::cerr << "Usage: " << argv[0] << " host port" << std::endl << std::endl;
         return -1;

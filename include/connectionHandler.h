@@ -26,7 +26,8 @@ using boost::asio::ip::tcp;
 
 class ConnectionHandler {
 private:
-	const std::string host_;
+
+    const std::string host_;
 	const short port_;
 	boost::asio::io_service io_service_;   // Provides core I/O functionality
 	tcp::socket socket_;
@@ -34,6 +35,7 @@ private:
     MessageEncoderDecoder encDec_;
  
 public:
+
     ConnectionHandler(std::string host, short port, MessageEncoderDecoder encDec);
     virtual ~ConnectionHandler();
  
@@ -46,7 +48,7 @@ public:
  
 	// Send a fixed number of bytes from the client - blocking.
     // Returns false in case the connection is closed before all the data is sent.
-    bool sendBytes(const char bytes[], int bytesToWrite);
+//    bool sendBytes(const char bytes[], int bytesToWrite);
 	
     // Read an ascii line from the server
     // Returns false in case connection closed before a newline can be read.
@@ -76,6 +78,12 @@ public:
     bool sendFrameAscii(const string &frame);
 
     bool getFrameAscii(Packet *packet);
+
+    bool sendBytes(string &bytes, int bytesToWrite);
+
+    bool sendFrameAscii(string &frame);
+
+    bool sendFrameAscii(string &frame, char delimiter);
 }; //class ConnectionHandler
  
 #endif

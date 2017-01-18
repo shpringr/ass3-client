@@ -1,7 +1,3 @@
-//
-// Created by alonam on 1/15/17.
-//
-#pragma execution_character_set("utf-8")
 
 #ifndef CLIENTDANA_ENCDECTEST_H
 #define CLIENTDANA_ENCDECTEST_H

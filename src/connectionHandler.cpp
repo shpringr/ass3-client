@@ -12,7 +12,7 @@
 #include "../packet/DELRQPacket.h"
 #include "../packet/DIRQPacket.h"
 #include "../packet/DISCPacket.h"
-#include "ListenToKeyboard.h"
+#include "../include/ListenToKeyboard.h"
 
 
 using boost::asio::ip::tcp;
@@ -91,33 +91,40 @@ bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
 
 
 bool ConnectionHandler::send(Packet *pPacket) {
-    string msg = encDec_.encode(pPacket);
+    char* encoded = encDec_.encode(pPacket);
+    char* tryr =encoded + 1;
+    string msg = encoded[0] + tryr;
+
+    char* data = encoded;
     switch(pPacket->getOpCode()){
         case 1: case 2: case 7: case 8: case 5:
             return sendFrameAscii(msg, '\0');
         case 6: case 3: case 4:
             return sendFrameAscii(msg);
+        default:
+            //TODO: error
+            break;
     }
     return false;
 }
 
-bool ConnectionHandler::sendFrameAscii(const std::string& frame) {
-    return sendBytes(frame.c_str(),frame.length());
+bool ConnectionHandler::sendFrameAscii(std::string& frame) {
+    return sendBytes(frame,frame.length());
 
 }
 
-bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter) {
-    bool result=sendBytes(frame.c_str(),frame.length());
+bool ConnectionHandler::sendFrameAscii(std::string& frame, char delimiter) {
+    bool result=sendBytes(frame,frame.length());
     if(!result) return false;
-    return sendBytes(&delimiter,1);
+    //return sendBytes(&delimiter,1);
 }
 
-bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
+bool ConnectionHandler::sendBytes(string &bytes, int bytesToWrite) {
     int tmp = 0;
     boost::system::error_code error;
     try {
         while (!error && bytesToWrite > tmp ) {
-            tmp += socket_.write_some(boost::asio::buffer(bytes + tmp, bytesToWrite - tmp), error);
+            tmp += socket_.write_some(boost::asio::buffer(bytes, bytesToWrite), error);
         }
         if(error)
             throw boost::system::system_error(error);
@@ -139,10 +146,6 @@ void ConnectionHandler::close() {
         std::cout << "closing failed: connection already closed" << std::endl;
     }
 }
-
-
-
-
 /*
 
 bool ConnectionHandler::getLine(std::string& line) {
