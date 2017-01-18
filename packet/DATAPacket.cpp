@@ -3,9 +3,16 @@
     DATAPacket::DATAPacket(short packetSize, short block, char* data) {
         this->packetSize = packetSize;
         this->block = block;
-        this->data = data;
+        getData(data);
         Packet::opCode = 3;
     }
+
+void DATAPacket::getData(const char *data) {
+    DATAPacket::data =new char[packetSize];
+    for (unsigned int i = 0; i < packetSize; ++i) {
+        DATAPacket::data[i] = data[i];
+    }
+}
 
 short DATAPacket::getPacketSize() {
         return packetSize;
