@@ -1,4 +1,3 @@
-
 #include <boost/thread/win32/thread_data.hpp>
 #include "../include/ListenToServer.h"
 
@@ -15,7 +14,7 @@ ListenToServer::ListenToServer(const ListenToServer& listenToServer){
 }
 
 ListenToServer::ListenToServer(int number, shared_ptr<ConnectionHandler> handler) :connectionHandler(handler),
-_id(number){
+                                                                                   _id(number){
 //    dataQueue = queue<Packet *>();
 }
 
@@ -75,15 +74,6 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
             ListenToServer::status = Status::Normal;
             break;
         case Status::WRQ:
-
-            if (message->getBlock()==0){
-                readFileIntoDataQueue();
-                DATAPacket *& dataToSend = dataQueue.front();
-                if ()
-                connectionHandler->send(dataToSend);
-            }
-            else{
-
             if (message->getBlock()<512){
                 std::cout << "WRQ " << fileName << " complete" <<  std::endl;
                 ListenToServer::status = Status::Normal;
@@ -109,13 +99,24 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
                 ListenToServer::status = Status::Normal;
             }
             break;
-         //
+            //
         case Status::DIRQ:
+            if (message->getPacketSize() < 512)
+            {
+                printDirqArr((message->getPacketSize() + (message->getBlock() - 1)*512));
+                Status::Normal;
+                connectionHandler->send(new ACKPacket(message->getBlock()));
+            }
+            else
+            {
+                dirqCharArr[512*(message->getBlock() - 1)] = message->getData()[0];
+            }
+
             //TODO
 
             //handleAckPacket(static_cast<ACKPacket *>());
             break;
-           }
+    }
 }
 
 void ListenToServer::readFileIntoDataQueue(){
@@ -148,13 +149,14 @@ void ListenToServer::readFileIntoDataQueue(){
             packetSize = sizeOfLastBlock;
         }
 
-        char* data = fileCharArr + (i-1)*512;
+        char* data = ListenToServer::fileCharArr + (i-1)*512;
 
-        dataQueue.push(new DATAPacket(packetSize, i, data));
+        ListenToServer::dataQueue.push(new DATAPacket(packetSize, i, data));
     }
 
     if (sizeOfLastBlock == 512) {
-        dataQueue.push(new DATAPacket(0, (short)(numberOfBlocks + 1), new char()));
+        DATAPacket *dataToSend = new DATAPacket(0, (short)(numberOfBlocks + 1), new char());
+        ListenToServer::dataQueue.push((Packet *&&) dataToSend);
     }
 }
 
@@ -163,6 +165,13 @@ void ListenToServer::operator()(){
     boost::this_thread::yield(); //Gives up the remainder of the current thread's time slice, to allow other threads to run.
 }
 
+void ListenToServer::printDirqArr(int size) {
+//
+//    string str = dirqCharArr;
+//    int curSize = str.length();
+////    while(size )
+
+}
 
 /*
 
@@ -196,4 +205,3 @@ if (ListenToServer::status == Status::WRQ) {
         sendError(NOT_DEFINED, e->getMessage());
     }
 }*/
-
