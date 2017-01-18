@@ -1,13 +1,13 @@
 #pragma once
 
 #include "Packet.h"
-#include <string>
 #include <vector>
 using namespace std;
 #include <string>
 #include <iostream>
 
     class ERRORPacket : public Packet {
+
     public:
         short errorCode = 0;
         string errMsg;

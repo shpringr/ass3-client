@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Packet.h"
-#include <string>
 #include <vector>
 
 using namespace std;
