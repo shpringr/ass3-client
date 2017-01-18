@@ -10,7 +10,6 @@ using namespace std;
     class BCASTPacket : public Packet {
     public:
         char deletedAdd = 0;
-        std::string fileName;
         string fileName;
 
         BCASTPacket(char deletedAdd, const string &fileName);

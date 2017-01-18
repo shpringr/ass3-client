@@ -38,9 +38,11 @@ add_executable(Client
         packet/DIRQPacket.h packet/DIRQPacket.cpp
         packet/DISCPacket.h packet/DISCPacket.cpp
         src/EncdecTest.cpp include/EncdecTest.h
-        src/MessageEncoderDecoder.cpp include/MessageEncoderDecoder.h)
-        src/ListenToServer.cpp src/ListenToServer.h
-        src/EncdecTest.cpp include/EncdecTest.h src/ListenToKeyboard.cpp src/ListenToKeyboard.h)
+        src/MessageEncoderDecoder.cpp include/MessageEncoderDecoder.h
+#     //   src/ListenToServer.cpp src/ListenToServer.h
+        src/EncdecTest.cpp include/EncdecTest.h
+#        //src/ListenToKeyboard.cpp src/ListenToKeyboard.h
+        )
 
 if(Boost_FOUND)
 
