@@ -90,11 +90,26 @@ bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
 
 
 bool ConnectionHandler::send(Packet *pPacket) {
-    char* msg = encDec_.encode(pPacket);
-    return sendBytes(msg, sizeof(msg));
-    ListenToKeyboard
+    string msg = encDec_.encode(pPacket);
+    switch(pPacket->getOpCode()){
+        case 1: case 2: case 7: case 8: case 5:
+            return sendFrameAscii(msg, '\0');
+        case 6: case 3: case 4:
+            return sendFrameAscii(msg);
+    }
+    return false;
 }
 
+bool ConnectionHandler::sendFrameAscii(const std::string& frame) {
+    return sendBytes(frame.c_str(),frame.length());
+
+}
+
+bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter) {
+    bool result=sendBytes(frame.c_str(),frame.length());
+    if(!result) return false;
+    return sendBytes(&delimiter,1);
+}
 
 bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
     int tmp = 0;
@@ -114,6 +129,7 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
 
 
 
+
 // Close down the connection properly.
 void ConnectionHandler::close() {
     try{
@@ -122,6 +138,7 @@ void ConnectionHandler::close() {
         std::cout << "closing failed: connection already closed" << std::endl;
     }
 }
+
 
 bool ConnectionHandler::getPacket(Packet packet) {
     //sholud read from socket and put the packet
