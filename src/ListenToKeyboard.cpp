@@ -16,10 +16,12 @@ ListenToKeyboard::ListenToKeyboard(int number, shared_ptr<ConnectionHandler> han
 }
 
 void ListenToKeyboard::run() {
-    Packet* packetToSend = createNewPacketFromKeyboard();
-    bool success = connectionHandler->send(packetToSend);
-    if (!success){
-        //TODO:send error
+    while (ListenToServer::connected) {
+        Packet *packetToSend = createNewPacketFromKeyboard();
+        bool success = connectionHandler->send(packetToSend);
+        if (!success) {
+            //TODO:send error
+        }
     }
 }
 

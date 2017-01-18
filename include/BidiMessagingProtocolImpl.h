@@ -44,7 +44,6 @@ private:
 
     void handleBCastPacket();
 
-    //TODO: can we get errors from client to server?
     void handleErrorPacket();
 
     void handleAckPacket(ACKPacket *message);
@@ -57,8 +56,6 @@ private:
 
     bool isLegalFirstCommand(Packet *message);
 
-    //TODO: make sure it doesnt return file that are uploading.
-    //TODO: what happens if the list is more than 512b?
     void handleDirqPacket();
 
     void handleDelReqPacket(DELRQPacket *message);

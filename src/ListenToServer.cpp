@@ -9,8 +9,7 @@ string ListenToServer::fileName("");
 
 
 
-bool conected = true;
-
+bool ListenToServer::connected = true;
 
 ListenToServer::ListenToServer(const ListenToServer& listenToServer){
 }
@@ -21,13 +20,13 @@ _id(number){
 }
 
 void ListenToServer::run() {
-    while (conected) {
+    while (connected) {
         Packet *answerPacket = nullptr;
 
         if (connectionHandler->getPacket(answerPacket)) {
             process(answerPacket);
         } else {
-            conected = false;
+            connected = false;
             // releaseBuffer(buf);
             //close();
             //return nullptr;
@@ -76,18 +75,14 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
             ListenToServer::status = Status::Normal;
             break;
         case Status::WRQ:
-
-            if (message->getBlock()==0){
-                //dataQueue.f
+            if (message->getBlock()<512){
+                std::cout << "WRQ " << fileName << " complete" <<  std::endl;
+                ListenToServer::status = Status::Normal;
             }
             break;
         case Status::DISC:
-            //TODO
+            connected = false;
             break;
-        case Status::DELRQ:
-            //TODO
-            break;
-
     }
 }
 
@@ -108,6 +103,7 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
          //
         case Status::DIRQ:
             //TODO
+
             //handleAckPacket(static_cast<ACKPacket *>());
             break;
            }
