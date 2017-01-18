@@ -19,6 +19,18 @@ char *DATAPacket::getData() {
     return data;
 }
 
+const char* DATAPacket::getSizeInBytes() {
+    char *sizeArr = new char[2];
+    shortToBytes(getPacketSize(),sizeArr);
+    return sizeArr;
+}
+
+const char* DATAPacket::getBlockInBytes() {
+    char *blockArr = new char[2];
+    shortToBytes(getBlock(),blockArr);
+    return blockArr;
+}
+
 char *DATAPacket::toByteArr() {
 
     char *opCodeBytes = new char[2];
@@ -29,6 +41,7 @@ char *DATAPacket::toByteArr() {
     shortToBytes(opCode, opCodeBytes);
     shortToBytes(packetSize, sizeChar);
     shortToBytes(block, blockChar);
+
 
     for (unsigned int i = 0; i < 2; i++)
         returnBytes[i] = opCodeBytes[i];

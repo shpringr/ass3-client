@@ -9,6 +9,11 @@
         return block;
     }
 
+const char* ACKPacket::getBlockInBytes() {
+    char *blockArr = new char[2];
+    shortToBytes(getBlock(),blockArr );
+    return blockArr ;
+}
     char* ACKPacket::toByteArr()  {
 
         char *opCodeBytes = new char[2];

@@ -16,3 +16,9 @@ short Packet::bytesToShort(char *bytesArr) {
         return result;
     }
 
+const char* Packet::getOpCodeInBytes() {
+    char *opCodeArr = new char[2];
+    shortToBytes(getOpCode(),opCodeArr);
+    return opCodeArr;
+}
+

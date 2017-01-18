@@ -12,5 +12,7 @@
         short getBlock();
 
         virtual char* toByteArr()  override ;
+
+        const char *getBlockInBytes();
     };
 

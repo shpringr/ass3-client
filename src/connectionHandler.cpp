@@ -92,34 +92,54 @@ bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
 
 bool ConnectionHandler::send(Packet *pPacket) {
     char* encoded = encDec_.encode(pPacket);
-    char* tryr =encoded + 1;
-    string msg = encoded[0] + tryr;
+    string msgWIthoutZeros;
 
-    char* data = encoded;
     switch(pPacket->getOpCode()){
-        case 1: case 2: case 7: case 8: case 5:
-            return sendFrameAscii(msg, '\0');
-        case 6: case 3: case 4:
-            return sendFrameAscii(msg);
-        default:
-            //TODO: error
-            break;
+        case 1: case 2: case 7: case 8:
+            msgWIthoutZeros = encoded + 2;
+            return sendBytes(pPacket->getOpCodeInBytes(), 2) &&
+                    sendFrameAscii(msgWIthoutZeros, '\0');
+        case 3:
+            msgWIthoutZeros = encoded + 6;
+            return sendBytes(pPacket->getOpCodeInBytes(), 2) &&
+                    sendBytes((static_cast<DATAPacket *>(pPacket))->getSizeInBytes(), 2) &&
+                    sendBytes((static_cast<DATAPacket *>(pPacket))->getBlockInBytes(), 2) &&
+                    sendFrameAscii(msgWIthoutZeros);
+        case 4:;
+            return sendBytes(pPacket->getOpCodeInBytes(), 2) &&
+                   sendBytes((static_cast<DATAPacket *>(pPacket))->getBlockInBytes(), 2);
+        case 5:
+            msgWIthoutZeros = encoded + 4;
+            return sendBytes(pPacket->getOpCodeInBytes(), 2) &&
+                   sendBytes((static_cast<ERRORPacket*>(pPacket))->getErrorCodeInBytes(), 2) &&
+                   sendFrameAscii(msgWIthoutZeros, '\0');
+
+        case 6: case 10:
+            return sendBytes(pPacket->getOpCodeInBytes(), 2);
+        case 9:
+            msgWIthoutZeros = encoded + 3;
+            char *addedOrDeleted = new char[1];
+            addedOrDeleted[0] = (static_cast<BCASTPacket *>(pPacket))->getDeletedAdd();
+
+            return sendBytes(pPacket->getOpCodeInBytes(), 2) &&
+                    sendBytes(addedOrDeleted, 1) &&
+                    sendFrameAscii(msgWIthoutZeros, '\0');
     }
     return false;
 }
 
 bool ConnectionHandler::sendFrameAscii(std::string& frame) {
-    return sendBytes(frame,frame.length());
+    return sendBytes(frame.c_str(),frame.length());
 
 }
 
 bool ConnectionHandler::sendFrameAscii(std::string& frame, char delimiter) {
-    bool result=sendBytes(frame,frame.length());
+    bool result=sendBytes(frame.c_str(),frame.length());
     if(!result) return false;
-    //return sendBytes(&delimiter,1);
+    return sendBytes(&delimiter,1);
 }
 
-bool ConnectionHandler::sendBytes(string &bytes, int bytesToWrite) {
+bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
     int tmp = 0;
     boost::system::error_code error;
     try {

@@ -57,15 +57,15 @@ public:
 	// Send an ascii line from the server
     // Returns false in case connection closed before all the data is sent.
     bool sendLine(std::string& line);
- 
+
     // Get Ascii data from the server until the delimiter character
     // Returns false in case connection closed before null can be read.
     bool getFrameAscii(std::string& frame, char delimiter);
  
     // Send a message to the remote host.
     // Returns false in case connection is closed before all the data is sent.
-    bool sendFrameAscii(const std::string& frame, char delimiter);
-	
+    bool sendFrameAscii(string &frame, char delimiter);
+
     // Close down the connection properly.
     void close();
 
@@ -73,17 +73,13 @@ public:
 
     bool getPacket(Packet* packet);
 
-    bool sendBytes(const char *bytes);
-
-    bool sendFrameAscii(const string &frame);
-
     bool getFrameAscii(Packet *packet);
 
-    bool sendBytes(string &bytes, int bytesToWrite);
 
     bool sendFrameAscii(string &frame);
 
-    bool sendFrameAscii(string &frame, char delimiter);
+
+    bool sendBytes(const char *bytes, int bytesToWrite);
 }; //class ConnectionHandler
  
 #endif

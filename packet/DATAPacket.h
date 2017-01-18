@@ -19,6 +19,10 @@
         virtual char* getData();
 
         virtual char* toByteArr() override ;
+
+        const char *getSizeInBytes();
+
+        const char *getBlockInBytes();
     };
 
 
