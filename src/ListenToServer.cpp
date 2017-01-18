@@ -1,4 +1,3 @@
-
 #include <boost/thread/win32/thread_data.hpp>
 #include "../include/ListenToServer.h"
 
@@ -15,7 +14,7 @@ ListenToServer::ListenToServer(const ListenToServer& listenToServer){
 }
 
 ListenToServer::ListenToServer(int number, shared_ptr<ConnectionHandler> handler) :connectionHandler(handler),
-_id(number){
+                                                                                   _id(number){
 //    dataQueue = queue<Packet *>();
 }
 
@@ -100,11 +99,11 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
                 ListenToServer::status = Status::Normal;
             }
             break;
-         //
+            //
         case Status::DIRQ:
             if (message->getPacketSize() < 512)
             {
-              printDirqArr((message->getPacketSize() + (message->getBlock() - 1)*512));
+                printDirqArr((message->getPacketSize() + (message->getBlock() - 1)*512));
                 Status::Normal;
                 connectionHandler->send(new ACKPacket(message->getBlock()));
             }
@@ -117,7 +116,7 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
 
             //handleAckPacket(static_cast<ACKPacket *>());
             break;
-           }
+    }
 }
 
 void ListenToServer::readFileIntoDataQueue(){
@@ -210,4 +209,3 @@ if (ListenToServer::status == Status::WRQ) {
         sendError(NOT_DEFINED, e->getMessage());
     }
 }*/
-
