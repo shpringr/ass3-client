@@ -75,6 +75,15 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
             ListenToServer::status = Status::Normal;
             break;
         case Status::WRQ:
+
+            if (message->getBlock()==0){
+                readFileIntoDataQueue();
+                DATAPacket *& dataToSend = dataQueue.front();
+                if ()
+                connectionHandler->send(dataToSend);
+            }
+            else{
+
             if (message->getBlock()<512){
                 std::cout << "WRQ " << fileName << " complete" <<  std::endl;
                 ListenToServer::status = Status::Normal;
@@ -102,17 +111,6 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
             break;
          //
         case Status::DIRQ:
-            if (message->getPacketSize() < 512)
-            {
-              printDirqArr((message->getPacketSize() + (message->getBlock() - 1)*512));
-                Status::Normal;
-                connectionHandler->send(new ACKPacket(message->getBlock()));
-            }
-            else
-            {
-                dirqCharArr[512*(message->getBlock() - 1)] = message->getData()[0];
-            }
-
             //TODO
 
             //handleAckPacket(static_cast<ACKPacket *>());
@@ -150,14 +148,13 @@ void ListenToServer::readFileIntoDataQueue(){
             packetSize = sizeOfLastBlock;
         }
 
-        char* data = ListenToServer::fileCharArr + (i-1)*512;
+        char* data = fileCharArr + (i-1)*512;
 
-        ListenToServer::dataQueue.push(new DATAPacket(packetSize, i, data));
+        dataQueue.push(new DATAPacket(packetSize, i, data));
     }
 
     if (sizeOfLastBlock == 512) {
-        DATAPacket *dataToSend = new DATAPacket(0, (short)(numberOfBlocks + 1), new char());
-        ListenToServer::dataQueue.push((Packet *&&) dataToSend);
+        dataQueue.push(new DATAPacket(0, (short)(numberOfBlocks + 1), new char()));
     }
 }
 
@@ -166,13 +163,6 @@ void ListenToServer::operator()(){
     boost::this_thread::yield(); //Gives up the remainder of the current thread's time slice, to allow other threads to run.
 }
 
-void ListenToServer::printDirqArr(int size) {
-//
-//    string str = dirqCharArr;
-//    int curSize = str.length();
-////    while(size )
-
-}
 
 /*
 
