@@ -32,6 +32,7 @@ public:
     static string fileName;
     queue <Packet *> dataQueue ;
     char *fileCharArr;
+    char *dirqCharArr;
     ListenToServer(int number, shared_ptr<ConnectionHandler> handler);
 
     ListenToServer(const ListenToServer &listenToServer_);
@@ -51,5 +52,9 @@ public:
     void readFileIntoDataQueue();
 
     static bool connected;
+
+    void printDirqArr(short size);
+
+    void printDirqArr(int size);
 };
 

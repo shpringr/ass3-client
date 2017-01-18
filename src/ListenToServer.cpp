@@ -102,6 +102,17 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
             break;
          //
         case Status::DIRQ:
+            if (message->getPacketSize() < 512)
+            {
+              printDirqArr((message->getPacketSize() + (message->getBlock() - 1)*512));
+                Status::Normal;
+                connectionHandler->send(new ACKPacket(message->getBlock()));
+            }
+            else
+            {
+                dirqCharArr[512*(message->getBlock() - 1)] = message->getData()[0];
+            }
+
             //TODO
 
             //handleAckPacket(static_cast<ACKPacket *>());
@@ -153,6 +164,14 @@ void ListenToServer::readFileIntoDataQueue(){
 void ListenToServer::operator()(){
     run();
     boost::this_thread::yield(); //Gives up the remainder of the current thread's time slice, to allow other threads to run.
+}
+
+void ListenToServer::printDirqArr(int size) {
+//
+//    string str = dirqCharArr;
+//    int curSize = str.length();
+////    while(size )
+
 }
 
 /*
