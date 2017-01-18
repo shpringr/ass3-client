@@ -1,26 +1,27 @@
 
 #include <boost/thread/win32/thread_data.hpp>
 #include "../include/ListenToServer.h"
-#include "../packet/Packet.h"
-#include <fstream>
-#include <iostream>
 
 
 Status ListenToServer::status(Status::Normal);
 string ListenToServer::fileName("");
 
+
+
+
 bool conected = true;
 
 
+ListenToServer::ListenToServer(const ListenToServer& listenToServer){
+}
 
 ListenToServer::ListenToServer(int number, ConnectionHandler* handler) {
     this->connectionHandler = handler;
     _id=number;
-    this->dataQueue = queue<Packet *>();
-
+//    dataQueue = queue<Packet *>();
 }
 
- void ListenToServer::run() {
+void ListenToServer::run() {
     while (conected) {
         Packet *answerPacket = nullptr;
 
@@ -36,23 +37,23 @@ ListenToServer::ListenToServer(int number, ConnectionHandler* handler) {
 }
 
 void ListenToServer::process(Packet* packet) {
-        switch ((packet->getOpCode())) {
-            case 3:
-                handleDataPacket(static_cast<DATAPacket *>(packet));
-                break;
-            case 4:
-                handleAckPacket(static_cast<ACKPacket *>(packet));
-                break;
-            case 5:
-                handleErrorPacket(static_cast<ERRORPacket *>(packet));
-                break;
-            case 9:
-                handleBCastPacket(static_cast<BCASTPacket *>(packet));
-                break;
-            default:
-                //sendError(ERRORPacket::Errors::ILLEGAL_TFTP_OPERATION, L"");
-                break;
-        }
+    switch ((packet->getOpCode())) {
+        case 3:
+            handleDataPacket(static_cast<DATAPacket *>(packet));
+            break;
+        case 4:
+            handleAckPacket(static_cast<ACKPacket *>(packet));
+            break;
+        case 5:
+            handleErrorPacket(static_cast<ERRORPacket *>(packet));
+            break;
+        case 9:
+            handleBCastPacket(static_cast<BCASTPacket *>(packet));
+            break;
+        default:
+            //sendError(ERRORPacket::Errors::ILLEGAL_TFTP_OPERATION, L"");
+            break;
+    }
 
 }
 
@@ -76,8 +77,9 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
             ListenToServer::status = Status::Normal;
             break;
         case Status::WRQ:
-            //TODO
+
             if (message->getBlock()==0){
+                //dataQueue.f
             }
             break;
         case Status::DISC:
@@ -87,7 +89,7 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
             //TODO
             break;
 
-        }
+    }
 }
 
 void ListenToServer::handleDataPacket(DATAPacket *message) {
@@ -96,7 +98,7 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
             ListenToServer::fileToWrite.open(fileName);
             if (ListenToServer::fileToWrite.is_open()) {
                 ListenToServer::fileToWrite.write(message->getData(), message->getPacketSize());
-                connectionHandler.send(new ACKPacket(message->getBlock()));
+                connectionHandler->send(new ACKPacket(message->getBlock()));
             }
             else if (message->getPacketSize()!=512){
                 ListenToServer::fileToWrite.close();
@@ -107,27 +109,31 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
          //
         case Status::DIRQ:
             //TODO
-            handleAckPacket(static_cast<ACKPacket *>(packet));
+            //handleAckPacket(static_cast<ACKPacket *>());
             break;
            }
 }
 
-void ListenToServer::readFileIntoDataQueue(File *file){
+void ListenToServer::readFileIntoDataQueue(){
 
     short blockPacket = 1;
-    streampos size;
+
     ListenToServer::fileTosend= ifstream(fileName, ios::in|ios::binary|ios::ate);
-    fileTosend.open(fileName);
-    if (fileTosend.is_open()){
-        size = fileTosend.tellg();
-        fileCharArr = new char [size];
-        fileTosend.seekg (0, ios::beg);
-        fileTosend.read (fileCharArr, size);
-        fileTosend.close();
+
+    ListenToServer::fileTosend.open(fileName);
+    streampos size;
+
+    if (ListenToServer::fileTosend.is_open()){
+        size = ListenToServer::fileTosend.tellg();
+        ListenToServer::fileCharArr = new char [size];
+        ListenToServer::fileTosend.seekg (0, ios::beg);
+        ListenToServer::fileTosend.read (ListenToServer::fileCharArr, (streamsize) size);
+        ListenToServer::fileTosend.close();
     }
 
-    short numberOfBlocks = (size / 512) + 1;
-    short sizeOfLastBlock = size % 512;
+    int sizeInt = (int) size;
+    short numberOfBlocks = (short) ((sizeInt / 512) + 1);
+    short sizeOfLastBlock = (short) (sizeInt % 512);
     if (sizeOfLastBlock == 0)
         sizeOfLastBlock = 512;
 
@@ -138,20 +144,17 @@ void ListenToServer::readFileIntoDataQueue(File *file){
             packetSize = sizeOfLastBlock;
         }
 
-        char* data = fileCharArr + (i-1)*512;
-        DATAPacket *dataToSend = new DATAPacket(packetSize, i, data);
-        dataQueue.push(dataToSend);
+        char* data = ListenToServer::fileCharArr + (i-1)*512;
+
+        ListenToServer::dataQueue.push(new DATAPacket(packetSize, i, data));
     }
 
     if (sizeOfLastBlock == 512) {
         DATAPacket *dataToSend = new DATAPacket(0, (short)(numberOfBlocks + 1), new char());
-        dataQueue.push(dataToSend);
+        ListenToServer::dataQueue.push((Packet *&&) dataToSend);
     }
 }
 
-bool ListenToServer::shouldTerminate() {
-    return shouldTerminate_Renamed;
-}
 void ListenToServer::operator()(){
     run();
     boost::this_thread::yield(); //Gives up the remainder of the current thread's time slice, to allow other threads to run.
@@ -190,4 +193,3 @@ if (ListenToServer::status == Status::WRQ) {
     }
 }*/
 
-}

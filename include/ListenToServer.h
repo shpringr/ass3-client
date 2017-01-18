@@ -27,13 +27,15 @@ protected:
     ConnectionHandler* connectionHandler = nullptr;
 public:
     ofstream fileToWrite;
-    static ifstream fileTosend;
+    ifstream fileTosend;
     static Status status;
     static string fileName;
-    static queue <Packet *> dataQueue ;
-    static char *fileCharArr;
+    queue <Packet *> dataQueue ;
+    char *fileCharArr;
 
     ListenToServer(int number, ConnectionHandler* handler);
+    ListenToServer(const ListenToServer &listenToServer_);
+
     void run();
     void process(Packet* packet);
 
@@ -45,5 +47,7 @@ public:
 
     void handleBCastPacket(BCASTPacket *packet);
     void operator()();
+
+    void readFileIntoDataQueue();
 };
 
