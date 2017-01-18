@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     EncdecTest test;
 //  test.testRRQDecode(encdec); // 1
 //  test.testWRQDecode(encdec); // 2
-//  test.testDataDecode(encdec); // 3
+  test.testDataDecode(encdec); // 3
 //  test.testDataEncode(encdec); // 3
 //  test.testACKDecode(encdec); // 4
 // 	test.testACKEncode(encdec); // 4
@@ -43,9 +43,9 @@ int main(int argc, char *argv[]) {
 // 	test.testLOGRQDecode(encdec); // 7
 // 	test.testDELRQDecode(encdec); // 8
 // 	test.testBCastDecode(encdec); // 9
-  test.testBCastEncode(encdec); // 9
+//  test.testBCastEncode(encdec); // 9
 //	test.testDISCDecode(encdec); // 10
-
+//    test.testDISCDecode(encdec); // 10
 }
 
 

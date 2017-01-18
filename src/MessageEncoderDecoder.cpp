@@ -1,36 +1,42 @@
 #include "../include/MessageEncoderDecoder.h"
+#include "../packet/DIRQPacket.h"
+#include "../packet/DISCPacket.h"
+#include "../packet/ACKPacket.h"
+#include "../packet/DATAPacket.h"
 
 MessageEncoderDecoder::MessageEncoderDecoder() {
     initAll();
 }
 
 void MessageEncoderDecoder::initAll() {
-//    initOpObjects();
-//    if (lengthBuffer != nullptr) {
-//        lengthBuffer->clear();
-//    }
-//    if (blockBuffer != nullptr) {
-//        blockBuffer->clear();
-//    }
-//    if (packetSizeBuffer != nullptr) {
-//        packetSizeBuffer->clear();
-//    }
-//    if (errorBuffer != nullptr) {
-//        errorBuffer->clear();
-//    }
+    initOpObjects();
+
+    lengthArr = nullptr;
+    lengthArrSize=0;
+    lengthArrIndex=0;
+
+    errorArr= nullptr;
+    errorArrSize=0;
+    errorArrIndex=0;
+
     errorCode = -1;
-    errorArr.clear();
-    packetSizeArr.clear();
+
+    packetArr= nullptr;
+    packetArrSize=0;
+    packetArrIndex=0;
+
     packetSize = 0;
-    blockArr.clear();
+
+    blockArr = nullptr;
+    blockArrSize=0;
+    blockArrIndex=0;
+
     block = 0;
+
     deletedAdd = L'e';
 }
 
 void MessageEncoderDecoder::initOpObjects() {
-//    if (opLengthBuffer != nullptr) {
-//        opLengthBuffer->clear();
-//    }
     opCode = 0;
 }
 
@@ -81,7 +87,9 @@ Packet *MessageEncoderDecoder::decodeNextByte(char nextByte)  {
         default:break;
     }
 
-    return res;
+    Packet* tmp = res;
+    res = nullptr;
+    return tmp;
 }
 
 void MessageEncoderDecoder::makeBCastPacket(char nextByte)  {
@@ -89,9 +97,9 @@ void MessageEncoderDecoder::makeBCastPacket(char nextByte)  {
 //        deletedAdd = nextByte;
 //    } else {
 //        if (nextByte != L'\0') {
-//            lengthBuffer->put(nextByte);
+//            lengthArr->put(nextByte);
 //        } else { //nextByte == '\0'
-//            string fileName = string(getDataFromBuffer(lengthBuffer), L"UTF-8");
+//            string fileName = string(getDataFromBuffer(lengthArr), L"UTF-8");
 //            res = new BCASTPacket(deletedAdd, fileName);
 //            initAll();
 //        }
@@ -100,9 +108,9 @@ void MessageEncoderDecoder::makeBCastPacket(char nextByte)  {
 
 void MessageEncoderDecoder::makeDelRqPacket(char nextByte)  {
 //    if (nextByte != L'\0') {
-//        lengthBuffer->put(nextByte);
+//        lengthArr->put(nextByte);
 //    } else { //nextByte == '\0'
-//        string fileName = string(getDataFromBuffer(lengthBuffer), L"UTF-8");
+//        string fileName = string(getDataFromBuffer(lengthArr), L"UTF-8");
 //        res = new DELRQPacket(fileName);
 //        initAll();
 //    }
@@ -110,9 +118,9 @@ void MessageEncoderDecoder::makeDelRqPacket(char nextByte)  {
 
 void MessageEncoderDecoder::makeLoginPacket(char nextByte)  {
 //    if (nextByte != L'\0') {
-//        lengthBuffer->put(nextByte);
+//        lengthArr->put(nextByte);
 //    } else { //nextByte == '\0'
-//        string userName = string(getDataFromBuffer(lengthBuffer), L"UTF-8");
+//        string userName = string(getDataFromBuffer(lengthArr), L"UTF-8");
 //        res = new LOGRQPacket(userName);
 //        initAll();
 //    }
@@ -139,9 +147,9 @@ void MessageEncoderDecoder::makeErrorPacket(char nextByte)  {
 //        }
 //    } else {
 //        if (nextByte != L'\0') {
-//            lengthBuffer->put(nextByte);
+//            lengthArr->put(nextByte);
 //        } else { //nextByte == '\0'
-//            string errMsg = string(getDataFromBuffer(lengthBuffer), L"UTF-8");
+//            string errMsg = string(getDataFromBuffer(lengthArr), L"UTF-8");
 //            res = new ERRORPacket(errorCode, errMsg);
 //            initAll();
 //        }
@@ -149,43 +157,49 @@ void MessageEncoderDecoder::makeErrorPacket(char nextByte)  {
 }
 
 void MessageEncoderDecoder::makeACKPacket(char nextByte) {
-//    lengthBuffer->put(nextByte);
-//    if (!lengthBuffer->hasRemaining()) {
-//        short blockAck = bytesToShort(getDataFromBuffer(lengthBuffer));
-//        res = new ACKPacket(blockAck);
-//        initAll();
-//    }
+    lengthArr[lengthArrIndex]=nextByte;
+
+    if (lengthArrIndex == lengthArrSize - 1) {
+        short blockAck = bytesToShort(lengthArr);
+        res = new ACKPacket(blockAck);
+        initAll();
+    }
+    else
+    {
+        lengthArrIndex++;
+    }
 }
 
 void MessageEncoderDecoder::makeDataPacket(char nextByte) {
-//    if (packetSizeArr.empty()) {
-//        packetSizeBuffer->put(nextByte);
-//        if (!packetSizeBuffer->hasRemaining()) {
-//            packetSizeArr = getDataFromBuffer(packetSizeBuffer);
-//            packetSize = bytesToShort(packetSizeArr);
-//        }
-//    } else if (blockArr.empty()) {
-//        blockBuffer->put(nextByte);
-//        if (!blockBuffer->hasRemaining()) {
-//            blockArr = getDataFromBuffer(blockBuffer);
-//            block = bytesToShort(blockArr);
-//        }
-//    } else {
-//        lengthBuffer->put(nextByte);
-//        packetSize--;
-//        if (packetSize == 0) {
-//            std::vector<char> bytes = getDataFromBuffer(lengthBuffer);
-//            res = new DATAPacket(static_cast<short>(bytes.size()), block, bytes);
-//            initAll();
-//        }
-//    }
+    if (packetArrIndex != packetArrSize) {
+        packetArr[packetArrIndex]=nextByte;
+        packetArrIndex++;
+        if (packetArrIndex == packetArrSize) {
+            packetSize = bytesToShort(packetArr);
+        }
+    }
+    else if (blockArrIndex != blockArrSize) {
+        blockArr[blockArrIndex]=nextByte;
+        blockArrIndex++;
+        if (blockArrIndex== blockArrSize) {
+            block = bytesToShort(blockArr);
+        }
+    } else {
+        lengthArr[lengthArrIndex]=nextByte;
+        packetSize--;
+        lengthArrIndex++;
+        if (packetSize == 0) {
+            res = new DATAPacket(lengthArrSize, block, lengthArr);
+            initAll();
+        }
+    }
 }
 
 void MessageEncoderDecoder::makeWRQPacket(char nextByte)  {
 //    if (nextByte != L'\0') {
-//        lengthBuffer->put(nextByte);
+//        lengthArr->put(nextByte);
 //    } else { //nextByte == '\0'
-//        string filename = string(getDataFromBuffer(lengthBuffer), L"UTF-8");
+//        string filename = string(getDataFromBuffer(lengthArr), L"UTF-8");
 //        res = new WRQPacket(filename);
 //        initAll();
 //    }
@@ -193,49 +207,57 @@ void MessageEncoderDecoder::makeWRQPacket(char nextByte)  {
 
 void MessageEncoderDecoder::makeRRQPacket(char nextByte)  {
 //    if (nextByte != L'\0') {
-//        lengthBuffer->put(nextByte);
+//        lengthArr->put(nextByte);
 //    } else { //nextByte == '\0'
-//        string filename = string(getDataFromBuffer(lengthBuffer), L"UTF-8");
+//        string filename = string(getDataFromBuffer(lengthArr), L"UTF-8");
 //        res = new RRQPacket(filename);
 //        initAll();
 //    }
 }
 
 void MessageEncoderDecoder::initOpCodeAndBuffers(char nextByte) {
-//    opLengthBuffer->put(nextByte);
-//    if (!opLengthBuffer->hasRemaining()) {
-//        opCode = bytesToShort(getDataFromBuffer(opLengthBuffer));
-//        switch (opCode) {
-//            case 1 :
-//            case 2 :
-//            case 7:
-//            case 8:
-//            case 9:
-//                lengthBuffer = ByteBuffer::allocate(516);
-//                break;
-//            case 3:
-//                packetSizeBuffer = ByteBuffer::allocate(2);
-//                blockBuffer = ByteBuffer::allocate(2);
-//                lengthBuffer = ByteBuffer::allocate(512);
-//                break;
-//            case 4:
-//                lengthBuffer = ByteBuffer::allocate(2);
-//                break;
-//            case 5:
-//                errorBuffer = ByteBuffer::allocate(2);
-//                lengthBuffer = ByteBuffer::allocate(516);
-//                break;
-//            case 6:
-//                res = new DIRQPacket();
-//                initOpObjects();
-//                break;
-//
-//            case 10:
-//                res = new DISCPacket();
-//                initOpObjects();
-//                break;
-//        }
-//    }/
+
+    if (nextByte != 0)
+    {
+        opCode = bytesToShort(new char[2]{0,nextByte});
+        switch (opCode) {
+            case 1 :
+            case 2 :
+            case 7:
+            case 8:
+            case 9:
+                lengthArrSize = 516;
+                lengthArr = new char[lengthArrSize];
+                break;
+            case 3:
+                packetArrSize = 2;
+                packetArr = new char[packetArrSize];
+                blockArrSize =2;
+                blockArr = new char[blockArrSize];
+                lengthArrSize = 2;
+                lengthArr = new char[lengthArrSize];
+                break;
+            case 4:
+                lengthArrSize = 2;
+                lengthArr = new char[lengthArrSize];
+                break;
+            case 5:
+                errorArrSize = 2;
+                errorArr = new char[errorArrSize];
+                lengthArrSize = 516;
+                lengthArr = new char[lengthArrSize];
+                break;
+            case 6:
+                res = new DIRQPacket();
+                initOpObjects();
+                break;
+
+            case 10:
+                res = new DISCPacket();
+                initOpObjects();
+                break;
+        }
+    }
 }
 
 char* MessageEncoderDecoder::encode(Packet *message) {

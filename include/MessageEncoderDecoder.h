@@ -12,32 +12,36 @@
 class MessageEncoderDecoder{
 
 private:
-//    ByteBuffer *const opLengthBuffer = ByteBuffer::allocate(2);
-//    ByteBuffer *lengthBuffer;
-//    ByteBuffer *blockBuffer;
-//    ByteBuffer *packetSizeBuffer;
-//
-//    ByteBuffer *errorBuffer;
-    short errorCode = 0;
-    std::vector<char> errorArr;
 
     short opCode = 0;
+    Packet* res;
 
-    std::vector<char> packetSizeArr;
-    short packetSize = 0;
-    std::vector<char> blockArr;
-    short block = 0;
+    char* lengthArr;
+    short lengthArrSize=0;
+    short lengthArrIndex=0;
+
+    char* errorArr;
+    short errorArrSize=0;
+    short errorArrIndex=0;
+
+    short errorCode = -1;
+
+    char* packetArr;
+    short packetArrSize=0;
+    short packetArrIndex=0;
+
+    short packetSize=0;
+
+    char* blockArr;
+    short blockArrSize=0;
+    short blockArrIndex=0;
+
+    short block=0;
+
     char deletedAdd = 0;
-
-    Packet *res;
 
 public:
     virtual ~MessageEncoderDecoder() {
-//        delete opLengthBuffer;
-//        delete lengthBuffer;
-//        delete blockBuffer;
-//        delete packetSizeBuffer;
-//        delete errorBuffer;
         delete res;
     }
 
