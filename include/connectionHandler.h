@@ -5,6 +5,20 @@
 #include <boost/asio.hpp>
 #include <iostream>
 #include "../packet/Packet.h"
+#include "../include/connectionHandler.h"
+#include "../packet/LOGRQPacket.h"
+#include "../packet/Packet.h"
+#include "../packet/RRQPacket.h"
+#include "../packet/ACKPacket.h"
+#include "../packet/BCASTPacket.h"
+#include "../packet/WRQPacket.h"
+#include "../packet/ERRORPacket.h"
+#include "../packet/DATAPacket.h"
+#include "../packet/DELRQPacket.h"
+#include "../packet/DIRQPacket.h"
+#include "../packet/DISCPacket.h"
+#include "MessageEncoderDecoder.h"
+
 
 using boost::asio::ip::tcp;
 
@@ -13,10 +27,12 @@ private:
 	const std::string host_;
 	const short port_;
 	boost::asio::io_service io_service_;   // Provides core I/O functionality
-	tcp::socket socket_; 
+	tcp::socket socket_;
+
+    MessageEncoderDecoder encDec_;
  
 public:
-    ConnectionHandler(std::string host, short port);
+    ConnectionHandler(std::string host, short port, MessageEncoderDecoder encDec);
     virtual ~ConnectionHandler();
  
     // Connect to the remote machine
@@ -49,7 +65,9 @@ public:
     // Close down the connection properly.
     void close();
 
-    void send(Packet *pPacket);
+    bool send(Packet *pPacket);
+
+    bool getPacket(Packet packet);
 }; //class ConnectionHandler
  
 #endif
