@@ -3,12 +3,9 @@
         Packet::opCode = 10;
     }
 
-    void DISCPacket::toByteArr(char* outChar) {
+    char* DISCPacket::toByteArr()  {
         char *opCodeBytes = new char[2];
         shortToBytes(opCode, opCodeBytes);
 
-        for(int i=0; i < sizeof(opCodeBytes); ++i) {
-
-            outChar[i] = opCodeBytes[i];
-        }
+        return opCodeBytes;
     }

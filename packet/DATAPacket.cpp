@@ -8,10 +8,12 @@
     }
 
 void DATAPacket::getData(const char *data) {
-    DATAPacket::data =new char[packetSize];
+    DATAPacket::data =new char[packetSize + 1];
     for (unsigned int i = 0; i < packetSize; ++i) {
         DATAPacket::data[i] = data[i];
     }
+
+    DATAPacket::data[packetSize] = '\0';
 }
 
 short DATAPacket::getPacketSize() {
@@ -26,7 +28,7 @@ short DATAPacket::getPacketSize() {
         return data;
     }
 
-    void DATAPacket::toByteArr(char* outChar) {
+    char* DATAPacket::toByteArr()  {
 
         char *opCodeBytes = new char[2];
         char *sizeChar = new char[2];
@@ -49,10 +51,8 @@ short DATAPacket::getPacketSize() {
         for (unsigned int i = 6; i < sizeof(returnBytes) - 1; i++)
             returnBytes[i] = data[i - 6];
 
-        returnBytes[sizeof(returnBytes) - 1] = '0';
+        returnBytes[sizeof(returnBytes) - 1] = '\0';
 
-        for(int i=0; i < sizeof(returnBytes); ++i){
-            outChar[i] = returnBytes[i];
-        }
+        return returnBytes;
 
     }

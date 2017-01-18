@@ -17,7 +17,7 @@
 
         virtual char* getData();
 
-        virtual void toByteArr(char *outChar) override ;
+        virtual char* toByteArr() override ;
 
         void getData(const char *data);
     };

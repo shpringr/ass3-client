@@ -266,10 +266,7 @@ void MessageEncoderDecoder::initOpCodeAndBuffers(char nextByte) {
 }
 
 char* MessageEncoderDecoder::encode(Packet *message) {
-    char* outStr;
-    message->toByteArr(outStr);
-    return outStr;
-
+    return message->toByteArr();
 }
 
 void MessageEncoderDecoder::shortToBytes(short num, char *bytesArr) {

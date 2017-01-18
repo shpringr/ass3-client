@@ -13,7 +13,7 @@ public:
 
         void shortToBytes(short num, char bytesArr[]);
 
-        virtual void toByteArr(char * outChar) = 0;
+        virtual char* toByteArr() = 0;
 };
 
 

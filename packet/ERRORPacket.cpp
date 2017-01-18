@@ -14,7 +14,7 @@
         return errMsg;
     }
 
-    void ERRORPacket::toByteArr(char* outChar) {
+    char * ERRORPacket::toByteArr()  {
 
         char *opCodeBytes = new char[2];
         char *errorCodeChar = new char[2];
@@ -33,10 +33,8 @@
         for (unsigned int i = 4; i < sizeof(returnBytes) - 1; i++)
             returnBytes[i] = errorMsgChar[i - 4];
 
-        returnBytes[sizeof(returnBytes) - 1] = '0';
+        returnBytes[sizeof(returnBytes) - 1] = '\0';
 
-        for(int i=0; i < sizeof(returnBytes); ++i){
-            outChar[i] = returnBytes[i];
-        }
+        return returnBytes;
     }
 

@@ -54,7 +54,7 @@ using namespace std;
 
         virtual string getErrMsg();
 
-    virtual void toByteArr(char *outChar) override ;
+    virtual char* toByteArr() override ;
     };
 
 

@@ -17,7 +17,7 @@ using namespace std;
         virtual string getFileName();
 
 
-        virtual void toByteArr(char *outChar) override ;
+        virtual char* toByteArr() override ;
     };
 
 
