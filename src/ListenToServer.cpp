@@ -9,17 +9,16 @@
 Status ListenToServer::status(Status::Normal);
 string ListenToServer::fileName("");
 
-ofstream ListenToServer::fileToWrite;
-ifstream ListenToServer::fileTosend;
-
-
 bool conected = true;
+
+
 
 ListenToServer::ListenToServer(int number, ConnectionHandler* handler) {
     this->connectionHandler = handler;
     _id=number;
-}
+    this->dataQueue = queue<Packet *>();
 
+}
 
  void ListenToServer::run() {
     while (conected) {
@@ -113,25 +112,40 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
            }
 }
 
-void ListenToServer::readFileIntoDataQueue(File *file) throw(IOException) {
+void ListenToServer::readFileIntoDataQueue(File *file){
+
     short blockPacket = 1;
-    FileInputStream *fileInputStream = new FileInputStream(file);
-    std::vector<char> dataBytes(512);
-    short packetSize = static_cast<short>(fileInputStream->read(dataBytes));
-    while (packetSize == 512) {
-        DATAPacket *dataToSend = new DATAPacket(packetSize, blockPacket, dataBytes);
-        dataQueue->add(dataToSend);
-        blockPacket++;
-        packetSize = static_cast<short>(fileInputStream->read(dataBytes));
+    streampos size;
+    ListenToServer::fileTosend= ifstream(fileName, ios::in|ios::binary|ios::ate);
+    fileTosend.open(fileName);
+    if (fileTosend.is_open()){
+        size = fileTosend.tellg();
+        fileCharArr = new char [size];
+        fileTosend.seekg (0, ios::beg);
+        fileTosend.read (fileCharArr, size);
+        fileTosend.close();
     }
-    if (packetSize == -1) {
-        std::vector<char> lastDataBytes(0);
-        DATAPacket *dataToSend = new DATAPacket(static_cast<short>(0), blockPacket, lastDataBytes);
-        dataQueue->add(dataToSend);
-    } else {
-        dataBytes = Arrays::copyOf(dataBytes, packetSize);
-        DATAPacket *dataToSend = new DATAPacket(packetSize, blockPacket, dataBytes);
-        dataQueue->add(dataToSend);
+
+    short numberOfBlocks = (size / 512) + 1;
+    short sizeOfLastBlock = size % 512;
+    if (sizeOfLastBlock == 0)
+        sizeOfLastBlock = 512;
+
+    for (short i = 1; i <= numberOfBlocks; ++i) {
+        short packetSize = 512;
+
+        if (i == numberOfBlocks) {
+            packetSize = sizeOfLastBlock;
+        }
+
+        char* data = fileCharArr + (i-1)*512;
+        DATAPacket *dataToSend = new DATAPacket(packetSize, i, data);
+        dataQueue.push(dataToSend);
+    }
+
+    if (sizeOfLastBlock == 512) {
+        DATAPacket *dataToSend = new DATAPacket(0, (short)(numberOfBlocks + 1), new char());
+        dataQueue.push(dataToSend);
     }
 }
 
@@ -151,8 +165,9 @@ void sendError(ERRORPacket::Errors *errorCode, const std::string &extraMsg)
     conec send(connectionId, &tempVar);
 }
 
-*/
 
+
+*/
 /*
 if (ListenToServer::status == Status::WRQ) {
     try {

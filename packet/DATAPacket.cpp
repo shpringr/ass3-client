@@ -23,7 +23,7 @@ char *DATAPacket::toByteArr() {
 
     char *opCodeBytes = new char[2];
     char *sizeChar = new char[2];
-    char blockChar[11];
+    char *blockChar = new char[2];
     char *returnBytes = new char[2 + 2 + 2 + packetSize + 1];
 
     shortToBytes(opCode, opCodeBytes);

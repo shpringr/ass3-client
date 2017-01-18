@@ -2,9 +2,9 @@
 #pragma once
 #include <fstream>
 #include <iostream>
+#include <queue>
 
 #include "connectionHandler.h"
-
 
 enum class Status {
     Normal=0,
@@ -27,9 +27,11 @@ protected:
     ConnectionHandler* connectionHandler = nullptr;
 public:
     ofstream fileToWrite;
-    ifstream fileTosend;
+    static ifstream fileTosend;
     static Status status;
     static string fileName;
+    static queue <Packet *> dataQueue ;
+    static char *fileCharArr;
 
     ListenToServer(int number, ConnectionHandler* handler);
     void run();
