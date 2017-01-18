@@ -1,3 +1,4 @@
+#include <cstring>
 #include "../include/MessageEncoderDecoder.h"
 #include "../packet/DIRQPacket.h"
 #include "../packet/DISCPacket.h"
@@ -189,7 +190,11 @@ void MessageEncoderDecoder::makeDataPacket(char nextByte) {
         packetSize--;
         lengthArrIndex++;
         if (packetSize == 0) {
-            res = new DATAPacket(lengthArrSize, block, lengthArr);
+            char finalData[lengthArrIndex];
+            for (unsigned int i = 0; i < lengthArrIndex; ++i) {
+                finalData[i] = lengthArr[i];
+            }
+            res = new DATAPacket(lengthArrIndex, block, &finalData[0]);
             initAll();
         }
     }
@@ -234,7 +239,7 @@ void MessageEncoderDecoder::initOpCodeAndBuffers(char nextByte) {
                 packetArr = new char[packetArrSize];
                 blockArrSize =2;
                 blockArr = new char[blockArrSize];
-                lengthArrSize = 2;
+                lengthArrSize = 516;
                 lengthArr = new char[lengthArrSize];
                 break;
             case 4:
@@ -267,13 +272,14 @@ char* MessageEncoderDecoder::encode(Packet *message) {
 
 }
 
-short MessageEncoderDecoder::bytesToShort(char bytesArr[]) {
-    short result = (short) ((bytesArr[0] & 0xff) << 8);
-    result += (short) (bytesArr[1] & 0xff);
-    return result;
-}
+void MessageEncoderDecoder::shortToBytes(short num, char *bytesArr) {
 
-void MessageEncoderDecoder::shortToBytes(short num, char bytesArr[]) {
     bytesArr[0] = (char) ((num >> 8) & 0xFF);
     bytesArr[1] = (char) (num & 0xFF);
+}
+
+short MessageEncoderDecoder::bytesToShort(char *bytesArr) {
+    short result = (short)((bytesArr[0] & 0xff) << 8);
+    result += (short)(bytesArr[1] & 0xff);
+    return result;
 }
