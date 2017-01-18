@@ -30,7 +30,7 @@ public:
     ifstream fileTosend;
     static Status status;
     static string fileName;
-    queue <Packet *> dataQueue ;
+    queue <DATAPacket *> dataQueue ;
     char *fileCharArr;
     char *dirqCharArr;
     ListenToServer(int number, shared_ptr<ConnectionHandler> handler);
