@@ -10,7 +10,7 @@ set(Boost_LIBRARY_DIR "C:/Program Files/boost_1_63_0/lib/")
 
 set(BOOST_ROOT "C:/Program Files/boost_1_63_0/")
 
-find_package(Boost COMPONENTS REQUIRED)
+#find_package(Boost COMPONENTS REQUIRED)
 
 if(Boost_FOUND)
 
@@ -39,10 +39,10 @@ add_executable(Client
         packet/DISCPacket.h packet/DISCPacket.cpp
         src/EncdecTest.cpp include/EncdecTest.h
         src/MessageEncoderDecoder.cpp include/MessageEncoderDecoder.h
-#     //   src/ListenToServer.cpp src/ListenToServer.h
+        src/ListenToServer.cpp src/ListenToServer.h
         src/EncdecTest.cpp include/EncdecTest.h
-#        //src/ListenToKeyboard.cpp src/ListenToKeyboard.h
-        )
+        src/ListenToKeyboard.cpp src/ListenToKeyboard.h
+        src/Protocol.cpp src/Protocol.h)
 
 if(Boost_FOUND)
 

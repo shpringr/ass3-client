@@ -68,6 +68,10 @@ public:
     bool send(Packet *pPacket);
 
     bool getPacket(Packet packet);
+
+    bool sendBytes(const char *bytes);
+
+    bool sendFrameAscii(const string &frame);
 }; //class ConnectionHandler
  
 #endif

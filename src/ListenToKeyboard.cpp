@@ -7,20 +7,20 @@
 #include "../packet/Packet.h"
 #include "../packet/ERRORPacket.h"
 #include "ListenToServer.h"
+#include "../include/connectionHandler.h"
 
 
-
-ListenToServer::ListenToKeyboard(const ConnectionHandler &connectionHandler) : connectionHandler(connectionHandler) {
+ListenToKeyboard::ListenToKeyboard(const ConnectionHandler &connectionHandler) : connectionHandler(connectionHandler) {
 }
-
-
 
 
 void ListenToKeyboard::run(Packet) {
 
     Packet* packetToSend = createNewPacketFromKeyboard();
     bool success = connectionHandler.send(packetToSend);
-
+    if (!success){
+        ///send error
+    }
 }
 
 Packet * ListenToKeyboard::createNewPacketFromKeyboard() const {
@@ -36,37 +36,29 @@ Packet * ListenToKeyboard::createNewPacketFromKeyboard() const {
 
     if(comand.compare("LOGRQ")){
         packetToSend = new LOGRQPacket(name);
+        ListenToServer::status = Status::LOGRQ;
     }
     else if(comand.compare("DELRQ")){
         packetToSend = new DELRQPacket(name);
+        ListenToServer::status = Status::DELRQ;
     }
     else if(comand.compare("WRQ")){
         packetToSend = new WRQPacket(name);
+        ListenToServer::status = Status::WRQ;
     }
     else if(comand.compare("RRQ")){
         packetToSend = new RRQPacket(name);
+        ListenToServer::status = Status::RRQ;
     }
     else if(comand.compare("DIRQ")){
         packetToSend = new DIRQPacket();
+        ListenToServer::status = Status::DIRQ;
     }
     else if(comand.compare("DISC")){
         packetToSend = new DISCPacket();
+        ListenToServer::status = Status::DISC;
     }
     return packetToSend;
 }
 
-
-void ListenToKeyboard::setStatus(const std::string &status) {
-    ListenToKeyboard::status = status;
-}
-
-const std::string &ListenToKeyboard::getStatus() const {
-    return (const std::string &) status;
-}
-
-void sendError(ERRORPacket::Errors *errorCode, const std::string &extraMsg)
-{
-    ERRORPacket tempVar(static_cast<short>(errorCode->ordinal()), errorCode->getErrorMsg() + extraMsg);
-    conec send(connectionId, &tempVar);
-}
 
