@@ -19,10 +19,10 @@
         for (unsigned int i = 0; i < 2; i++)
             returnBytes[i] = opCodeBytes[i];
 
-        for (unsigned int i = 2; i < sizeof(returnBytes) - 1; i++)
+        for (unsigned int i = 2; i < fileName.length() + 2; i++)
             returnBytes[i] = fileNameChar[i - 2];
 
-        returnBytes[sizeof(returnBytes) - 1] = '\0';
+        returnBytes[2 + fileName.length() - 1] = '\0';
 
         return returnBytes;
 

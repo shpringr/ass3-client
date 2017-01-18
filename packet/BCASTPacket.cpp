@@ -28,11 +28,11 @@ char* BCASTPacket::toByteArr() {
 
     returnBytes[2] = deletedAdd;
 
-    for (unsigned int j = 3; j < sizeof(returnBytes) - 1; j++) {
+    for (unsigned int j = 3; j < 2 + 1 + fileName.length(); j++) {
         returnBytes[j] = filenameChar[j - 3];
     }
 
-    returnBytes[sizeof(returnBytes) - 1] = '\0';
+    returnBytes[2 + 1 + fileName.length()] = '\0';
 
     return returnBytes;
 

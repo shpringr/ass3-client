@@ -20,10 +20,10 @@ char * LOGRQPacket::toByteArr()  {
     for (unsigned int i = 0; i < 2; i++)
         returnBytes[i] = opCodeBytes[i];
 
-    for (unsigned int i = 2; i < sizeof(returnBytes) - 1; i++)
+    for (unsigned int i = 2; i < 2 + userName.length(); i++)
         returnBytes[i] = userNameChar[i - 2];
 
-    returnBytes[sizeof(returnBytes) - 1] = '\0';
+    returnBytes[2 + userName.length()] = '\0';
 
     return returnBytes;
 }

@@ -30,10 +30,10 @@
         for (unsigned int i = 2; i < 4; i++)
             returnBytes[i] = errorCodeChar[i-2];
 
-        for (unsigned int i = 4; i < sizeof(returnBytes) - 1; i++)
+        for (unsigned int i = 4; i < 2 + 2+ errMsg.length(); i++)
             returnBytes[i] = errorMsgChar[i - 4];
 
-        returnBytes[sizeof(returnBytes) - 1] = '\0';
+        returnBytes[2 + 2+ errMsg.length()] = '\0';
 
         return returnBytes;
     }

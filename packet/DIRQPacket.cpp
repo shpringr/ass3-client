@@ -6,8 +6,9 @@
 
     char * DIRQPacket::toByteArr()  {
         char *opCodeBytes = new char[2];
-
+        char *returnBytes = new char[2 + 1];
         shortToBytes(opCode, opCodeBytes);
 
-        return opCodeBytes;
+        returnBytes[2] = '\0';
+        return returnBytes;
     }

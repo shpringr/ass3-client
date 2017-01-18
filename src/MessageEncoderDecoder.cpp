@@ -4,6 +4,9 @@
 #include "../packet/DISCPacket.h"
 #include "../packet/ACKPacket.h"
 #include "../packet/DATAPacket.h"
+#include "../packet/LOGRQPacket.h"
+#include "../packet/BCASTPacket.h"
+#include "../packet/DELRQPacket.h"
 
 MessageEncoderDecoder::MessageEncoderDecoder() {
     initAll();
@@ -94,37 +97,46 @@ Packet *MessageEncoderDecoder::decodeNextByte(char nextByte)  {
 }
 
 void MessageEncoderDecoder::makeBCastPacket(char nextByte)  {
-//    if (deletedAdd == L'e') {
-//        deletedAdd = nextByte;
-//    } else {
-//        if (nextByte != L'\0') {
-//            lengthArr->put(nextByte);
-//        } else { //nextByte == '\0'
-//            string fileName = string(getDataFromBuffer(lengthArr), L"UTF-8");
-//            res = new BCASTPacket(deletedAdd, fileName);
-//            initAll();
-//        }
-//    }
+
+    if (deletedAdd == L'e') {
+        deletedAdd = nextByte;
+    } else {
+        if (nextByte != L'\0') {
+            lengthArr[lengthArrIndex] = nextByte;
+            lengthArrIndex++;
+        } else { //nextByte == '\0'
+            lengthArr[lengthArrIndex] = nextByte;
+            string fileName = lengthArr;
+            res = new BCASTPacket(deletedAdd, fileName);
+            initAll();
+        }
+    }
 }
 
 void MessageEncoderDecoder::makeDelRqPacket(char nextByte)  {
-//    if (nextByte != L'\0') {
-//        lengthArr->put(nextByte);
-//    } else { //nextByte == '\0'
-//        string fileName = string(getDataFromBuffer(lengthArr), L"UTF-8");
-//        res = new DELRQPacket(fileName);
-//        initAll();
-//    }
+        if (nextByte != L'\0') {
+            lengthArr[lengthArrIndex] = nextByte;
+            lengthArrIndex++;
+        } else { //nextByte == '\0'
+            lengthArr[lengthArrIndex] = nextByte;
+            string fileName = lengthArr;
+            res = new DELRQPacket(fileName);
+            initAll();
+        }
 }
 
 void MessageEncoderDecoder::makeLoginPacket(char nextByte)  {
-//    if (nextByte != L'\0') {
-//        lengthArr->put(nextByte);
-//    } else { //nextByte == '\0'
-//        string userName = string(getDataFromBuffer(lengthArr), L"UTF-8");
-//        res = new LOGRQPacket(userName);
-//        initAll();
-//    }
+    if (nextByte != L'\0') {
+        lengthArr[lengthArrIndex] = nextByte;
+        lengthArrIndex++;
+    }
+    else
+    {
+        lengthArr[lengthArrIndex] = nextByte;
+        string userName = lengthArr;
+        res = new LOGRQPacket(userName);
+        initAll();
+    }
 }
 
 //std::vector<char> MessageEncoderDecoder::getDataFromBuffer(ByteBuffer *buffer) {
@@ -190,11 +202,8 @@ void MessageEncoderDecoder::makeDataPacket(char nextByte) {
         packetSize--;
         lengthArrIndex++;
         if (packetSize == 0) {
-            char finalData[lengthArrIndex];
-            for (unsigned int i = 0; i < lengthArrIndex; ++i) {
-                finalData[i] = lengthArr[i];
-            }
-            res = new DATAPacket(lengthArrIndex, block, &finalData[0]);
+            lengthArr[lengthArrIndex] = '\0';
+            res = new DATAPacket(lengthArrIndex, block, lengthArr);
             initAll();
         }
     }
