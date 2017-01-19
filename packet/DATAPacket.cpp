@@ -1,9 +1,9 @@
 #include "DATAPacket.h"
 
-DATAPacket::DATAPacket(short packetSize, short block, char *data) {
+DATAPacket::DATAPacket(short packetSize, short block, char *pData) {
     this->packetSize = packetSize;
     this->block = block;
-    this->data = data;
+    this->data = pData;
     Packet::opCode = 3;
 }
 

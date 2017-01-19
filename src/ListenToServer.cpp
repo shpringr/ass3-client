@@ -83,9 +83,9 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
 
             if(!dataQueue.empty()) {
                     connectionHandler->send(dataQueue.front());
+                    dataQueue.pop();
             }
-
-            if (dataQueue.empty()){
+            else{
                 std::cout << "WRQ " << fileName << " complete" <<  std::endl;
                 ListenToServer::status = Status::Normal;
             }
@@ -142,7 +142,7 @@ void ListenToServer::readFileIntoDataQueue(){
 
     ListenToServer::fileTosend= ifstream(fileName, ios::in|ios::binary|ios::ate);
 
-    ListenToServer::fileTosend.open(fileName);
+    ListenToServer::fileTosend.open("C:\\Users\\Orel Hazan\\Documents\\studies\\spl\\ass3\\Client\\src\\" + fileName);
     streampos size;
 
     if (ListenToServer::fileTosend.is_open()){
@@ -151,27 +151,31 @@ void ListenToServer::readFileIntoDataQueue(){
         ListenToServer::fileTosend.seekg (0, ios::beg);
         ListenToServer::fileTosend.read (ListenToServer::fileCharArr, (streamsize) size);
         ListenToServer::fileTosend.close();
-    }
 
-    int sizeInt = (int) size;
-    short numberOfBlocks = (short) ((sizeInt / 512) + 1);
-    short sizeOfLastBlock = (short) (sizeInt % 512);
-    if (sizeOfLastBlock == 0)
-        sizeOfLastBlock = 512;
+        int sizeInt = (int) size;
+        short numberOfBlocks = (short) ((sizeInt / 512) + 1);
+        short sizeOfLastBlock = (short) (sizeInt % 512);
+        if   (sizeOfLastBlock == 0&& sizeInt > 0)
+            sizeOfLastBlock = 512;
 
-    for (short i = 1; i <= numberOfBlocks; ++i) {
-        short packetSize = 512;
+        for (short i = 1; i <= numberOfBlocks; ++i) {
+            int packetSize = 512;
 
-        if (i == numberOfBlocks) {
-            packetSize = sizeOfLastBlock;
+            if (i == numberOfBlocks) {
+                packetSize = sizeOfLastBlock;
+            }
+
+            char* data = ListenToServer::fileCharArr + (i-1)*512;
+
+            ListenToServer::dataQueue.push(new DATAPacket(packetSize, i, data));
+        }
+        if (sizeOfLastBlock == 512) {
+            ListenToServer::dataQueue.push(new DATAPacket(0, (short)(numberOfBlocks + 1), new char()));
         }
 
-        char* data = ListenToServer::fileCharArr + (i-1)*512;
-
-        ListenToServer::dataQueue.push(new DATAPacket(packetSize, i, data));
-    }
-    if (sizeOfLastBlock == 512) {
-        ListenToServer::dataQueue.push(new DATAPacket(0, (short)(numberOfBlocks + 1), new char()));
+    } else
+    {
+        connectionHandler->send(new ERRORPacket(1, "no file to write. stop."));
     }
 }
 

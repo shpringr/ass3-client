@@ -22,7 +22,7 @@
         for (unsigned int i = 2; i < fileName.length() + 2; i++)
             returnBytes[i] = fileNameChar[i - 2];
 
-        returnBytes[2 + fileName.length() - 1] = '\0';
+        returnBytes[2 + fileName.length()] = '\0';
 
         return returnBytes;
     }

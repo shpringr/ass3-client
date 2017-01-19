@@ -10,7 +10,7 @@
         short block = 0;
         char* data;
 
-        DATAPacket(short packetSize, short block, char* data);
+        DATAPacket(short packetSize, short block, char* pData);
 
         virtual short getPacketSize();
 

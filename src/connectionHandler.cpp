@@ -102,6 +102,8 @@ bool ConnectionHandler::send(Packet *pPacket) {
                     sendFrameAscii(msgWIthoutZeros, '\0');
         case 3:
             msgWIthoutZeros = encoded + 6;
+            if (msgWIthoutZeros.empty())
+                msgWIthoutZeros= '\0';
             return sendBytes(pPacket->getOpCodeInBytes(), 2) &&
                     sendBytes((static_cast<DATAPacket *>(pPacket))->getSizeInBytes(), 2) &&
                     sendBytes((static_cast<DATAPacket *>(pPacket))->getBlockInBytes(), 2) &&
