@@ -4,13 +4,11 @@
 
 Status ListenToServer::status(Status::Normal);
 string ListenToServer::fileName("");
-
-
-
-
 bool ListenToServer::connected = true;
 
+
 ListenToServer::ListenToServer(const ListenToServer& listenToServer){
+
 }
 
 ListenToServer::ListenToServer(int number, shared_ptr<ConnectionHandler> handler) :
