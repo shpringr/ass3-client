@@ -32,6 +32,8 @@ void ListenToServer::run() {
             //return nullptr;
         }
     }
+
+    cout << "disconnected server!"<<endl;
 }
 
 void ListenToServer::process(Packet* packet) {
@@ -89,6 +91,7 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
             }
             break;
         case Status::DISC:
+            connectionHandler->send(new ACKPacket(0));
             connected = false;
             break;
     }

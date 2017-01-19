@@ -23,7 +23,13 @@ void ListenToKeyboard::run() {
         if (!success) {
             //TODO:send error
         }
+        else if (DISCPacket* answerPacket = dynamic_cast<DISCPacket*>(packetToSend))
+        {
+            while(ListenToServer::connected)
+            {}
+        }
     }
+    cout << "disconnected keyyboard!"<<endl;
 }
 
 Packet * ListenToKeyboard::createNewPacketFromKeyboard() const {
