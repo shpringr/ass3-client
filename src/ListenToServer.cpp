@@ -4,11 +4,8 @@
 
 Status ListenToServer::status(Status::Normal);
 string ListenToServer::fileName("");
-
-
-
-
 bool ListenToServer::connected = true;
+
 
 ListenToServer::ListenToServer(const ListenToServer& listenToServer){
     _id = listenToServer._id;
@@ -78,7 +75,15 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
             ListenToServer::status = Status::Normal;
             break;
         case Status::WRQ:
-            if (message->getBlock()<512){
+            if(message->getBlock()==0) {
+                readFileIntoDataQueue();
+            }
+
+            if(!dataQueue.empty()) {
+                    connectionHandler->send(dataQueue.front());
+            }
+
+            if (dataQueue.empty()){
                 std::cout << "WRQ " << fileName << " complete" <<  std::endl;
                 ListenToServer::status = Status::Normal;
             }
@@ -96,8 +101,11 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
             if (ListenToServer::fileToWrite.is_open()) {
                 ListenToServer::fileToWrite.write(message->getData(), message->getPacketSize());
                 connectionHandler->send(new ACKPacket(message->getBlock()));
+            } else{
+                connectionHandler->send(new ERRORPacket(1,""));
             }
-            else if (message->getPacketSize()!=512){
+
+            if (message->getPacketSize()!=512){
                 ListenToServer::fileToWrite.close();
                 std::cout << "RRQ " << fileName << " complete" <<  std::endl;
                 ListenToServer::status = Status::Normal;
@@ -159,10 +167,8 @@ void ListenToServer::readFileIntoDataQueue(){
 
         ListenToServer::dataQueue.push(new DATAPacket(packetSize, i, data));
     }
-
     if (sizeOfLastBlock == 512) {
-        DATAPacket *dataToSend = new DATAPacket(0, (short)(numberOfBlocks + 1), new char());
-        ListenToServer::dataQueue.push((Packet *&&) dataToSend);
+        ListenToServer::dataQueue.push(new DATAPacket(0, (short)(numberOfBlocks + 1), new char()));
     }
 }
 
@@ -181,39 +187,4 @@ void ListenToServer::printDirqArr(int size) {
         cout << str << endl;
         currSize += str.length();
         str = dirqCharArr[currSize];
-    }
-
-}
-
-/*
-
-void sendError(ERRORPacket::Errors *errorCode, const std::string &extraMsg)
-{
-    ERRORPacket tempVar(static_cast<short>(errorCode->ordinal()), errorCode->getErrorMsg() + extraMsg);
-    conec send(connectionId, &tempVar);
-}
-
-
-
-*/
-/*
-if (ListenToServer::status == Status::WRQ) {
-    try {
-        FileOutputStream *fileOutputStream = new FileOutputStream(fileToWrite);
-        fileOutputStream->write(message->getData());
-        ACKPacket tempVar(message->getBlock());
-        connections->send(connectionId, &tempVar);
-
-        if (message->getPacketSize() != 512) {
-            delete fileOutputStream;
-            broadcastMessageToLogons(static_cast<char>(1), fileToWrite->getName());
-            state = L"";
-        }
-    }
-    catch (const FileNotFoundException &e) {
-        sendError(FILE_NOT_FOUND, L"");
-    }
-    catch (const IOException &e) {
-        sendError(NOT_DEFINED, e->getMessage());
-    }
-}*/
+    }}
