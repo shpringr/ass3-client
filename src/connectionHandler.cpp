@@ -99,13 +99,10 @@ bool ConnectionHandler::send(Packet *pPacket) {
             return sendBytes(pPacket->getOpCodeInBytes(), 2) &&
                     sendFrameAscii(msgWIthoutZeros, '\0');
         case 3:
-            msgWIthoutZeros = encoded + 6;
-            if (msgWIthoutZeros.empty())
-                msgWIthoutZeros= '\0';
             return sendBytes(pPacket->getOpCodeInBytes(), 2) &&
                     sendBytes((static_cast<DATAPacket *>(pPacket))->getSizeInBytes(), 2) &&
                     sendBytes((static_cast<DATAPacket *>(pPacket))->getBlockInBytes(), 2) &&
-                    sendFrameAscii(msgWIthoutZeros);
+                    sendBytes(encoded+6, (int) (static_cast<DATAPacket *>(pPacket))->getPacketSize());
         case 4:
             return sendBytes(pPacket->getOpCodeInBytes(), 2) &&
                    sendBytes((static_cast<ACKPacket *>(pPacket))->getBlockInBytes(), 2);

@@ -33,10 +33,11 @@ const char* DATAPacket::getBlockInBytes() {
 
 char *DATAPacket::toByteArr() {
 
-    char *opCodeBytes = new char[2];
-    char *sizeChar = new char[2];
-    char *blockChar = new char[2];
-    char *returnBytes = new char[2 + 2 + 2 + packetSize + 1];
+    char* data2 = data;
+    char opCodeBytes[2];
+    char sizeChar[2];
+    char blockChar[2];
+    std::vector<char> returnBytes(2 + 2 + 2 + packetSize + 1);
 
     shortToBytes(opCode, opCodeBytes);
     shortToBytes(packetSize, sizeChar);
@@ -57,7 +58,7 @@ char *DATAPacket::toByteArr() {
 
     returnBytes[2 + 2 + 2 + packetSize] = '\0';
 
-    return returnBytes;
+    return &returnBytes[0];
 
 }
 

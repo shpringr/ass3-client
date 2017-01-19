@@ -64,7 +64,8 @@ void ListenToServer::handleBCastPacket(BCASTPacket *packet) {
 }
 
 void ListenToServer::handleErrorPacket(ERRORPacket* packet) {
-    std::cout << "Error " << packet->getErrorCode()  <<  std::endl;
+    //TODO:change to code
+    std::cout << "Error " << packet->getErrMsg()  <<  std::endl;
 }
 
 void ListenToServer::handleAckPacket(ACKPacket *message) {
@@ -76,9 +77,11 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
         case Status::WRQ:
             if(message->getBlock()==0) {
                 readFileIntoDataQueue();
-            }
+                connectionHandler->send(dataQueue.front());
+                dataQueue.pop();
 
-            if(!dataQueue.empty()) {
+            }
+            else if(!dataQueue.empty()) {
                     connectionHandler->send(dataQueue.front());
                     dataQueue.pop();
             }
@@ -135,43 +138,45 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
 
 void ListenToServer::readFileIntoDataQueue(){
 
-    short blockPacket = 1;
-
     ListenToServer::fileTosend= ifstream(fileName, ios::in|ios::binary|ios::ate);
 
     ListenToServer::fileTosend.open("C:\\Users\\Orel Hazan\\Documents\\studies\\spl\\ass3\\Client\\src\\" + fileName);
-    streampos size;
 
-    if (ListenToServer::fileTosend.is_open()){
-        size = ListenToServer::fileTosend.tellg();
-        ListenToServer::fileTosend.seekg (0, ios::beg);
-        size = fileTosend.tellg ()-  size;
-        int sizeInt = (int) size;
-        ListenToServer::fileCharArr = new char [size];
-        ListenToServer::fileTosend.read (ListenToServer::fileCharArr, (streamsize) size);
-        ListenToServer::fileTosend.close();
+    if (ListenToServer::fileTosend.is_open()) {
+        char getdata[512];
 
-        short numberOfBlocks = (short) ((sizeInt / 512) + 1);
-        short sizeOfLastBlock = (short) (sizeInt % 512);
-        if   (sizeOfLastBlock == 0&& sizeInt > 0)
-            sizeOfLastBlock = 512;
+        while (!fileTosend.eof()) {
+            fileTosend.read(getdata, sizeof getdata);
+            int bytes_really_read = 512;
 
-        for (short i = 1; i <= numberOfBlocks; ++i) {
-            int packetSize = 512;
-
-            if (i == numberOfBlocks) {
-                packetSize = sizeOfLastBlock;
+            if (fileTosend.eof()) {
+                bytes_really_read = fileTosend.gcount();
+            } else if (fileTosend.fail()) {
+                bool fsd = true;
+                // some other error...
             }
 
-            char* data = ListenToServer::fileCharArr + (i-1)*512;
+            short numberOfBlocks = (short) ((bytes_really_read / 512) + 1);
+            short sizeOfLastBlock = (short) (bytes_really_read % 512);
+            if (sizeOfLastBlock == 0 && bytes_really_read > 0)
+                sizeOfLastBlock = 512;
 
-            ListenToServer::dataQueue.push(new DATAPacket(packetSize, i, data));
-        }
-        if (sizeOfLastBlock == 512) {
-            ListenToServer::dataQueue.push(new DATAPacket(0, (short)(numberOfBlocks + 1), new char()));
-        }
+            for (short i = 1; i <= numberOfBlocks; ++i) {
+                short packetSize = 512;
 
-    } else
+                if (i == numberOfBlocks) {
+                    packetSize = sizeOfLastBlock;
+                }
+
+                char *data = getdata + ((i - 1) * 512);
+
+                ListenToServer::dataQueue.push(new DATAPacket(packetSize, i, data));
+
+
+            }
+        }
+    }
+    else
     {
         connectionHandler->send(new ERRORPacket(1, "no file to write. stop."));
     }
