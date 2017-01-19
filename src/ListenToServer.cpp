@@ -56,10 +56,10 @@ void ListenToServer::process(Packet* packet) {
 
 void ListenToServer::handleBCastPacket(BCASTPacket *packet) {
     if(packet->getDeletedAdd()==1){
-        std::cout << "BCAST add " << fileName  <<  std::endl;
+        std::cout << "BCAST add " << packet->getFileName() <<  std::endl;
     }
     else if(packet->getDeletedAdd()==0){
-        std::cout << "BCAST del " << fileName  <<  std::endl;
+        std::cout << "BCAST del " << packet->getFileName()  <<  std::endl;
     }
 }
 
@@ -96,7 +96,7 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
 void ListenToServer::handleDataPacket(DATAPacket *message) {
     switch (ListenToServer::status){
         case Status::RRQ:
-            ListenToServer::fileToWrite.open(fileName);
+            ListenToServer::fileToWrite.open("../" + fileName);
             if (ListenToServer::fileToWrite.is_open()) {
                 ListenToServer::fileToWrite.write(message->getData(), message->getPacketSize());
                 connectionHandler->send(new ACKPacket(message->getBlock()));
@@ -112,12 +112,11 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
             break;
             //
         case Status::DIRQ:
-            if (message->getPacketSize() == 512)
-            {
-                message->getData()[512] = '\0';
-            }
 
-            strcat(dirqCharArr,message->getData());
+            for (int i = 0; i <= message->packetSize; ++i)
+            {
+                dirqCharArr[(message->getBlock() - 1)*512 + i] = message->getData()[i];
+            }
 
             if (message->getPacketSize() < 512)
             {
@@ -188,11 +187,11 @@ void ListenToServer::printDirqArr(int size) {
     string str = dirqCharArr;
     int currSize = 0;
 
-    while(currSize != size)
+    while(currSize <= size)
     {
         cout << str << endl;
-        currSize += str.length();
-        str = dirqCharArr[currSize];
+        currSize += str.length()+1;
+        str = dirqCharArr + currSize;
     }}
 
 ListenToServer::~ListenToServer() {
