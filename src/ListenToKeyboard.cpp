@@ -5,8 +5,8 @@
 #include <iostream>
 #include <boost/thread/win32/thread_data.hpp>
 #include "../include/ListenToKeyboard.h"
-#include "../packet/Packet.h"
-#include "../packet/ERRORPacket.h"
+#include "../include/Packet/Packet.h"
+#include "../include/Packet/ERRORPacket.h"
 #include "../include/ListenToServer.h"
 #include "../include/connectionHandler.h"
 

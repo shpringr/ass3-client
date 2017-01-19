@@ -5,8 +5,8 @@
     <sourceRoots>
       <file path="$PROJECT_DIR$" />
       <file path="$PROJECT_DIR$/include" />
-      <file path="$PROJECT_DIR$/packet" />
       <file path="$PROJECT_DIR$/src" />
+      <file path="$PROJECT_DIR$/src/packet" />
     </sourceRoots>
   </component>
 </project>

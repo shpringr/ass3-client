@@ -33,9 +33,11 @@ public:
     queue <DATAPacket *> dataQueue ;
     char *fileCharArr;
     char *dirqCharArr = new char();
-    ListenToServer(int number, shared_ptr<ConnectionHandler> handler);
 
+    ListenToServer(int number, shared_ptr<ConnectionHandler> handler);
     ListenToServer(const ListenToServer &listenToServer_);
+
+    ~ListenToServer();
 
     void run();
     void process(Packet* packet);
@@ -52,8 +54,6 @@ public:
     void readFileIntoDataQueue();
 
     static bool connected;
-
-    void printDirqArr(short size);
 
     void printDirqArr(int size);
 };

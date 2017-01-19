@@ -1,4 +1,4 @@
-#include "LOGRQPacket.h"
+#include "../../include/Packet/LOGRQPacket.h"
 
 LOGRQPacket::LOGRQPacket(const std::string &userName) {
     this->userName = userName;

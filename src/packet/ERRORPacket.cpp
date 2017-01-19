@@ -1,4 +1,4 @@
-#include "ERRORPacket.h"
+#include "../../include/Packet/ERRORPacket.h"
 
     ERRORPacket::ERRORPacket(short errorCode, const string &errMsg) {
         this->errorCode = errorCode;

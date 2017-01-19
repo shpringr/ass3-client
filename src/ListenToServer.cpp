@@ -16,7 +16,7 @@ ListenToServer::ListenToServer(int number, shared_ptr<ConnectionHandler> handler
 {
     connectionHandler=handler;
     _id=number;
-//    dataQueue = queue<Packet *>();
+    //dataQueue = queue<DATAPacket *>();
 }
 
 void ListenToServer::run() {
@@ -27,12 +27,8 @@ void ListenToServer::run() {
             process(answerPacket);
         } else {
             connected = false;
-            // releaseBuffer(buf);
-            //close();
-            //return nullptr;
-        }
+            }
     }
-
     cout << "disconnected server!"<<endl;
 }
 
@@ -51,7 +47,7 @@ void ListenToServer::process(Packet* packet) {
             handleBCastPacket(static_cast<BCASTPacket *>(packet));
             break;
         default:
-            //sendError(ERRORPacket::Errors::ILLEGAL_TFTP_OPERATION, L"");
+            //TODO sendError(ERRORPacket::Errors::ILLEGAL_TFTP_OPERATION, L"");
             break;
     }
 
@@ -195,3 +191,15 @@ void ListenToServer::printDirqArr(int size) {
         currSize += str.length();
         str = dirqCharArr[currSize];
     }}
+
+ListenToServer::~ListenToServer() {
+    //connectionHandler;
+    fileToWrite.clear();
+    fileToWrite.close();
+    fileTosend.clear();
+    fileTosend.close();
+    delete fileCharArr;
+    delete dirqCharArr;
+}
+
+

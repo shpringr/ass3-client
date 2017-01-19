@@ -1,4 +1,4 @@
-#include "BCASTPacket.h"
+#include "../../include/Packet/BCASTPacket.h"
 #include <string>
 
 BCASTPacket::BCASTPacket(char deletedAdd, const string &fileName) {

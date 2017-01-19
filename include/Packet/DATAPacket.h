@@ -6,6 +6,9 @@
 
     class DATAPacket : public Packet {
     public:
+
+        ~DATAPacket();
+
         short packetSize = 0;
         short block = 0;
         char* data;

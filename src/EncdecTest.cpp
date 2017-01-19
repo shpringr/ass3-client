@@ -3,16 +3,16 @@
 //
 #include <cstring>
 #include "../include/EncdecTest.h"
-#include "../packet/WRQPacket.h"
-#include "../packet/DATAPacket.h"
-#include "../packet/DISCPacket.h"
-#include "../packet/BCASTPacket.h"
-#include "../packet/DELRQPacket.h"
-#include "../packet/LOGRQPacket.h"
-#include "../packet/DIRQPacket.h"
-#include "../packet/ERRORPacket.h"
-#include "../packet/RRQPacket.h"
-#include "../packet/ACKPacket.h"
+#include "../include/Packet/WRQPacket.h"
+#include "../include/Packet/DATAPacket.h"
+#include "../include/Packet/DISCPacket.h"
+#include "../include/Packet/BCASTPacket.h"
+#include "../include/Packet/DELRQPacket.h"
+#include "../include/Packet/LOGRQPacket.h"
+#include "../include/Packet/DIRQPacket.h"
+#include "../include/Packet/ERRORPacket.h"
+#include "../include/Packet/RRQPacket.h"
+#include "../include/Packet/ACKPacket.h"
 
 
 int maian(int argc, char *argv[]) {

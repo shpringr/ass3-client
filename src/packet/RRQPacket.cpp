@@ -1,15 +1,15 @@
-#include "DELRQPacket.h"
+#include "../../include/Packet/RRQPacket.h"
 
-    DELRQPacket::DELRQPacket(const string &filename) {
+    RRQPacket::RRQPacket(const string &filename) {
         fileName = filename;
-        Packet::opCode = 8;
+        Packet::opCode = 1;
     }
 
-    string DELRQPacket::getFilename() {
+    string RRQPacket::getFileName() {
         return fileName;
     }
 
-    char* DELRQPacket::toByteArr()  {
+    char * RRQPacket::toByteArr()  {
         char *opCodeBytes = new char[2];
         const char *fileNameChar = fileName.c_str();
         char *returnBytes = new char[2 + fileName.length() + 1];
@@ -19,11 +19,12 @@
         for (unsigned int i = 0; i < 2; i++)
             returnBytes[i] = opCodeBytes[i];
 
-        for (unsigned int i = 2; i < 2 + fileName.length(); i++)
+        for (unsigned int i = 2; i < fileName.length() + 2; i++)
             returnBytes[i] = fileNameChar[i - 2];
 
-        returnBytes[2 + fileName.length()] = '\0';
+        returnBytes[2 + fileName.length() - 1] = '\0';
 
         return returnBytes;
+
     }
 

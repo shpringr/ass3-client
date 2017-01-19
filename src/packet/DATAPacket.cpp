@@ -1,4 +1,4 @@
-#include "DATAPacket.h"
+#include "../../include/Packet/DATAPacket.h"
 
 DATAPacket::DATAPacket(short packetSize, short block, char *pData) {
     this->packetSize = packetSize;
@@ -58,5 +58,10 @@ char *DATAPacket::toByteArr() {
     returnBytes[2 + 2 + 2 + packetSize] = '\0';
 
     return returnBytes;
+
+}
+
+DATAPacket::~DATAPacket() {
+    delete data;
 
 }

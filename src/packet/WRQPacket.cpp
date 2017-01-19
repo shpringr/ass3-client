@@ -1,4 +1,4 @@
-#include "WRQPacket.h"
+#include "../../include/Packet/WRQPacket.h"
 
     WRQPacket::WRQPacket(const string &filename) {
         fileName = filename;

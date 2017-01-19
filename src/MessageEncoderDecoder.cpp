@@ -1,15 +1,15 @@
 #include <cstring>
 #include "../include/MessageEncoderDecoder.h"
-#include "../packet/DIRQPacket.h"
-#include "../packet/DISCPacket.h"
-#include "../packet/ACKPacket.h"
-#include "../packet/DATAPacket.h"
-#include "../packet/LOGRQPacket.h"
-#include "../packet/BCASTPacket.h"
-#include "../packet/DELRQPacket.h"
-#include "../packet/ERRORPacket.h"
-#include "../packet/WRQPacket.h"
-#include "../packet/RRQPacket.h"
+#include "../include/Packet/DIRQPacket.h"
+#include "../include/Packet/DISCPacket.h"
+#include "../include/Packet/ACKPacket.h"
+#include "../include/Packet/DATAPacket.h"
+#include "../include/Packet/LOGRQPacket.h"
+#include "../include/Packet/BCASTPacket.h"
+#include "../include/Packet/DELRQPacket.h"
+#include "../include/Packet/ERRORPacket.h"
+#include "../include/Packet/WRQPacket.h"
+#include "../include/Packet/RRQPacket.h"
 
 MessageEncoderDecoder::MessageEncoderDecoder() {
     initAll();
@@ -289,4 +289,8 @@ short MessageEncoderDecoder::bytesToShort(char *bytesArr) {
     short result = (short)((bytesArr[0] & 0xff) << 8);
     result += (short)(bytesArr[1] & 0xff);
     return result;
+}
+
+MessageEncoderDecoder::~MessageEncoderDecoder() {
+    delete res;
 }

@@ -1,22 +1,19 @@
 #pragma execution_character_set("utf-8")
 
-#ifndef LISTEN_TO_KEYBOARD_H
-#define LISTEN_TO_KEYBOARD_H
-
 #include <stdlib.h>
 #include <iostream>
 #include "connectionHandler.h"
-#include "../packet/LOGRQPacket.h"
-#include "../packet/Packet.h"
-#include "../packet/RRQPacket.h"
-#include "../packet/ACKPacket.h"
-#include "../packet/BCASTPacket.h"
-#include "../packet/WRQPacket.h"
-#include "../packet/ERRORPacket.h"
-#include "../packet/DATAPacket.h"
-#include "../packet/DELRQPacket.h"
-#include "../packet/DIRQPacket.h"
-#include "../packet/DISCPacket.h"
+#include "Packet/LOGRQPacket.h"
+#include "Packet/Packet.h"
+#include "Packet/RRQPacket.h"
+#include "Packet/ACKPacket.h"
+#include "Packet/BCASTPacket.h"
+#include "Packet/WRQPacket.h"
+#include "Packet/ERRORPacket.h"
+#include "Packet/DATAPacket.h"
+#include "Packet/DELRQPacket.h"
+#include "Packet/DIRQPacket.h"
+#include "Packet/DISCPacket.h"
 #include "ListenToServer.h"
 
 
@@ -35,6 +32,3 @@ public:
 
     Packet * createNewPacketFromKeyboard() const;
 };
-
-
-#endif //CLIENT_TFTPPROTOCOLCLIENT_H

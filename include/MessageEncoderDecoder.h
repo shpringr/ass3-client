@@ -2,7 +2,7 @@
 #pragma once
 
 #include "MessageEncoderDecoder.h"
-#include "../packet/Packet.h"
+#include "Packet/Packet.h"
 #include <string>
 #include <vector>
 
@@ -42,11 +42,9 @@ private:
     char deletedAdd = 0;
 
 public:
-    virtual ~MessageEncoderDecoder() {
-        delete res;
-    }
 
     MessageEncoderDecoder();
+    ~MessageEncoderDecoder();
 
 private:
     void initAll();
