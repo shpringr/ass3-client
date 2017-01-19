@@ -106,9 +106,9 @@ bool ConnectionHandler::send(Packet *pPacket) {
                     sendBytes((static_cast<DATAPacket *>(pPacket))->getSizeInBytes(), 2) &&
                     sendBytes((static_cast<DATAPacket *>(pPacket))->getBlockInBytes(), 2) &&
                     sendFrameAscii(msgWIthoutZeros);
-        case 4:;
+        case 4:
             return sendBytes(pPacket->getOpCodeInBytes(), 2) &&
-                   sendBytes((static_cast<DATAPacket *>(pPacket))->getBlockInBytes(), 2);
+                   sendBytes((static_cast<ACKPacket *>(pPacket))->getBlockInBytes(), 2);
         case 5:
             msgWIthoutZeros = encoded + 4;
             return sendBytes(pPacket->getOpCodeInBytes(), 2) &&
