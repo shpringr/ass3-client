@@ -15,7 +15,7 @@ class MessageEncoderDecoder{
 private:
 
     short opCode = 0;
-    Packet* res;
+    Packet* res = nullptr;
 
     char* lengthArr;
     short lengthArrSize=0;

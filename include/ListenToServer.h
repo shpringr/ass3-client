@@ -32,7 +32,7 @@ public:
     static string fileName;
     queue <Packet *> dataQueue ;
     char *fileCharArr;
-    char *dirqCharArr;
+    char *dirqCharArr = new char();
     ListenToServer(int number, shared_ptr<ConnectionHandler> handler);
 
     ListenToServer(const ListenToServer &listenToServer_);

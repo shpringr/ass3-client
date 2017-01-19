@@ -50,22 +50,22 @@ bool ConnectionHandler::connect() {
     return true;
 }
 
-bool ConnectionHandler::getPacket(Packet* packet) {
+bool ConnectionHandler::getPacket(Packet* &packet) {
     return getFrameAscii(packet);
 
 }
 
-bool ConnectionHandler::getFrameAscii(Packet* packet) {
+bool ConnectionHandler::getFrameAscii(Packet* &packet) {
     char ch;
     // Stop when we encounter the null character.
     // Notice that the null character is not appended to the frame string.
     try {
-        Packet* packet1 = nullptr;
-        while (packet1==nullptr){
-            getBytes(&ch, 1);
-            packet1 = encDec_.decodeNextByte(ch);
+        while (packet==nullptr){
+            if(getBytes(&ch, 1))
+                packet = encDec_.decodeNextByte(ch);
+            else
+                return false;
         }
-        packet = packet1;
     } catch (std::exception& e) {
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
         return false;
@@ -81,7 +81,8 @@ bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
 			tmp += socket_.read_some(boost::asio::buffer(bytes+tmp, bytesToRead-tmp), error);			
         }
 		if(error)
-			throw boost::system::system_error(error);
+			//throw boost::system::system_error(error);
+            return false;
     } catch (std::exception& e) {
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
         return false;

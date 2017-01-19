@@ -94,9 +94,13 @@ Packet *MessageEncoderDecoder::decodeNextByte(char nextByte)  {
         default:break;
     }
 
-    Packet* tmp = res;
-    res = nullptr;
-    return tmp;
+    if (res!= nullptr) {
+        Packet *tmp = res;
+        res = nullptr;
+        return tmp;
+    }
+
+    return res;
 }
 
 void MessageEncoderDecoder::makeBCastPacket(char nextByte)  {

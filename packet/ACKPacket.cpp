@@ -11,7 +11,7 @@
 
 const char* ACKPacket::getBlockInBytes() {
     char *blockArr = new char[2];
-    shortToBytes(getBlock(),blockArr );
+    Packet::shortToBytes(getBlock(),blockArr );
     return blockArr ;
 }
     char* ACKPacket::toByteArr()  {

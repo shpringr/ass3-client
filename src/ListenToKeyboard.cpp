@@ -10,8 +10,9 @@
 #include "../include/ListenToServer.h"
 #include "../include/connectionHandler.h"
 
-ListenToKeyboard::ListenToKeyboard(int number, shared_ptr<ConnectionHandler> handler) :connectionHandler(handler),
-                                                                                   _id(number){
+ListenToKeyboard::ListenToKeyboard(int number, shared_ptr<ConnectionHandler> handler){
+    connectionHandler=handler;
+            _id=number;
 //    dataQueue = queue<Packet *>();
 }
 
@@ -28,11 +29,12 @@ void ListenToKeyboard::run() {
 Packet * ListenToKeyboard::createNewPacketFromKeyboard() const {
     const short bufsize = 518;
     char buf[bufsize];
-    std::cin.getline(buf, bufsize);
-    std::__cxx11::string line(buf);
-    std::__cxx11::string comand(line.substr(0, line.find(" ", 0)));
-    std::__cxx11::string name(line.substr(line.find(" ", 0)).substr(1, line.length()));
-    int len=line.length();
+    cin.getline(buf, bufsize);
+    string line(buf);
+    string name;
+    string comand(line.substr(0, line.find(" ", 0)));
+    if (line.find(" ", 0) != string::npos)
+        name= line.substr(line.find(" ", 0)).substr(1, line.length());
 
     Packet *packetToSend = nullptr;
 

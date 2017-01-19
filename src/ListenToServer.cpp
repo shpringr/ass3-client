@@ -11,16 +11,20 @@ string ListenToServer::fileName("");
 bool ListenToServer::connected = true;
 
 ListenToServer::ListenToServer(const ListenToServer& listenToServer){
+    _id = listenToServer._id;
+    connectionHandler = listenToServer.connectionHandler;
 }
 
-ListenToServer::ListenToServer(int number, shared_ptr<ConnectionHandler> handler) :connectionHandler(handler),
-                                                                                   _id(number){
+ListenToServer::ListenToServer(int number, shared_ptr<ConnectionHandler> handler)
+{
+    connectionHandler=handler;
+    _id=number;
 //    dataQueue = queue<Packet *>();
 }
 
 void ListenToServer::run() {
     while (connected) {
-        Packet *answerPacket = nullptr;
+        Packet* answerPacket = nullptr;
 
         if (connectionHandler->getPacket(answerPacket)) {
             process(answerPacket);
@@ -101,17 +105,19 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
             break;
             //
         case Status::DIRQ:
+            if (message->getPacketSize() == 512)
+            {
+                message->getData()[512] = '\0';
+            }
+
+            strcat(dirqCharArr,message->getData());
+
             if (message->getPacketSize() < 512)
             {
                 printDirqArr((message->getPacketSize() + (message->getBlock() - 1)*512));
                 Status::Normal;
                 connectionHandler->send(new ACKPacket(message->getBlock()));
             }
-            else
-            {
-                dirqCharArr[512*(message->getBlock() - 1)] = message->getData()[0];
-            }
-
             //TODO
 
             //handleAckPacket(static_cast<ACKPacket *>());
@@ -168,14 +174,16 @@ void ListenToServer::operator()(){
 void ListenToServer::printDirqArr(int size) {
 
     string str = dirqCharArr;
-    int currSize = str.length();
+    int currSize = 0;
 
     while(currSize != size)
     {
         cout << str << endl;
-        str = dirqCharArr[currSize];
         currSize += str.length();
-    }}
+        str = dirqCharArr[currSize];
+    }
+
+}
 
 /*
 

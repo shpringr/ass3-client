@@ -71,15 +71,14 @@ public:
 
     bool send(Packet *pPacket);
 
-    bool getPacket(Packet* packet);
-
-    bool getFrameAscii(Packet *packet);
-
+    bool getPacket(Packet* &packet);
 
     bool sendFrameAscii(string &frame);
 
 
     bool sendBytes(const char *bytes, int bytesToWrite);
+
+    bool getFrameAscii(Packet *&packet);
 }; //class ConnectionHandler
  
 #endif
