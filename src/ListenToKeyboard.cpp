@@ -19,14 +19,19 @@ ListenToKeyboard::ListenToKeyboard(int number, shared_ptr<ConnectionHandler> han
 void ListenToKeyboard::run() {
     while (ListenToServer::connected) {
         Packet *packetToSend = createNewPacketFromKeyboard();
-        bool success = connectionHandler->send(packetToSend);
-        if (!success) {
-            //TODO:send error
-        }
-        else if (DISCPacket* answerPacket = dynamic_cast<DISCPacket*>(packetToSend))
+        if (packetToSend!= nullptr)
         {
-            while(ListenToServer::connected)
-            {}
+            bool success = connectionHandler->send(packetToSend);
+            if (!success) {
+                //TODO:send error
+            }
+            else if (DISCPacket* answerPacket = dynamic_cast<DISCPacket*>(packetToSend))
+            {
+                while(ListenToServer::connected)
+                {}
+            }
+        } else{
+            cout << "not a valid option" << endl;
         }
     }
     cout << "disconnected keyyboard!"<<endl;
@@ -45,22 +50,30 @@ Packet * ListenToKeyboard::createNewPacketFromKeyboard() const {
     Packet *packetToSend = nullptr;
 
     if(comand.compare("LOGRQ") == 0){
-        packetToSend = new LOGRQPacket(name);
-        ListenToServer::status = Status::LOGRQ;
+        if (!name.empty()) {
+            packetToSend = new LOGRQPacket(name);
+            ListenToServer::status = Status::LOGRQ;
+        }
     }
     else if(comand.compare("DELRQ") == 0){
-        packetToSend = new DELRQPacket(name);
-        ListenToServer::status = Status::DELRQ;
+        if (!name.empty()) {
+            packetToSend = new DELRQPacket(name);
+            ListenToServer::status = Status::DELRQ;
+        }
     }
     else if(comand.compare("WRQ") == 0){
-        packetToSend = new WRQPacket(name);
-        ListenToServer::status = Status::WRQ;
-        ListenToServer::fileName=name;
+        if (!name.empty()) {
+            packetToSend = new WRQPacket(name);
+            ListenToServer::status = Status::WRQ;
+            ListenToServer::fileName = name;
+        }
     }
     else if(comand.compare("RRQ") == 0){
-        packetToSend = new RRQPacket(name);
-        ListenToServer::status = Status::RRQ;
-        ListenToServer::fileName=name;
+        if (!name.empty()) {
+            packetToSend = new RRQPacket(name);
+            ListenToServer::status = Status::RRQ;
+            ListenToServer::fileName = name;
+        }
     }
     else if(comand.compare("DIRQ") == 0){
         packetToSend = new DIRQPacket();

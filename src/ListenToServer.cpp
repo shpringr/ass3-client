@@ -26,6 +26,7 @@ void ListenToServer::run() {
         if (connectionHandler->getPacket(answerPacket)) {
             process(answerPacket);
         } else {
+            connectionHandler->send(new ERRORPacket(0,""));
             connected = false;
             }
     }
@@ -88,8 +89,7 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
             break;
         case Status::DISC:
             connectionHandler->send(new ACKPacket(0));
-            connected = false;
-            break;
+             break;
     }
 }
 
@@ -132,6 +132,8 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
     }
 }
 
+
+
 void ListenToServer::readFileIntoDataQueue(){
 
     short blockPacket = 1;
@@ -143,12 +145,13 @@ void ListenToServer::readFileIntoDataQueue(){
 
     if (ListenToServer::fileTosend.is_open()){
         size = ListenToServer::fileTosend.tellg();
-        ListenToServer::fileCharArr = new char [size];
         ListenToServer::fileTosend.seekg (0, ios::beg);
+        size = fileTosend.tellg ()-  size;
+        int sizeInt = (int) size;
+        ListenToServer::fileCharArr = new char [size];
         ListenToServer::fileTosend.read (ListenToServer::fileCharArr, (streamsize) size);
         ListenToServer::fileTosend.close();
 
-        int sizeInt = (int) size;
         short numberOfBlocks = (short) ((sizeInt / 512) + 1);
         short sizeOfLastBlock = (short) (sizeInt % 512);
         if   (sizeOfLastBlock == 0&& sizeInt > 0)
