@@ -1,4 +1,3 @@
-#pragma execution_character_set("utf-8")
 
 #ifndef CONNECTION_HANDLER_H
 #define CONNECTION_HANDLER_H

@@ -1,8 +1,7 @@
 #include "../../include/Packet/LOGRQPacket.h"
 
-LOGRQPacket::LOGRQPacket(const std::string &userName) {
-    this->userName = userName;
-    Packet::opCode = 7;
+LOGRQPacket::LOGRQPacket(const std::string &userName):userName(userName){
+    opCode=7;
 }
 
 std::string LOGRQPacket::getUserName() {

@@ -1,4 +1,3 @@
-#pragma execution_character_set("utf-8")
 #pragma once
 
 #include <vector>
@@ -9,8 +8,6 @@ protected:
 
 public:
         short getOpCode();
-
-        short bytesToShort(char bytesArr[]);
 
         void shortToBytes(short num, char bytesArr[]);
 

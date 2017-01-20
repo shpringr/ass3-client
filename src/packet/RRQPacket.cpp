@@ -1,8 +1,7 @@
 #include "../../include/Packet/RRQPacket.h"
 
-    RRQPacket::RRQPacket(const string &filename) {
-        fileName = filename;
-        Packet::opCode = 1;
+    RRQPacket::RRQPacket(const string &filename):fileName(filename) {
+        opCode=1;
     }
 
     string RRQPacket::getFileName() {
