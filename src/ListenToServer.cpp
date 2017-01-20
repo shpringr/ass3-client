@@ -222,7 +222,6 @@ void ListenToServer::operator()(){
 }
 
 
-
 void ListenToServer::printDirqArr(int size) {
 
     string str = string(&dirqCharArr[0]);
