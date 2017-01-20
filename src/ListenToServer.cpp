@@ -27,6 +27,8 @@ void ListenToServer::run() {
         if (connectionHandler->getPacket(answerPacket)) {
             process(answerPacket);
         } else {
+            //TODO delete every place the errorpacket appears the couts
+            std::cout << "can't get pocket " << fileName << std::endl;
             connectionHandler->send(new ERRORPacket(0,""));
             connected = false;
             }
@@ -78,9 +80,10 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
         case Status::WRQ:
             if(message->getBlock()==0) {
                 readFileIntoDataQueue();
-                connectionHandler->send(dataQueue.front());
-                dataQueue.pop();
-
+                if (!dataQueue.empty()) {
+                    connectionHandler->send(dataQueue.front());
+                    dataQueue.pop();
+                }
             }
             else if(!dataQueue.empty()) {
                     connectionHandler->send(dataQueue.front());
@@ -115,7 +118,7 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
                     connectionHandler->send(new ACKPacket(message->getBlock()));
                     ListenToServer::fileToWrite.close();
                 } else {
-                    std::cout << "can't write file " << fileName << std::endl;
+                    std::cout << "can't write file to server" << fileName << std::endl;
                     connectionHandler->send(new ERRORPacket(1, ""));
                 }
             }
@@ -151,10 +154,14 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
 
 void ListenToServer::readFileIntoDataQueue(){
 
-    ListenToServer::fileTosend= ifstream(fileName, ios::in|ios::binary|ios::ate);
+    try {
 
-    //TODO : RELATIVE PATH
-    ListenToServer::fileTosend.open("C:\\Users\\Orel Hazan\\Documents\\studies\\spl\\ass3\\Client\\src\\" + fileName);
+
+        string fullFileName = "./" + fileName;
+//    ListenToServer::fileTosend= ifstream(fileName, ios::in|ios::binary|ios::ate);
+
+        fileTosend.open(fileName, ios::binary | ios::app);
+
 //TODO: utf-8
 //    const std::locale empty_locale;
 //    typedef std::codecvt_utf8<wchar_t> converter_type;
@@ -163,43 +170,49 @@ void ListenToServer::readFileIntoDataQueue(){
 //
 //    fileTosend.imbue(utf8_locale);
 
-    if (ListenToServer::fileTosend.is_open()) {
-        char getdata[512];
-
-        while (!fileTosend.eof()) {
-            fileTosend.read(getdata, sizeof getdata);
+        if (ListenToServer::fileTosend.is_open()) {
+            char* getData = new char[512];
             int bytes_really_read = 512;
 
-            if (fileTosend.eof()) {
-                bytes_really_read = fileTosend.gcount();
-            } else if (fileTosend.fail()) {
-                bool fsd = true;
-                // some other error...
-            }
+            bool gfg =fileTosend.fail();
+            short blockNumber = 0;
+            while (!fileTosend.eof()) {
+                fileTosend.read(getData, bytes_really_read);
 
-            short numberOfBlocks = (short) ((bytes_really_read / 512) + 1);
-            short sizeOfLastBlock = (short) (bytes_really_read % 512);
-            if (sizeOfLastBlock == 0 && bytes_really_read > 0)
-                sizeOfLastBlock = 512;
-
-            for (short i = 1; i <= numberOfBlocks; ++i) {
-                short packetSize = 512;
-
-                if (i == numberOfBlocks) {
-                    packetSize = sizeOfLastBlock;
+                if (fileTosend.eof()) {
+                    bytes_really_read = fileTosend.gcount();
                 }
 
-                char *data = getdata + ((i - 1) * 512);
+                blockNumber++;
 
-                ListenToServer::dataQueue.push(new DATAPacket(packetSize, i, data));
+                ListenToServer::dataQueue.push(
+                        new DATAPacket((short) bytes_really_read, blockNumber, getData));
 
+//
+//            char *data = getdata + ((i - 1) * 512);
+//
+//            short numberOfBlocks = (short) ((bytes_really_read / 512) + 1);
+//            short sizeOfLastBlock = (short) (bytes_really_read % 512);
+//            if (sizeOfLastBlock == 0 && bytes_really_read > 0)
+//                sizeOfLastBlock = 512;
+//
+//            for (short i = 1; i <= numberOfBlocks; ++i) {
+//                short packetSize = 512;
+//
+//                if (i == numberOfBlocks) {
+//                    packetSize = sizeOfLastBlock;
+//                }
+//
 
             }
+            fileTosend.close();
+        } else {
+            std::cout << "can't read file from client " << fileName << std::endl;
+            connectionHandler->send(new ERRORPacket(1, "no file to write. stop."));
         }
     }
-    else
-    {
-        connectionHandler->send(new ERRORPacket(1, "no file to write. stop."));
+    catch (std::ios_base::failure& e) {
+        std::cerr << e.what() << '\n';
     }
 }
 

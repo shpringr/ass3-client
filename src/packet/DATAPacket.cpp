@@ -58,7 +58,13 @@ char *DATAPacket::toByteArr() {
 
     returnBytes[2 + 2 + 2 + packetSize] = '\0';
 
-    return &returnBytes[0];
+    char* p = new char[2 + 2 + 2 + packetSize + 1];
+    for (unsigned int j = 0; j < returnBytes.size(); ++j) {
+        p[j] = returnBytes.at(j);
+
+    }
+
+    return p;
 
 }
 
