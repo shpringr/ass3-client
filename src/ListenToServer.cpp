@@ -106,9 +106,9 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
 
 
                 if (message->getBlock() != 1)
-                    fileToWrite.open(fullFileName, ios::app);
+                    fileToWrite.open(fullFileName, ios::app | ios::binary);
                 else
-                    fileToWrite.open(fullFileName);
+                    fileToWrite.open(fullFileName, ios::binary);
 
                 if (ListenToServer::fileToWrite.is_open()) {
                     ListenToServer::fileToWrite.write(message->getData(), message->getPacketSize());
