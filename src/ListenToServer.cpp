@@ -1,4 +1,5 @@
 #include <boost/thread/win32/thread_data.hpp>
+#include <codecvt>
 #include "../include/ListenToServer.h"
 
 
@@ -99,7 +100,7 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
 void ListenToServer::handleDataPacket(DATAPacket *message) {
     switch (ListenToServer::status){
         case Status::RRQ:
-            ListenToServer::fileToWrite.open("../" + fileName);
+            ListenToServer::fileToWrite.open("./" + fileName);
             if (ListenToServer::fileToWrite.is_open()) {
                 ListenToServer::fileToWrite.write(message->getData(), message->getPacketSize());
                 connectionHandler->send(new ACKPacket(message->getBlock()));
@@ -140,7 +141,15 @@ void ListenToServer::readFileIntoDataQueue(){
 
     ListenToServer::fileTosend= ifstream(fileName, ios::in|ios::binary|ios::ate);
 
+    //TODO : RELATIVE PATH
     ListenToServer::fileTosend.open("C:\\Users\\Orel Hazan\\Documents\\studies\\spl\\ass3\\Client\\src\\" + fileName);
+//TODO: utf-8
+//    const std::locale empty_locale;
+//    typedef std::codecvt_utf8<wchar_t> converter_type;
+//    const converter_type* converter = new converter_type;
+//    const std::locale utf8_locale = std::locale(empty_locale, converter);
+//
+//    fileTosend.imbue(utf8_locale);
 
     if (ListenToServer::fileTosend.is_open()) {
         char getdata[512];
@@ -205,8 +214,9 @@ ListenToServer::~ListenToServer() {
     fileToWrite.close();
     fileTosend.clear();
     fileTosend.close();
-    delete fileCharArr;
-    delete dirqCharArr;
+//TODO DIRQ DOESNT WORK WITH THAT
+    //delete fileCharArr;
+   // delete dirqCharArr;
 }
 
 
