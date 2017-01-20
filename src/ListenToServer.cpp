@@ -100,16 +100,16 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
 void ListenToServer::handleDataPacket(DATAPacket *message) {
     switch (ListenToServer::status){
         case Status::RRQ:
-            ListenToServer::fileToWrite.open("./" + fileName);
+            fileToWrite.open("./" + fileName, ios::app);
             if (ListenToServer::fileToWrite.is_open()) {
                 ListenToServer::fileToWrite.write(message->getData(), message->getPacketSize());
                 connectionHandler->send(new ACKPacket(message->getBlock()));
+                ListenToServer::fileToWrite.close();
             } else{
                 connectionHandler->send(new ERRORPacket(1,""));
             }
 
             if (message->getPacketSize()!=512){
-                ListenToServer::fileToWrite.close();
                 std::cout << "RRQ " << fileName << " complete" <<  std::endl;
                 ListenToServer::status = Status::Normal;
             }
