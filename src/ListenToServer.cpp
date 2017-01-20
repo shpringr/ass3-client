@@ -133,7 +133,7 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
         case Status::DIRQ:
 
             for (int i = 0; i <= message->packetSize; ++i) {
-                dirqCharArr[(message->getBlock() - 1) * 512 + i] = message->getData()[i];
+                dirqCharArr.push_back(message->getData()[i]);
             }
 
             if (message->getPacketSize() < 512) {
@@ -221,17 +221,20 @@ void ListenToServer::operator()(){
     boost::this_thread::yield(); //Gives up the remainder of the current thread's time slice, to allow other threads to run.
 }
 
+
+
 void ListenToServer::printDirqArr(int size) {
 
-    string str = dirqCharArr;
+    string str = string(&dirqCharArr[0]);
+
     int currSize = 0;
 
-    while(currSize <= size)
-    {
+    while (currSize <= size) {
         cout << str << endl;
-        currSize += str.length()+1;
-        str = dirqCharArr + currSize;
-    }}
+        currSize += str.length() + 1;
+        str = string(&dirqCharArr[currSize]);
+    }
+}
 
 ListenToServer::~ListenToServer() {
     //connectionHandler;
@@ -243,5 +246,6 @@ ListenToServer::~ListenToServer() {
     //delete fileCharArr;
    // delete dirqCharArr;
 }
+
 
 

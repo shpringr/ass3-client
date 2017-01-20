@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <queue>
+#include <vector>
 
 #include "connectionHandler.h"
 
@@ -31,7 +32,8 @@ public:
     static string fileName;
     queue <DATAPacket *> dataQueue ;
     char *fileCharArr;
-    char *dirqCharArr = new char();
+    std::vector<char> dirqCharArr;
+    // stirng s = string(&vec[0])
 
     ListenToServer(int number, shared_ptr<ConnectionHandler> handler);
     ListenToServer(const ListenToServer &listenToServer_);
@@ -55,4 +57,7 @@ public:
     static bool connected;
 
     void printDirqArr(int size);
+
+    std::string getString(const std::string& fullString);
+
 };
