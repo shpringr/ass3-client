@@ -98,39 +98,51 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
 }
 
 void ListenToServer::handleDataPacket(DATAPacket *message) {
-    switch (ListenToServer::status){
-        case Status::RRQ:
-            fileToWrite.open("./" + fileName, ios::app);
-            if (ListenToServer::fileToWrite.is_open()) {
-                ListenToServer::fileToWrite.write(message->getData(), message->getPacketSize());
-                connectionHandler->send(new ACKPacket(message->getBlock()));
-                ListenToServer::fileToWrite.close();
-            } else{
-                connectionHandler->send(new ERRORPacket(1,""));
+    switch (ListenToServer::status) {
+        case Status::RRQ: {
+
+            if (message->getPacketSize() != 0) {
+                string fullFileName = "./" + fileName;
+
+
+                if (message->getBlock() != 1)
+                    fileToWrite.open(fullFileName, ios::app);
+                else
+                    fileToWrite.open(fullFileName);
+
+                if (ListenToServer::fileToWrite.is_open()) {
+                    ListenToServer::fileToWrite.write(message->getData(), message->getPacketSize());
+                    connectionHandler->send(new ACKPacket(message->getBlock()));
+                    ListenToServer::fileToWrite.close();
+                } else {
+                    std::cout << "can't write file " << fileName << std::endl;
+                    connectionHandler->send(new ERRORPacket(1, ""));
+                }
             }
 
-            if (message->getPacketSize()!=512){
-                std::cout << "RRQ " << fileName << " complete" <<  std::endl;
+            if (message->getPacketSize() != 512) {
+                std::cout << "RRQ " << fileName << " complete" << std::endl;
                 ListenToServer::status = Status::Normal;
             }
+        }
             break;
             //
         case Status::DIRQ:
 
-            for (int i = 0; i <= message->packetSize; ++i)
-            {
-                dirqCharArr[(message->getBlock() - 1)*512 + i] = message->getData()[i];
+            for (int i = 0; i <= message->packetSize; ++i) {
+                dirqCharArr[(message->getBlock() - 1) * 512 + i] = message->getData()[i];
             }
 
-            if (message->getPacketSize() < 512)
-            {
-                printDirqArr((message->getPacketSize() + (message->getBlock() - 1)*512));
+            if (message->getPacketSize() < 512) {
+                printDirqArr((message->getPacketSize() + (message->getBlock() - 1) * 512));
                 Status::Normal;
                 connectionHandler->send(new ACKPacket(message->getBlock()));
             }
             //TODO
 
             //handleAckPacket(static_cast<ACKPacket *>());
+            break;
+        default:
             break;
     }
 }
