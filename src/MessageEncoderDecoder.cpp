@@ -194,11 +194,10 @@ void MessageEncoderDecoder::makeDataPacket(char nextByte) {
             block = bytesToShort(blockArr);
         }
     } else {
-        if (packetSize != 0) {
             lengthArr[lengthArrIndex] = nextByte;
             packetSize--;
             lengthArrIndex++;
-        } else {
+        if (packetSize <= 0) {
             lengthArr[lengthArrIndex] = '\0';
             res = new DATAPacket(lengthArrIndex, block, lengthArr);
             initAll();
