@@ -8,6 +8,8 @@
 
 
         virtual char* toByteArr() override ;
+
+        virtual ~DISCPacket();
     };
 
 

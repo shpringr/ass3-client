@@ -3,6 +3,7 @@
 #include "Packet.h"
 #include <vector>
     class ACKPacket : public Packet {
+
     public:
         short block = 0;
 
@@ -13,5 +14,7 @@
         virtual char* toByteArr()  override ;
 
         const char *getBlockInBytes();
+
+        virtual ~ACKPacket();
     };
 

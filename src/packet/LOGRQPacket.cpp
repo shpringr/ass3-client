@@ -28,3 +28,7 @@ char * LOGRQPacket::toByteArr()  {
     return returnBytes;
 }
 
+LOGRQPacket::~LOGRQPacket() {
+
+}
+

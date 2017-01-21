@@ -17,6 +17,8 @@ public:
 
 
     virtual char* toByteArr() override ;
+
+    virtual ~LOGRQPacket();
 };
 
 

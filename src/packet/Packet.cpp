@@ -12,7 +12,5 @@ const char* Packet::getOpCodeInBytes() {
 }
 
 Packet::~Packet() {
-    //TODO
-
 }
 

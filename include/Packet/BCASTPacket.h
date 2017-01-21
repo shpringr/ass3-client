@@ -19,6 +19,8 @@ using namespace std;
         virtual string getFileName();
 
         virtual char* toByteArr() override ;
+
+        virtual ~BCASTPacket();
     };
 
 

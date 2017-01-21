@@ -75,7 +75,6 @@ char *DATAPacket::toByteArr() {
 
 DATAPacket::~DATAPacket() {
     delete data;
-
 }
 
 DATAPacket& DATAPacket::operator=(const DATAPacket &b) {

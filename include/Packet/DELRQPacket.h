@@ -18,6 +18,8 @@ using namespace std;
 
 
         virtual char* toByteArr() override ;
+
+        virtual ~DELRQPacket();
     };
 
 

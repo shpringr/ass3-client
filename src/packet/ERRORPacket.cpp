@@ -45,3 +45,7 @@ const char* ERRORPacket::getErrorCodeInBytes() {
         return returnBytes;
     }
 
+ERRORPacket::~ERRORPacket() {
+
+}
+

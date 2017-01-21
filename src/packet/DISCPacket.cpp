@@ -14,3 +14,7 @@ DISCPacket::DISCPacket() {
         return returnBytes;
 
     }
+
+DISCPacket::~DISCPacket() {
+
+}

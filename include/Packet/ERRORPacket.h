@@ -21,7 +21,9 @@ using namespace std;
     virtual char* toByteArr() override ;
 
     const char *getErrorCodeInBytes();
-};
+
+        virtual ~ERRORPacket();
+    };
 
 
 

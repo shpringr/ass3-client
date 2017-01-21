@@ -28,3 +28,7 @@ RRQPacket::RRQPacket(const string &filename):fileName(filename) {
 
     }
 
+RRQPacket::~RRQPacket() {
+
+}
+

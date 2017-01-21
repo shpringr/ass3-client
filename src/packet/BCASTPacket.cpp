@@ -37,3 +37,7 @@ char* BCASTPacket::toByteArr() {
     return returnBytes;
 
 }
+
+BCASTPacket::~BCASTPacket() {
+
+}

@@ -27,3 +27,7 @@ WRQPacket::WRQPacket(const string &filename) :fileName(filename){
         return returnBytes;
     }
 
+WRQPacket::~WRQPacket() {
+
+}
+

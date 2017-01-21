@@ -27,3 +27,7 @@ DELRQPacket::DELRQPacket(const string &filename):fileName(filename) {
         return returnBytes;
     }
 
+DELRQPacket::~DELRQPacket() {
+
+}
+

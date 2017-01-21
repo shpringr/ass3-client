@@ -13,3 +13,7 @@ DIRQPacket::DIRQPacket() {
         returnBytes[2] = '\0';
         return returnBytes;
     }
+
+DIRQPacket::~DIRQPacket() {
+
+}

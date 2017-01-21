@@ -10,6 +10,8 @@
 
 
         virtual char* toByteArr() override ;
+
+        virtual ~DIRQPacket();
     };
 
 

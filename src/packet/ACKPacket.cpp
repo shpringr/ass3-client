@@ -34,3 +34,6 @@ const char* ACKPacket::getBlockInBytes() {
 
         return returnBytes;
     }
+
+
+ACKPacket::~ACKPacket() {}
