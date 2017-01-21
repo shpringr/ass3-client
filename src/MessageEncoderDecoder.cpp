@@ -10,6 +10,8 @@
 #include "../include/Packet/WRQPacket.h"
 #include "../include/Packet/RRQPacket.h"
 
+
+MessageEncoderDecoder::MessageEncoderDecoder(const MessageEncoderDecoder &messageEncoderDecoder_){}
 MessageEncoderDecoder::MessageEncoderDecoder() {
     initAll();
 }

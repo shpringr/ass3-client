@@ -2,6 +2,8 @@
 #include <boost/thread/win32/thread_data.hpp>
 #include "../include/ListenToKeyboard.h"
 
+
+ListenToKeyboard::ListenToKeyboard(const ListenToKeyboard &listenToKeyboard_):connectionHandler(listenToKeyboard_.connectionHandler) {}
 ListenToKeyboard::ListenToKeyboard(shared_ptr<ConnectionHandler> handler):connectionHandler(handler){}
 
 void ListenToKeyboard::run() {

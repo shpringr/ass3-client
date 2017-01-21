@@ -26,6 +26,7 @@ private:
 
 public:
     ListenToKeyboard(shared_ptr<ConnectionHandler> handler);
+    ListenToKeyboard(const ListenToKeyboard &listenToKeyboard_);
     virtual ~ListenToKeyboard();
 
     void run();

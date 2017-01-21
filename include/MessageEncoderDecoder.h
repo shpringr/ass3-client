@@ -65,6 +65,7 @@ private:
 public:
 
     MessageEncoderDecoder();
+    MessageEncoderDecoder(const MessageEncoderDecoder &messageEncoderDecoder_);
     virtual ~MessageEncoderDecoder();
 
     virtual Packet *decodeNextByte(char nextByte);

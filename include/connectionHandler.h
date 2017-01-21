@@ -30,13 +30,13 @@ private:
     const string host_;
 	const short port_;
 	boost::asio::io_service io_service_;   // Provides core I/O functionality
+	MessageEncoderDecoder encDec_;
 	tcp::socket socket_;
-    MessageEncoderDecoder encDec_;
- 
+
 public:
 
     ConnectionHandler(std::string host, short port, MessageEncoderDecoder encDec);
-    virtual ~ConnectionHandler();
+	virtual ~ConnectionHandler();
 
     bool connect();
     bool getBytes(char bytes[], unsigned int bytesToRead);

@@ -11,3 +11,8 @@ const char* Packet::getOpCodeInBytes() {
     return opCodeArr;
 }
 
+Packet::~Packet() {
+    //TODO
+
+}
+

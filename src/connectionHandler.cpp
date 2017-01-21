@@ -14,7 +14,7 @@ using std::string;
 ConnectionHandler::ConnectionHandler(std::string host, short port, MessageEncoderDecoder encDec):
 host_(host), port_(port), io_service_() , encDec_(encDec), socket_(io_service_)
 {}
-    
+
 ConnectionHandler::~ConnectionHandler() {
     close();
 }
@@ -144,3 +144,4 @@ void ConnectionHandler::close() {
         std::cout << "closing failed: connection already closed" << std::endl;
     }
 }
+

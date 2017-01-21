@@ -7,6 +7,12 @@ DATAPacket::DATAPacket(short packetSize, short block, char *pData)
     Packet::opCode = 3;
 }
 
+DATAPacket::DATAPacket(const DATAPacket &dataPacket)
+        : packetSize(dataPacket.packetSize), block(dataPacket.block), data(dataPacket.data){
+
+    Packet::opCode = 3;
+}
+
 short DATAPacket::getPacketSize() {
     return packetSize;
 }
@@ -70,4 +76,12 @@ char *DATAPacket::toByteArr() {
 DATAPacket::~DATAPacket() {
     delete data;
 
+}
+
+DATAPacket DATAPacket::operator=(const DATAPacket &b) {
+    DATAPacket tmp_obj = *this;
+    tmp_obj.packetSize = b.packetSize;
+    tmp_obj.block = b.block;
+    tmp_obj.data = b.data;
+    return tmp_obj;
 }

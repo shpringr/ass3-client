@@ -7,9 +7,10 @@ protected:
     short opCode = 0;
 
 public:
-        short getOpCode();
+    short getOpCode();
 
-        const char* getOpCodeInBytes();
+    const char* getOpCodeInBytes();
 
-        virtual char* toByteArr() = 0;
+    virtual char* toByteArr() = 0;
+    virtual ~Packet();
 };
