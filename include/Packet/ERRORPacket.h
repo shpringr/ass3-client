@@ -7,14 +7,13 @@ using namespace std;
 
     class ERRORPacket : public Packet {
 
-    private:
-        char * errorCodeArr;
     public:
         ERRORPacket(const ERRORPacket &errPacket);
         ERRORPacket& operator=(const ERRORPacket &b);
 
         short errorCode = 0;
         string errMsg;
+        char * errorCodeArr;
 
     public:
         ERRORPacket(short errorCode, const string &errMsg);
