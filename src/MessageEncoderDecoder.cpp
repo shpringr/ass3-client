@@ -1,4 +1,3 @@
-#include <cstring>
 #include "../include/MessageEncoderDecoder.h"
 #include "../include/Packet/DIRQPacket.h"
 #include "../include/Packet/DISCPacket.h"

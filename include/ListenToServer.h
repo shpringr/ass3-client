@@ -36,7 +36,7 @@ public:
 
     ListenToServer(shared_ptr<ConnectionHandler> handler);
     ListenToServer(const ListenToServer &listenToServer_);
-    ~ListenToServer();
+    virtual ~ListenToServer();
     void operator()();
 
     void run();

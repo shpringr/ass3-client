@@ -2,11 +2,9 @@
 #include <codecvt>
 #include "../include/ListenToServer.h"
 
-
 Status ListenToServer::status(Status::Normal);
 string ListenToServer::fileName("");
 bool ListenToServer::connected = true;
-
 
 ListenToServer::ListenToServer(const ListenToServer& listenToServer):connectionHandler(listenToServer.connectionHandler){}
 
@@ -44,9 +42,9 @@ void ListenToServer::process(Packet* packet) {
             break;
         default:
             //TODO sendError(ERRORPacket::Errors::ILLEGAL_TFTP_OPERATION, L"");
+            cout << "Error 4" << endl;
             break;
     }
-
 }
 
 void ListenToServer::handleBCastPacket(BCASTPacket *packet) {
@@ -134,9 +132,6 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
                 Status::Normal;
                 connectionHandler->send(new ACKPacket(message->getBlock()));
             }
-            //TODO
-
-            //handleAckPacket(static_cast<ACKPacket *>());
             break;
         default:
             break;
@@ -148,20 +143,8 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
 void ListenToServer::readFileIntoDataQueue(){
 
     try {
-
-
         string fullFileName = "./" + fileName;
-//    ListenToServer::fileTosend= ifstream(fileName, ios::in|ios::binary|ios::ate);
-
         fileTosend.open(fileName, ios::binary | ios::app);
-
-//TODO: utf-8
-//    const std::locale empty_locale;
-//    typedef std::codecvt_utf8<wchar_t> converter_type;
-//    const converter_type* converter = new converter_type;
-//    const std::locale utf8_locale = std::locale(empty_locale, converter);
-//
-//    fileTosend.imbue(utf8_locale);
 
         if (ListenToServer::fileTosend.is_open()) {
             vector<char>* getData;
@@ -200,7 +183,6 @@ void ListenToServer::operator()(){
     boost::this_thread::yield(); //Gives up the remainder of the current thread's time slice, to allow other threads to run.
 }
 
-
 void ListenToServer::printDirqArr(int size) {
 
     string str = string(&dirqCharArr[0]);
@@ -224,6 +206,3 @@ ListenToServer::~ListenToServer() {
     //delete fileCharArr;
    // delete dirqCharArr;
 }
-
-
-

@@ -1,14 +1,6 @@
-//
-// Created by ROTEM on 18/01/2017.
-//
-
 #include <iostream>
 #include <boost/thread/win32/thread_data.hpp>
 #include "../include/ListenToKeyboard.h"
-#include "../include/Packet/Packet.h"
-#include "../include/Packet/ERRORPacket.h"
-#include "../include/ListenToServer.h"
-#include "../include/connectionHandler.h"
 
 ListenToKeyboard::ListenToKeyboard(shared_ptr<ConnectionHandler> handler):connectionHandler(handler){}
 
@@ -20,6 +12,7 @@ void ListenToKeyboard::run() {
             bool success = connectionHandler->send(packetToSend);
             if (!success) {
                 //TODO:send error
+                cout<<"Error 4" << endl;
             }
             else if (DISCPacket* answerPacket = dynamic_cast<DISCPacket*>(packetToSend))
             {
@@ -91,7 +84,6 @@ Packet * ListenToKeyboard::createNewPacketFromKeyboard() {
     return packetToSend;
 }
 
-
 void ListenToKeyboard::operator()(){
     run();
     boost::this_thread::yield(); //Gives up the remainder of the current thread's time slice, to allow other threads to run.
@@ -112,6 +104,5 @@ bool ListenToKeyboard::isFIleExists(string name) {
 
 ListenToKeyboard::~ListenToKeyboard() {
     //TODO: DES
-
 }
 

@@ -1,19 +1,6 @@
 #include <iostream>
 #include "../include/connectionHandler.h"
-#include "../include/connectionHandler.h"
-#include "../include/Packet/LOGRQPacket.h"
-#include "../include/Packet/Packet.h"
-#include "../include/Packet/RRQPacket.h"
-#include "../include/Packet/ACKPacket.h"
-#include "../include/Packet/BCASTPacket.h"
-#include "../include/Packet/WRQPacket.h"
-#include "../include/Packet/ERRORPacket.h"
-#include "../include/Packet/DATAPacket.h"
-#include "../include/Packet/DELRQPacket.h"
-#include "../include/Packet/DIRQPacket.h"
-#include "../include/Packet/DISCPacket.h"
 #include "../include/ListenToKeyboard.h"
-
 
 using boost::asio::ip::tcp;
 
@@ -27,7 +14,6 @@ using std::string;
 ConnectionHandler::ConnectionHandler(std::string host, short port, MessageEncoderDecoder encDec):
 host_(host), port_(port), io_service_() , encDec_(encDec), socket_(io_service_)
 {}
-
     
 ConnectionHandler::~ConnectionHandler() {
     close();
@@ -114,16 +100,18 @@ bool ConnectionHandler::send(Packet *pPacket) {
 
         case 6: case 10:
             return sendBytes(pPacket->getOpCodeInBytes(), 2);
-        case 9:
+        case 9: {
             msgWIthoutZeros = encoded + 3;
             char *addedOrDeleted = new char[1];
             addedOrDeleted[0] = (static_cast<BCASTPacket *>(pPacket))->getDeletedAdd();
 
             return sendBytes(pPacket->getOpCodeInBytes(), 2) &&
-                    sendBytes(addedOrDeleted, 1) &&
-                    sendFrameAscii(msgWIthoutZeros, '\0');
+                   sendBytes(addedOrDeleted, 1) &&
+                   sendFrameAscii(msgWIthoutZeros, '\0');
+        }
+        default:
+            return false;
     }
-    return false;
 }
 
 bool ConnectionHandler::sendFrameAscii(std::string& frame, char delimiter) {

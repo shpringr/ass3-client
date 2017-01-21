@@ -65,7 +65,8 @@ private:
 public:
 
     MessageEncoderDecoder();
-    ~MessageEncoderDecoder();
+    virtual ~MessageEncoderDecoder();
+
     virtual Packet *decodeNextByte(char nextByte);
     virtual char* encode(Packet *message);
     short bytesToShort(char bytesArr[]);

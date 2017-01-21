@@ -5,7 +5,7 @@
 #include "../include/ListenToServer.h"
 
 int main(int argc, char *argv[]){
-
+//TODO CHANGE THIS
 //	if (argc < 3) {
 //		std::cerr << "Usage: " << argv[0] << " host port" << std::endl << std::endl;
 //		return -1;
