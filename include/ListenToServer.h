@@ -25,7 +25,7 @@ class ListenToServer {
 protected:
     shared_ptr<ConnectionHandler> connectionHandler;
     ofstream fileToWrite;
-    ifstream fileTosend;
+    ifstream fileToSend;
     std::vector<char> dirqCharArr;
     queue <DATAPacket *> dataQueue ;
 

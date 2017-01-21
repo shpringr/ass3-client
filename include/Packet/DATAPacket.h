@@ -7,7 +7,7 @@
     public:
         DATAPacket(short packetSize, short block, char* pData);
         DATAPacket(const DATAPacket &dataPacket);
-        DATAPacket operator=(const DATAPacket& b);
+        DATAPacket& operator=(const DATAPacket& b);
         ~DATAPacket();
 
         short packetSize = 0;

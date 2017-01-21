@@ -11,8 +11,21 @@
 #include "../include/Packet/RRQPacket.h"
 
 
-MessageEncoderDecoder::MessageEncoderDecoder(const MessageEncoderDecoder &messageEncoderDecoder_){}
-MessageEncoderDecoder::MessageEncoderDecoder() {
+MessageEncoderDecoder::MessageEncoderDecoder(const MessageEncoderDecoder &messageEncoderDecoder_)
+        :opCode(0),res(nullptr), lengthArr(nullptr), lengthArrSize(0),
+        lengthArrIndex(0), errorArr(nullptr), errorArrSize(0),
+        errorArrIndex(0), errorCode(-1), packetArr(nullptr),
+        packetArrSize(0), packetArrIndex(0), packetSize(0),
+        blockArr(nullptr), blockArrSize(0), blockArrIndex(0), block(0), deletedAdd(0) {
+    initAll();
+}
+MessageEncoderDecoder::MessageEncoderDecoder()
+        :opCode(0),res(nullptr), lengthArr(nullptr), lengthArrSize(0),
+         lengthArrIndex(0), errorArr(nullptr), errorArrSize(0),
+         errorArrIndex(0), errorCode(-1), packetArr(nullptr),
+         packetArrSize(0), packetArrIndex(0), packetSize(0),
+         blockArr(nullptr), blockArrSize(0), blockArrIndex(0), block(0), deletedAdd(0)
+{
     initAll();
 }
 
@@ -294,4 +307,36 @@ short MessageEncoderDecoder::bytesToShort(char *bytesArr) {
 
 MessageEncoderDecoder::~MessageEncoderDecoder() {
     delete res;
+}
+
+MessageEncoderDecoder& MessageEncoderDecoder::operator=(const MessageEncoderDecoder &b)
+{
+    opCode = b.opCode;
+    res = b.res;
+
+    lengthArr = b.lengthArr;
+    lengthArrSize=b.lengthArrSize;
+    lengthArrIndex=b.lengthArrIndex;
+
+    errorArr=b.errorArr;
+    errorArrSize=b.errorArrSize;
+    errorArrIndex=b.errorArrIndex;
+
+    errorCode = b.errorCode;
+
+    packetArr=b.packetArr;
+    packetArrSize=b.packetArrSize;
+    packetArrIndex=b.packetArrIndex;
+
+    packetSize=b.packetSize;
+
+    blockArr=b.blockArr;
+    blockArrSize=b.blockArrSize;
+    blockArrIndex=b.blockArrIndex;
+
+    block=b.block;
+
+    deletedAdd = b.deletedAdd;
+
+    return *this;
 }

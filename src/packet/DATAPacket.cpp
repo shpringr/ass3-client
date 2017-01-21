@@ -78,10 +78,9 @@ DATAPacket::~DATAPacket() {
 
 }
 
-DATAPacket DATAPacket::operator=(const DATAPacket &b) {
-    DATAPacket tmp_obj = *this;
-    tmp_obj.packetSize = b.packetSize;
-    tmp_obj.block = b.block;
-    tmp_obj.data = b.data;
-    return tmp_obj;
+DATAPacket& DATAPacket::operator=(const DATAPacket &b) {
+    packetSize = b.packetSize;
+    block = b.block;
+    data = b.data;
+    return *this;
 }

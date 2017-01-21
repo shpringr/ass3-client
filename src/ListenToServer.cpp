@@ -6,9 +6,14 @@ Status ListenToServer::status(Status::Normal);
 string ListenToServer::fileName("");
 bool ListenToServer::connected = true;
 
-ListenToServer::ListenToServer(const ListenToServer& listenToServer):connectionHandler(listenToServer.connectionHandler){}
-
-ListenToServer::ListenToServer(shared_ptr<ConnectionHandler> handler) : connectionHandler(handler) {}
+ListenToServer::ListenToServer(const ListenToServer& listenToServer)
+        :connectionHandler(listenToServer.connectionHandler),
+        fileToWrite(), fileToSend(),
+         dirqCharArr(), dataQueue()
+        {}
+ListenToServer::ListenToServer(shared_ptr<ConnectionHandler> handler) : connectionHandler(handler)
+,fileToWrite(), fileToSend(),
+dirqCharArr(), dataQueue(){}
 
 void ListenToServer::run() {
     while (connected) {
@@ -88,6 +93,8 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
         case Status::DISC:
             connectionHandler->send(new ACKPacket(0));
              break;
+        default:
+            connectionHandler->send(new ERRORPacket(0, ""));
     }
 }
 
@@ -129,7 +136,7 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
 
             if (message->getPacketSize() < 512) {
                 printDirqArr((message->getPacketSize() + (message->getBlock() - 1) * 512));
-                Status::Normal;
+                status = Status::Normal;
                 connectionHandler->send(new ACKPacket(message->getBlock()));
             }
             break;
@@ -144,19 +151,19 @@ void ListenToServer::readFileIntoDataQueue(){
 
     try {
         string fullFileName = "./" + fileName;
-        fileTosend.open(fileName, ios::binary | ios::app);
+        fileToSend.open(fileName, ios::binary | ios::app);
 
-        if (ListenToServer::fileTosend.is_open()) {
+        if (ListenToServer::fileToSend.is_open()) {
             vector<char>* getData;
             int bytes_really_read =512;
             short blockNumber = 0;
 
-            while (!fileTosend.eof()) {
+            while (!fileToSend.eof()) {
                 getData = new vector<char>(512);
-                fileTosend.read(getData->data(), bytes_really_read);
+                fileToSend.read(getData->data(), bytes_really_read);
 
-                if (fileTosend.eof()) {
-                    bytes_really_read = fileTosend.gcount();
+                if (fileToSend.eof()) {
+                    bytes_really_read = fileToSend.gcount();
                 }
 
                 blockNumber++;
@@ -167,7 +174,7 @@ void ListenToServer::readFileIntoDataQueue(){
 
             }
 
-            fileTosend.close();
+            fileToSend.close();
         } else {
             std::cout << "can't read file from client " << fileName << std::endl;
             connectionHandler->send(new ERRORPacket(1, "no file to write. stop."));
@@ -200,8 +207,8 @@ ListenToServer::~ListenToServer() {
     //connectionHandler;
     fileToWrite.clear();
     fileToWrite.close();
-    fileTosend.clear();
-    fileTosend.close();
+    fileToSend.clear();
+    fileToSend.close();
 //TODO DIRQ DOESNT WORK WITH THAT
     //delete fileCharArr;
    // delete dirqCharArr;

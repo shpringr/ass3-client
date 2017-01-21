@@ -16,7 +16,7 @@ void ListenToKeyboard::run() {
                 //TODO:send error
                 cout<<"Error 4" << endl;
             }
-            else if (DISCPacket* answerPacket = dynamic_cast<DISCPacket*>(packetToSend))
+            else if (dynamic_cast<DISCPacket*>(packetToSend))
             {
                 while(ListenToServer::connected)
                 {}
