@@ -30,4 +30,6 @@ public:
     void operator()();
 
     Packet * createNewPacketFromKeyboard() const;
+
+    bool isFIleExists(string name) const;
 };

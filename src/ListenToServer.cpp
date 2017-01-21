@@ -81,7 +81,8 @@ void ListenToServer::handleAckPacket(ACKPacket *message) {
             if(message->getBlock()==0) {
                 readFileIntoDataQueue();
                 if (!dataQueue.empty()) {
-                    connectionHandler->send(dataQueue.front());
+                    DATAPacket* dataPacket = dataQueue.front();
+                    connectionHandler->send(dataPacket);
                     dataQueue.pop();
                 }
             }
@@ -171,13 +172,13 @@ void ListenToServer::readFileIntoDataQueue(){
 //    fileTosend.imbue(utf8_locale);
 
         if (ListenToServer::fileTosend.is_open()) {
-            char* getData = new char[512];
-            int bytes_really_read = 512;
-
-            bool gfg =fileTosend.fail();
+            vector<char>* getData;
+            int bytes_really_read =512;
             short blockNumber = 0;
+
             while (!fileTosend.eof()) {
-                fileTosend.read(getData, bytes_really_read);
+                getData = new vector<char>(512);
+                fileTosend.read(getData->data(), bytes_really_read);
 
                 if (fileTosend.eof()) {
                     bytes_really_read = fileTosend.gcount();
@@ -185,26 +186,12 @@ void ListenToServer::readFileIntoDataQueue(){
 
                 blockNumber++;
 
+                char* data = getData->data();
                 ListenToServer::dataQueue.push(
-                        new DATAPacket((short) bytes_really_read, blockNumber, getData));
-
-//
-//            char *data = getdata + ((i - 1) * 512);
-//
-//            short numberOfBlocks = (short) ((bytes_really_read / 512) + 1);
-//            short sizeOfLastBlock = (short) (bytes_really_read % 512);
-//            if (sizeOfLastBlock == 0 && bytes_really_read > 0)
-//                sizeOfLastBlock = 512;
-//
-//            for (short i = 1; i <= numberOfBlocks; ++i) {
-//                short packetSize = 512;
-//
-//                if (i == numberOfBlocks) {
-//                    packetSize = sizeOfLastBlock;
-//                }
-//
+                        new DATAPacket((short) bytes_really_read, blockNumber, data));
 
             }
+
             fileTosend.close();
         } else {
             std::cout << "can't read file from client " << fileName << std::endl;

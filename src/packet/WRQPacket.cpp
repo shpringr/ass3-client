@@ -1,7 +1,6 @@
 #include "../../include/Packet/WRQPacket.h"
 
-    WRQPacket::WRQPacket(const string &filename) {
-        fileName = filename;
+    WRQPacket::WRQPacket(const string &filename) :fileName(filename){
         Packet::opCode = 2;
     }
 

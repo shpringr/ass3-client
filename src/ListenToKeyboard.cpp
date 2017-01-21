@@ -31,7 +31,10 @@ void ListenToKeyboard::run() {
                 {}
             }
         } else{
+            cout << "Error 4";
+            //TODO : DELETE
             cout << "not a valid option" << endl;
+
         }
     }
     cout << "disconnected keyyboard!"<<endl;
@@ -45,7 +48,7 @@ Packet * ListenToKeyboard::createNewPacketFromKeyboard() const {
     string name;
     string comand(line.substr(0, line.find(" ", 0)));
     if (line.find(" ", 0) != string::npos)
-        name= line.substr(line.find(" ", 0)).substr(1, line.length());
+        name= line.substr(comand.size() + 1, line.length());
 
     Packet *packetToSend = nullptr;
 
@@ -63,9 +66,15 @@ Packet * ListenToKeyboard::createNewPacketFromKeyboard() const {
     }
     else if(comand.compare("WRQ") == 0){
         if (!name.empty()) {
-            packetToSend = new WRQPacket(name);
-            ListenToServer::status = Status::WRQ;
-            ListenToServer::fileName = name;
+            if (isFIleExists(name)) {
+                packetToSend = new WRQPacket(name);
+                ListenToServer::status = Status::WRQ;
+                ListenToServer::fileName = name;
+            } else
+            {
+                packetToSend = new ERRORPacket(1, "");
+                cout << "file not found in client " << name << endl;
+            }
         }
     }
     else if(comand.compare("RRQ") == 0){
@@ -90,5 +99,18 @@ Packet * ListenToKeyboard::createNewPacketFromKeyboard() const {
 void ListenToKeyboard::operator()(){
     run();
     boost::this_thread::yield(); //Gives up the remainder of the current thread's time slice, to allow other threads to run.
+}
+
+bool ListenToKeyboard::isFIleExists(string name) const {
+
+    string fullFileName = "./" + name;
+
+    ifstream tryOpen;
+    tryOpen.open(fullFileName);
+
+    bool isOpened = tryOpen.is_open();
+    if (isOpened)
+        tryOpen.close();
+    return isOpened;
 }
 
