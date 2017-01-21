@@ -1,7 +1,6 @@
 //#include <boost/asio/buffer.hpp>
 #include "../../include/Packet/ACKPacket.h"
-    ACKPacket::ACKPacket(short block) {
-        this->block = block;
+    ACKPacket::ACKPacket(short block) : block(block){
         Packet::opCode = 4;
     }
 

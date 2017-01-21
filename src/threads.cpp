@@ -27,8 +27,8 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
-	ListenToKeyboard task1(1, ptr);
-	ListenToServer task2(2, ptr);
+	ListenToKeyboard task1(ptr);
+	ListenToServer task2(ptr);
 	
 	boost::thread th1(task1); 
 	boost::thread th2(task2); 

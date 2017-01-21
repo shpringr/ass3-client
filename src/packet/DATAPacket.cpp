@@ -1,9 +1,8 @@
 #include "../../include/Packet/DATAPacket.h"
 
-DATAPacket::DATAPacket(short packetSize, short block, char *pData) {
-    this->packetSize = packetSize;
-    this->block = block;
-    this->data = pData;
+DATAPacket::DATAPacket(short packetSize, short block, char *pData)
+:   packetSize(packetSize),block(block),data(pData)
+{
     Packet::opCode = 3;
 }
 
@@ -32,12 +31,11 @@ const char* DATAPacket::getBlockInBytes() {
 }
 
 char *DATAPacket::toByteArr() {
-
-    char* data2 = data;
     char opCodeBytes[2];
     char sizeChar[2];
     char blockChar[2];
-    std::vector<char> returnBytes(2 + 2 + 2 + packetSize + 1);
+    unsigned int size = (unsigned int) (2 + 2 + 2 + packetSize + 1);
+    std::vector<char> returnBytes(size);
 
     shortToBytes(opCode, opCodeBytes);
     shortToBytes(packetSize, sizeChar);
@@ -53,7 +51,7 @@ char *DATAPacket::toByteArr() {
     for (unsigned int i = 4; i < 6; i++)
         returnBytes[i] = blockChar[i - 4];
 
-    for (unsigned int i = 6; i < 2 + 2 + 2 + packetSize; i++)
+    for (unsigned int i = 6; i < size - 1; i++)
         returnBytes[i] = data[i - 6];
 
     returnBytes[2 + 2 + 2 + packetSize] = '\0';

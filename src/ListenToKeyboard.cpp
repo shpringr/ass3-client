@@ -10,11 +10,7 @@
 #include "../include/ListenToServer.h"
 #include "../include/connectionHandler.h"
 
-ListenToKeyboard::ListenToKeyboard(int number, shared_ptr<ConnectionHandler> handler){
-    connectionHandler=handler;
-            _id=number;
-//    dataQueue = queue<Packet *>();
-}
+ListenToKeyboard::ListenToKeyboard(shared_ptr<ConnectionHandler> handler):connectionHandler(handler){}
 
 void ListenToKeyboard::run() {
     while (ListenToServer::connected) {

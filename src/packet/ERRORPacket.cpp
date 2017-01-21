@@ -1,8 +1,8 @@
 #include "../../include/Packet/ERRORPacket.h"
 
-    ERRORPacket::ERRORPacket(short errorCode, const string &errMsg) {
-        this->errorCode = errorCode;
-        this->errMsg = errMsg;
+    ERRORPacket::ERRORPacket(short errorCode, const string &errMsg) :
+errorCode(errorCode),errMsg(errMsg)
+{
         Packet::opCode = 5;
     }
 

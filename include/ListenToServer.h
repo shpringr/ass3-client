@@ -23,7 +23,6 @@ enum class Status {
 
 class ListenToServer {
 protected:
-    int _id;
     shared_ptr<ConnectionHandler> connectionHandler;
 public:
     ofstream fileToWrite;
@@ -35,7 +34,7 @@ public:
     std::vector<char> dirqCharArr;
     // stirng s = string(&vec[0])
 
-    ListenToServer(int number, shared_ptr<ConnectionHandler> handler);
+    ListenToServer(shared_ptr<ConnectionHandler> handler);
     ListenToServer(const ListenToServer &listenToServer_);
 
     ~ListenToServer();

@@ -8,17 +8,9 @@ string ListenToServer::fileName("");
 bool ListenToServer::connected = true;
 
 
-ListenToServer::ListenToServer(const ListenToServer& listenToServer){
-    _id = listenToServer._id;
-    connectionHandler = listenToServer.connectionHandler;
-}
+ListenToServer::ListenToServer(const ListenToServer& listenToServer):connectionHandler(listenToServer.connectionHandler){}
 
-ListenToServer::ListenToServer(int number, shared_ptr<ConnectionHandler> handler)
-{
-    connectionHandler=handler;
-    _id=number;
-    //dataQueue = queue<DATAPacket *>();
-}
+ListenToServer::ListenToServer(shared_ptr<ConnectionHandler> handler) : connectionHandler(handler) {}
 
 void ListenToServer::run() {
     while (connected) {

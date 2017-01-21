@@ -1,7 +1,6 @@
 #include "../../include/Packet/DELRQPacket.h"
 
-    DELRQPacket::DELRQPacket(const string &filename) {
-        fileName = filename;
+    DELRQPacket::DELRQPacket(const string &filename):fileName(filename) {
         Packet::opCode = 8;
     }
 
