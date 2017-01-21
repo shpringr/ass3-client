@@ -7,6 +7,8 @@ using namespace std;
 
     class ERRORPacket : public Packet {
 
+    private:
+        char * errorCodeArr;
     public:
         ERRORPacket(const ERRORPacket &errPacket);
         ERRORPacket& operator=(const ERRORPacket &b);

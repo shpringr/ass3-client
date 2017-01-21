@@ -2,18 +2,19 @@
 #include "../../include/Packet/ACKPacket.h"
 #include "../../include/MessageEncoderDecoder.h"
 
-ACKPacket::ACKPacket(short block) : block(block){
+ACKPacket::ACKPacket(short block) : block(block), blockArr(){
         Packet::opCode = 4;
     }
 
 ACKPacket::ACKPacket(const ACKPacket &ackPacket)
-        : block(ackPacket.block){
+        : block(ackPacket.block), blockArr(){
 
     Packet::opCode = 3;
 }
 
 ACKPacket& ACKPacket::operator=(const ACKPacket &b) {
     block = b.block;
+    blockArr = b.blockArr;
     return *this;
 }
 
@@ -22,7 +23,7 @@ ACKPacket& ACKPacket::operator=(const ACKPacket &b) {
     }
 
 const char* ACKPacket::getBlockInBytes() {
-    char *blockArr = new char[2];
+    blockArr = new char[2];
     MessageEncoderDecoder::shortToBytes(getBlock(),blockArr );
     return blockArr ;
 }
@@ -49,4 +50,5 @@ const char* ACKPacket::getBlockInBytes() {
 
 ACKPacket::~ACKPacket() {
     delete(returnBytes);
+    delete(blockArr);
 }

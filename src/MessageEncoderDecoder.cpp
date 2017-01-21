@@ -247,7 +247,8 @@ void MessageEncoderDecoder::initOpCodeAndBuffers(char nextByte) {
 
     if (nextByte != 0)
     {
-        opCode = bytesToShort(new char[2]{0,nextByte});
+        char opCodeChar[2]{0,nextByte};
+        opCode = bytesToShort(opCodeChar);
         switch (opCode) {
             case 1 :
             case 2 :
@@ -306,8 +307,12 @@ short MessageEncoderDecoder::bytesToShort(char *bytesArr) {
 }
 
 MessageEncoderDecoder::~MessageEncoderDecoder() {
-    delete res;
-}
+        delete (res);
+        delete(lengthArr);
+        delete(errorArr);
+        delete(packetArr);
+        delete(blockArr);
+    }
 
 MessageEncoderDecoder& MessageEncoderDecoder::operator=(const MessageEncoderDecoder &b)
 {

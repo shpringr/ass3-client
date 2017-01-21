@@ -2,19 +2,20 @@
 #include "../../include/MessageEncoderDecoder.h"
 
 ERRORPacket::ERRORPacket(short errorCode, const string &errMsg) :
-errorCode(errorCode),errMsg(errMsg)
+errorCode(errorCode),errMsg(errMsg), errorCodeArr()
 {
         Packet::opCode = 5;
     }
 
 ERRORPacket::ERRORPacket(const ERRORPacket& errPacket)
-        : errorCode(errPacket.errorCode), errMsg(errPacket.errMsg){
+        : errorCode(errPacket.errorCode), errMsg(errPacket.errMsg), errorCodeArr(){
     Packet::opCode = 3;
 }
 
 ERRORPacket& ERRORPacket::operator=(const ERRORPacket&b) {
     errorCode = b.errorCode;
     errMsg= b.errMsg;
+    errorCodeArr = b.errorCodeArr;
     return *this;
 }
 
@@ -23,7 +24,7 @@ ERRORPacket& ERRORPacket::operator=(const ERRORPacket&b) {
     }
 
 const char* ERRORPacket::getErrorCodeInBytes() {
-    char *errorCodeArr = new char[2];
+    errorCodeArr = new char[2];
     MessageEncoderDecoder::shortToBytes(getErrorCode(),errorCodeArr);
     return errorCodeArr;
 }
@@ -58,5 +59,6 @@ const char* ERRORPacket::getErrorCodeInBytes() {
 ERRORPacket::~ERRORPacket() {
 
     delete(returnBytes);
+    delete(errorCodeArr);
 }
 

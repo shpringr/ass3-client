@@ -102,7 +102,7 @@ bool ConnectionHandler::send(Packet *pPacket) {
             return sendBytes(pPacket->getOpCodeInBytes(), 2);
         case 9: {
             msgWIthoutZeros = encoded + 3;
-            char *addedOrDeleted = new char[1];
+            char addedOrDeleted[1];
             addedOrDeleted[0] = (static_cast<BCASTPacket *>(pPacket))->getDeletedAdd();
 
             return sendBytes(pPacket->getOpCodeInBytes(), 2) &&

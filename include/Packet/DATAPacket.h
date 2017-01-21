@@ -4,6 +4,7 @@
 #include <vector>
 
     class DATAPacket : public Packet {
+
     public:
         DATAPacket(short packetSize, short block, char* pData);
         DATAPacket(const DATAPacket &dataPacket);
@@ -13,6 +14,8 @@
         short packetSize = 0;
         short block = 0;
         char* data;
+        char *sizeArr;
+        char *blockArr;
 
         virtual short getPacketSize();
 

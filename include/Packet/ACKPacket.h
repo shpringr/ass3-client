@@ -4,6 +4,8 @@
 #include <vector>
     class ACKPacket : public Packet {
 
+    private:
+        char* blockArr;
     public:
         ACKPacket(const ACKPacket &ackPacket);
         ACKPacket& operator=(const ACKPacket &b);

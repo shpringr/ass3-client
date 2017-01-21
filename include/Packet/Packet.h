@@ -6,6 +6,8 @@ class Packet {
 protected:
     short opCode = 0;
     char* returnBytes;
+    char *opCodeArr;
+
     Packet();
 public:
     Packet& operator=(const Packet &b);
@@ -18,4 +20,6 @@ public:
 
     virtual char* toByteArr() = 0;
     virtual ~Packet();
+
+
 };

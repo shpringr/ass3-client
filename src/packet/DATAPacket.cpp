@@ -2,13 +2,13 @@
 #include "../../include/MessageEncoderDecoder.h"
 
 DATAPacket::DATAPacket(short packetSize, short block, char *pData)
-:   packetSize(packetSize),block(block),data(pData)
+:   packetSize(packetSize),block(block),data(pData),sizeArr(),blockArr()
 {
     Packet::opCode = 3;
 }
 
 DATAPacket::DATAPacket(const DATAPacket &dataPacket)
-        : packetSize(dataPacket.packetSize), block(dataPacket.block), data(dataPacket.data){
+        : packetSize(dataPacket.packetSize), block(dataPacket.block), data(dataPacket.data),sizeArr(),blockArr(){
 
     Packet::opCode = 3;
 }
@@ -17,6 +17,8 @@ DATAPacket& DATAPacket::operator=(const DATAPacket &b) {
     packetSize = b.packetSize;
     block = b.block;
     data = b.data;
+    blockArr = b.blockArr;
+    sizeArr = b.sizeArr;
     return *this;
 }
 
@@ -33,13 +35,13 @@ char *DATAPacket::getData() {
 }
 
 const char* DATAPacket::getSizeInBytes() {
-    char *sizeArr = new char[2];
+    sizeArr = new char[2];
     MessageEncoderDecoder::shortToBytes(getPacketSize(),sizeArr);
     return sizeArr;
 }
 
 const char* DATAPacket::getBlockInBytes() {
-    char *blockArr = new char[2];
+    blockArr = new char[2];
     MessageEncoderDecoder::shortToBytes(getBlock(),blockArr);
     return blockArr;
 }
@@ -76,4 +78,6 @@ char *DATAPacket::toByteArr() {
 DATAPacket::~DATAPacket() {
     delete (data);
     delete(returnBytes);
+    delete(sizeArr);
+    delete(blockArr);
 }
