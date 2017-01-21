@@ -1,4 +1,5 @@
 #include "../../include/Packet/LOGRQPacket.h"
+#include "../../include/MessageEncoderDecoder.h"
 
 LOGRQPacket::LOGRQPacket(const std::string &userName):userName(userName){
     opCode=7;
@@ -14,7 +15,7 @@ char * LOGRQPacket::toByteArr()  {
     const char *userNameChar = userName.c_str();
     char *returnBytes = new char[2 + userName.length() + 1];
 
-    shortToBytes(opCode, opCodeBytes);
+    MessageEncoderDecoder::shortToBytes(opCode, opCodeBytes);
 
     for (unsigned int i = 0; i < 2; i++)
         returnBytes[i] = opCodeBytes[i];

@@ -1,4 +1,5 @@
 #include "../../include/Packet/DATAPacket.h"
+#include "../../include/MessageEncoderDecoder.h"
 
 DATAPacket::DATAPacket(short packetSize, short block, char *pData)
 :   packetSize(packetSize),block(block),data(pData)
@@ -20,13 +21,13 @@ char *DATAPacket::getData() {
 
 const char* DATAPacket::getSizeInBytes() {
     char *sizeArr = new char[2];
-    shortToBytes(getPacketSize(),sizeArr);
+    MessageEncoderDecoder::shortToBytes(getPacketSize(),sizeArr);
     return sizeArr;
 }
 
 const char* DATAPacket::getBlockInBytes() {
     char *blockArr = new char[2];
-    shortToBytes(getBlock(),blockArr);
+    MessageEncoderDecoder::shortToBytes(getBlock(),blockArr);
     return blockArr;
 }
 
@@ -37,9 +38,9 @@ char *DATAPacket::toByteArr() {
     unsigned int size = (unsigned int) (2 + 2 + 2 + packetSize + 1);
     std::vector<char> returnBytes(size);
 
-    shortToBytes(opCode, opCodeBytes);
-    shortToBytes(packetSize, sizeChar);
-    shortToBytes(block, blockChar);
+    MessageEncoderDecoder::shortToBytes(opCode, opCodeBytes);
+    MessageEncoderDecoder::shortToBytes(packetSize, sizeChar);
+    MessageEncoderDecoder::shortToBytes(block, blockChar);
 
 
     for (unsigned int i = 0; i < 2; i++)

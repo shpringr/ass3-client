@@ -20,15 +20,14 @@
 class ListenToKeyboard {
 
 private:
-
     shared_ptr<ConnectionHandler> connectionHandler;
+    bool isFIleExists(string name);
+    Packet * createNewPacketFromKeyboard();
 
 public:
     ListenToKeyboard(shared_ptr<ConnectionHandler> handler);
+    virtual ~ListenToKeyboard();
+
     void run();
     void operator()();
-
-    Packet * createNewPacketFromKeyboard() const;
-
-    bool isFIleExists(string name) const;
 };

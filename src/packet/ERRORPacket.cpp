@@ -1,6 +1,7 @@
 #include "../../include/Packet/ERRORPacket.h"
+#include "../../include/MessageEncoderDecoder.h"
 
-    ERRORPacket::ERRORPacket(short errorCode, const string &errMsg) :
+ERRORPacket::ERRORPacket(short errorCode, const string &errMsg) :
 errorCode(errorCode),errMsg(errMsg)
 {
         Packet::opCode = 5;
@@ -12,7 +13,7 @@ errorCode(errorCode),errMsg(errMsg)
 
 const char* ERRORPacket::getErrorCodeInBytes() {
     char *errorCodeArr = new char[2];
-    shortToBytes(getErrorCode(),errorCodeArr);
+    MessageEncoderDecoder::shortToBytes(getErrorCode(),errorCodeArr);
     return errorCodeArr;
 }
 
@@ -27,8 +28,8 @@ const char* ERRORPacket::getErrorCodeInBytes() {
         const char *errorMsgChar = errMsg.c_str();
         char *returnBytes = new char[2 + 2+ errMsg.length() + 1];
 
-        shortToBytes(opCode, opCodeBytes);
-        shortToBytes(errorCode, errorCodeChar);
+        MessageEncoderDecoder::shortToBytes(opCode, opCodeBytes);
+        MessageEncoderDecoder::shortToBytes(errorCode, errorCodeChar);
 
         for (unsigned int i = 0; i < 2; i++)
             returnBytes[i] = opCodeBytes[i];

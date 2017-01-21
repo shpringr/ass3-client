@@ -1,6 +1,8 @@
 //#include <boost/asio/buffer.hpp>
 #include "../../include/Packet/ACKPacket.h"
-    ACKPacket::ACKPacket(short block) : block(block){
+#include "../../include/MessageEncoderDecoder.h"
+
+ACKPacket::ACKPacket(short block) : block(block){
         Packet::opCode = 4;
     }
 
@@ -10,7 +12,7 @@
 
 const char* ACKPacket::getBlockInBytes() {
     char *blockArr = new char[2];
-    Packet::shortToBytes(getBlock(),blockArr );
+    MessageEncoderDecoder::shortToBytes(getBlock(),blockArr );
     return blockArr ;
 }
     char* ACKPacket::toByteArr()  {
@@ -19,8 +21,8 @@ const char* ACKPacket::getBlockInBytes() {
         char *blockBytes = new char[2];
         char *returnBytes = new char[2+2+1];
 
-        shortToBytes(opCode, opCodeBytes);
-        shortToBytes(block, blockBytes);
+        MessageEncoderDecoder::shortToBytes(opCode, opCodeBytes);
+        MessageEncoderDecoder::shortToBytes(block, blockBytes);
 
         for (unsigned int i = 0; i < 2; i++)
             returnBytes[i] = opCodeBytes[i];

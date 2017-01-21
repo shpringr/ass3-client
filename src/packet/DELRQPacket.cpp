@@ -1,6 +1,7 @@
 #include "../../include/Packet/DELRQPacket.h"
+#include "../../include/MessageEncoderDecoder.h"
 
-    DELRQPacket::DELRQPacket(const string &filename):fileName(filename) {
+DELRQPacket::DELRQPacket(const string &filename):fileName(filename) {
         Packet::opCode = 8;
     }
 
@@ -13,7 +14,7 @@
         const char *fileNameChar = fileName.c_str();
         char *returnBytes = new char[2 + fileName.length() + 1];
 
-        shortToBytes(opCode, opCodeBytes);
+        MessageEncoderDecoder::shortToBytes(opCode, opCodeBytes);
 
         for (unsigned int i = 0; i < 2; i++)
             returnBytes[i] = opCodeBytes[i];

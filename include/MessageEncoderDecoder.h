@@ -40,20 +40,9 @@ private:
 
     char deletedAdd = 0;
 
-public:
-
-    MessageEncoderDecoder();
-    ~MessageEncoderDecoder();
-
-private:
     void initAll();
-
     void initOpObjects();
 
-public:
-    virtual Packet *decodeNextByte(char nextByte);
-
-private:
     void makeBCastPacket(char nextByte) ;
 
     void makeDelRqPacket(char nextByte) ;
@@ -72,10 +61,13 @@ private:
 
     void initOpCodeAndBuffers(char nextByte);
 
+
 public:
+
+    MessageEncoderDecoder();
+    ~MessageEncoderDecoder();
+    virtual Packet *decodeNextByte(char nextByte);
     virtual char* encode(Packet *message);
-
     short bytesToShort(char bytesArr[]);
-    void shortToBytes(short num, char bytesArr[]);
-
+    static void shortToBytes(short num, char bytesArr[]);
 };

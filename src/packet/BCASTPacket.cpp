@@ -1,4 +1,5 @@
 #include "../../include/Packet/BCASTPacket.h"
+#include "../../include/MessageEncoderDecoder.h"
 #include <string>
 
 BCASTPacket::BCASTPacket(char deletedAdd, const string &fileName)
@@ -20,7 +21,7 @@ char* BCASTPacket::toByteArr() {
     const char *filenameChar = fileName.c_str();
     char *returnBytes = new char[2 + 1 + fileName.length() + 1];
 
-    shortToBytes(opCode, opCodeBytes);
+    MessageEncoderDecoder::shortToBytes(opCode, opCodeBytes);
 
     for (unsigned int i = 0; i < 2; i++)
         returnBytes[i] = opCodeBytes[i];

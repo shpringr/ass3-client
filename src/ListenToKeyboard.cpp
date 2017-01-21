@@ -36,7 +36,7 @@ void ListenToKeyboard::run() {
     cout << "disconnected keyyboard!"<<endl;
 }
 
-Packet * ListenToKeyboard::createNewPacketFromKeyboard() const {
+Packet * ListenToKeyboard::createNewPacketFromKeyboard() {
     const short bufsize = 518;
     char buf[bufsize];
     cin.getline(buf, bufsize);
@@ -97,7 +97,7 @@ void ListenToKeyboard::operator()(){
     boost::this_thread::yield(); //Gives up the remainder of the current thread's time slice, to allow other threads to run.
 }
 
-bool ListenToKeyboard::isFIleExists(string name) const {
+bool ListenToKeyboard::isFIleExists(string name) {
 
     string fullFileName = "./" + name;
 
@@ -108,5 +108,10 @@ bool ListenToKeyboard::isFIleExists(string name) const {
     if (isOpened)
         tryOpen.close();
     return isOpened;
+}
+
+ListenToKeyboard::~ListenToKeyboard() {
+    //TODO: DES
+
 }
 

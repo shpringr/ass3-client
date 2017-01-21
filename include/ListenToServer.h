@@ -24,22 +24,23 @@ enum class Status {
 class ListenToServer {
 protected:
     shared_ptr<ConnectionHandler> connectionHandler;
-public:
     ofstream fileToWrite;
     ifstream fileTosend;
+    std::vector<char> dirqCharArr;
+    queue <DATAPacket *> dataQueue ;
+
+public:
+    static bool connected;
     static Status status;
     static string fileName;
-    queue <DATAPacket *> dataQueue ;
-    char *fileCharArr;
-    std::vector<char> dirqCharArr;
-    // stirng s = string(&vec[0])
 
     ListenToServer(shared_ptr<ConnectionHandler> handler);
     ListenToServer(const ListenToServer &listenToServer_);
-
     ~ListenToServer();
+    void operator()();
 
     void run();
+
     void process(Packet* packet);
 
     void handleAckPacket(ACKPacket *message);
@@ -49,14 +50,8 @@ public:
     void handleErrorPacket(ERRORPacket *packet);
 
     void handleBCastPacket(BCASTPacket *packet);
-    void operator()();
 
     void readFileIntoDataQueue();
 
-    static bool connected;
-
     void printDirqArr(int size);
-
-    std::string getString(const std::string& fullString);
-
 };

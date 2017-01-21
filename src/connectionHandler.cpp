@@ -126,10 +126,6 @@ bool ConnectionHandler::send(Packet *pPacket) {
     return false;
 }
 
-bool ConnectionHandler::sendFrameAscii(std::string& frame) {
-    return sendBytes(frame.c_str(),frame.length());
-}
-
 bool ConnectionHandler::sendFrameAscii(std::string& frame, char delimiter) {
     bool result=sendBytes(frame.c_str(),frame.length());
     if(!result) return false;
