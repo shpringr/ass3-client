@@ -137,6 +137,7 @@ void ListenToServer::handleDataPacket(DATAPacket *message) {
             if (message->getPacketSize() < 512) {
                 printDirqArr((message->getPacketSize() + (message->getBlock() - 1) * 512));
                 status = Status::Normal;
+                dirqCharArr.clear();
                 connectionHandler->send(new ACKPacket(message->getBlock()));
             }
             break;
