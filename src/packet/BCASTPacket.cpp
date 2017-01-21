@@ -7,6 +7,18 @@ BCASTPacket::BCASTPacket(char deletedAdd, const string &fileName)
     opCode = 9;
 }
 
+BCASTPacket::BCASTPacket(const BCASTPacket &bCASTPacket)
+        : deletedAdd(bCASTPacket.deletedAdd), fileName(bCASTPacket.fileName){
+
+    Packet::opCode = 3;
+}
+
+BCASTPacket& BCASTPacket::operator=(const BCASTPacket &b) {
+    deletedAdd = b.deletedAdd;
+    fileName = b.fileName;
+    return *this;
+}
+
 char BCASTPacket::getDeletedAdd() {
     return deletedAdd;
 }
@@ -17,9 +29,8 @@ string BCASTPacket::getFileName() {
 
 char* BCASTPacket::toByteArr() {
 
-    char *opCodeBytes = new char[2];
-    const char *filenameChar = fileName.c_str();
-    char *returnBytes = new char[2 + 1 + fileName.length() + 1];
+    char opCodeBytes[2];
+    returnBytes = new char[2 + 1 + fileName.length() + 1];
 
     MessageEncoderDecoder::shortToBytes(opCode, opCodeBytes);
 
@@ -29,7 +40,7 @@ char* BCASTPacket::toByteArr() {
     returnBytes[2] = deletedAdd;
 
     for (unsigned int j = 3; j < 2 + 1 + fileName.length(); j++) {
-        returnBytes[j] = filenameChar[j - 3];
+        returnBytes[j] = fileName.c_str()[j - 3];
     }
 
     returnBytes[2 + 1 + fileName.length()] = '\0';
@@ -39,5 +50,5 @@ char* BCASTPacket::toByteArr() {
 }
 
 BCASTPacket::~BCASTPacket() {
-
+    delete(returnBytes);
 }

@@ -8,6 +8,9 @@ using namespace std;
     class ERRORPacket : public Packet {
 
     public:
+        ERRORPacket(const ERRORPacket &errPacket);
+        ERRORPacket& operator=(const ERRORPacket &b);
+
         short errorCode = 0;
         string errMsg;
 

@@ -7,6 +7,9 @@ using namespace std;
 
 class LOGRQPacket : public Packet {
 private:
+    LOGRQPacket(const LOGRQPacket &logRQPacket);
+    LOGRQPacket& operator=(const LOGRQPacket &b);
+
     std::string userName;
 
 

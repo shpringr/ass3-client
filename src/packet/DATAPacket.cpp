@@ -13,6 +13,13 @@ DATAPacket::DATAPacket(const DATAPacket &dataPacket)
     Packet::opCode = 3;
 }
 
+DATAPacket& DATAPacket::operator=(const DATAPacket &b) {
+    packetSize = b.packetSize;
+    block = b.block;
+    data = b.data;
+    return *this;
+}
+
 short DATAPacket::getPacketSize() {
     return packetSize;
 }
@@ -42,7 +49,7 @@ char *DATAPacket::toByteArr() {
     char sizeChar[2];
     char blockChar[2];
     unsigned int size = (unsigned int) (2 + 2 + 2 + packetSize + 1);
-    std::vector<char> returnBytes(size);
+    returnBytes= new char[size];
 
     MessageEncoderDecoder::shortToBytes(opCode, opCodeBytes);
     MessageEncoderDecoder::shortToBytes(packetSize, sizeChar);
@@ -63,23 +70,10 @@ char *DATAPacket::toByteArr() {
 
     returnBytes[2 + 2 + 2 + packetSize] = '\0';
 
-    char* p = new char[2 + 2 + 2 + packetSize + 1];
-    for (unsigned int j = 0; j < returnBytes.size(); ++j) {
-        p[j] = returnBytes.at(j);
-
-    }
-
-    return p;
-
+    return returnBytes;
 }
 
 DATAPacket::~DATAPacket() {
-    delete data;
-}
-
-DATAPacket& DATAPacket::operator=(const DATAPacket &b) {
-    packetSize = b.packetSize;
-    block = b.block;
-    data = b.data;
-    return *this;
+    delete (data);
+    delete(returnBytes);
 }

@@ -5,14 +5,24 @@ WRQPacket::WRQPacket(const string &filename) :fileName(filename){
         Packet::opCode = 2;
     }
 
+
+WRQPacket::WRQPacket(const WRQPacket &wrqPacket)
+        : fileName(wrqPacket.fileName){
+
+    Packet::opCode = 3;
+}
+
+WRQPacket& WRQPacket::operator=(const WRQPacket &b) {
+    fileName = b.fileName;
+    return *this;
+}
     string WRQPacket::getFileName() {
         return fileName;
     }
 
     char * WRQPacket::toByteArr()  {
-        char *opCodeBytes = new char[2];
-        const char *fileNameChar = fileName.c_str();
-        char *returnBytes = new char[2 + fileName.length() + 1];
+        char opCodeBytes[2];
+        returnBytes = new char[2 + fileName.length() + 1];
 
         MessageEncoderDecoder::shortToBytes(opCode, opCodeBytes);
 
@@ -20,7 +30,7 @@ WRQPacket::WRQPacket(const string &filename) :fileName(filename){
             returnBytes[i] = opCodeBytes[i];
 
         for (unsigned int i = 2; i < fileName.length() + 2; i++)
-            returnBytes[i] = fileNameChar[i - 2];
+            returnBytes[i] = fileName.c_str()[i - 2];
 
         returnBytes[2 + fileName.length()] = '\0';
 
@@ -28,6 +38,6 @@ WRQPacket::WRQPacket(const string &filename) :fileName(filename){
     }
 
 WRQPacket::~WRQPacket() {
-
+    delete(returnBytes);
 }
 

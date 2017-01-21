@@ -9,6 +9,9 @@
         DIRQPacket();
 
 
+        DIRQPacket(const DIRQPacket &dirqPacket);
+        DIRQPacket& operator=(const DIRQPacket &b);
+
         virtual char* toByteArr() override ;
 
         virtual ~DIRQPacket();

@@ -9,6 +9,9 @@ using namespace std;
 
     class RRQPacket : public Packet {
     private:
+        RRQPacket(const RRQPacket &rrqPacket);
+        RRQPacket& operator=(const RRQPacket &b);
+
         string fileName;
 
     public:

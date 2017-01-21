@@ -7,6 +7,9 @@
         DISCPacket();
 
 
+        DISCPacket(const DISCPacket &discPacket);
+        DISCPacket& operator=(const DISCPacket &b);
+
         virtual char* toByteArr() override ;
 
         virtual ~DISCPacket();

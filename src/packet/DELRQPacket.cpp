@@ -5,14 +5,24 @@ DELRQPacket::DELRQPacket(const string &filename):fileName(filename) {
         Packet::opCode = 8;
     }
 
+DELRQPacket::DELRQPacket(const DELRQPacket &delRQPacket)
+        : fileName(delRQPacket.fileName){
+
+    Packet::opCode = 3;
+}
+
+DELRQPacket& DELRQPacket::operator=(const DELRQPacket &b) {
+    fileName = b.fileName;
+    return *this;
+}
+
     string DELRQPacket::getFilename() {
         return fileName;
     }
 
     char* DELRQPacket::toByteArr()  {
-        char *opCodeBytes = new char[2];
-        const char *fileNameChar = fileName.c_str();
-        char *returnBytes = new char[2 + fileName.length() + 1];
+        char opCodeBytes[2];
+        returnBytes = new char[2 + fileName.length() + 1];
 
         MessageEncoderDecoder::shortToBytes(opCode, opCodeBytes);
 
@@ -20,7 +30,7 @@ DELRQPacket::DELRQPacket(const string &filename):fileName(filename) {
             returnBytes[i] = opCodeBytes[i];
 
         for (unsigned int i = 2; i < 2 + fileName.length(); i++)
-            returnBytes[i] = fileNameChar[i - 2];
+            returnBytes[i] = fileName.c_str()[i - 2];
 
         returnBytes[2 + fileName.length()] = '\0';
 
@@ -28,6 +38,6 @@ DELRQPacket::DELRQPacket(const string &filename):fileName(filename) {
     }
 
 DELRQPacket::~DELRQPacket() {
-
+    delete(returnBytes);
 }
 

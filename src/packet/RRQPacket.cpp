@@ -5,14 +5,24 @@ RRQPacket::RRQPacket(const string &filename):fileName(filename) {
         opCode=1;
     }
 
+RRQPacket::RRQPacket(const RRQPacket &rrqPacket)
+        : fileName(rrqPacket.fileName){
+
+    Packet::opCode = 3;
+}
+
+RRQPacket& RRQPacket::operator=(const RRQPacket &b) {
+    fileName = b.fileName;
+    return *this;
+}
+
     string RRQPacket::getFileName() {
         return fileName;
     }
 
     char * RRQPacket::toByteArr()  {
-        char *opCodeBytes = new char[2];
-        const char *fileNameChar = fileName.c_str();
-        char *returnBytes = new char[2 + fileName.length() + 1];
+        char opCodeBytes[2];
+        returnBytes = new char[2 + fileName.length() + 1];
 
         MessageEncoderDecoder::shortToBytes(opCode, opCodeBytes);
 
@@ -20,15 +30,15 @@ RRQPacket::RRQPacket(const string &filename):fileName(filename) {
             returnBytes[i] = opCodeBytes[i];
 
         for (unsigned int i = 2; i < fileName.length() + 2; i++)
-            returnBytes[i] = fileNameChar[i - 2];
+            returnBytes[i] = fileName.c_str()[i - 2];
 
         returnBytes[2 + fileName.length()] = '\0';
 
         return returnBytes;
-
     }
 
 RRQPacket::~RRQPacket() {
+    delete(returnBytes);
 
 }
 

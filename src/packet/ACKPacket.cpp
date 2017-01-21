@@ -6,6 +6,17 @@ ACKPacket::ACKPacket(short block) : block(block){
         Packet::opCode = 4;
     }
 
+ACKPacket::ACKPacket(const ACKPacket &ackPacket)
+        : block(ackPacket.block){
+
+    Packet::opCode = 3;
+}
+
+ACKPacket& ACKPacket::operator=(const ACKPacket &b) {
+    block = b.block;
+    return *this;
+}
+
     short ACKPacket::getBlock() {
         return block;
     }
@@ -17,9 +28,9 @@ const char* ACKPacket::getBlockInBytes() {
 }
     char* ACKPacket::toByteArr()  {
 
-        char *opCodeBytes = new char[2];
-        char *blockBytes = new char[2];
-        char *returnBytes = new char[2+2+1];
+        char opCodeBytes[2];
+        char blockBytes[2];
+        returnBytes = new char[2+2+1];
 
         MessageEncoderDecoder::shortToBytes(opCode, opCodeBytes);
         MessageEncoderDecoder::shortToBytes(block, blockBytes);
@@ -36,4 +47,6 @@ const char* ACKPacket::getBlockInBytes() {
     }
 
 
-ACKPacket::~ACKPacket() {}
+ACKPacket::~ACKPacket() {
+    delete(returnBytes);
+}

@@ -5,9 +5,19 @@ DIRQPacket::DIRQPacket() {
         Packet::opCode = 6;
     }
 
+DIRQPacket::DIRQPacket(const DIRQPacket &dirqPacket)
+        {
+
+    Packet::opCode = 3;
+}
+
+DIRQPacket& DIRQPacket::operator=(const DIRQPacket &b) {
+    return *this;
+}
+
     char * DIRQPacket::toByteArr()  {
-        char *opCodeBytes = new char[2];
-        char *returnBytes = new char[2 + 1];
+        char opCodeBytes[2];
+        returnBytes = new char[2 + 1];
         MessageEncoderDecoder::shortToBytes(opCode, opCodeBytes);
 
         returnBytes[2] = '\0';
@@ -16,4 +26,5 @@ DIRQPacket::DIRQPacket() {
 
 DIRQPacket::~DIRQPacket() {
 
+    delete(returnBytes);
 }

@@ -9,6 +9,9 @@ using namespace std;
 
     class BCASTPacket : public Packet {
     public:
+        BCASTPacket(const BCASTPacket &bCASTPacket);
+        BCASTPacket& operator=(const BCASTPacket &b);
+
         char deletedAdd = 0;
         string fileName;
 

@@ -9,6 +9,9 @@ using namespace std;
 
     class DELRQPacket : public Packet {
     private:
+        DELRQPacket(const DELRQPacket &delRQPacket);
+        DELRQPacket& operator=(const DELRQPacket &b);
+
         string fileName;
 
     public:
